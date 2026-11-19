@@ -48,6 +48,20 @@ Lubomir~V. Kolev.
 \newblock An improved interval linearization for solving nonlinear problems.
 \newblock {\em Numerical Algorithms}, 37(1--4):213--224, 2004.
 
+\bibitem{miyajima2003best}
+Shinya Miyajima, Takatomi Miyata, and Masahide Kashiwagi.
+\newblock On the best multiplication of the affine arithmetic.
+\newblock {\em IEICE Transactions on Fundamentals of Electronics,
+  Communications and Computer Sciences (Japanese Edition)}, J86-A(2):150--159,
+  2003.
+\newblock In Japanese.
+
+\bibitem{kvlib}
+Masahide Kashiwagi.
+\newblock kv -- a {C}++ library for verified numerical computation.
+\newblock \url{https://github.com/mskashi/kv}, file \texttt{kv/affine.hpp}.
+\newblock Accessed 2026.
+
 \bibitem{makino2003}
 Kyoko Makino and Martin Berz.
 \newblock Taylor models and other validated functional inclusion methods.
@@ -64,6 +78,11 @@ G{\"u}nter~M. Ziegler.
 \newblock {\em Lectures on Polytopes}, volume 152 of {\em Graduate Texts in
   Mathematics}.
 \newblock Springer, New York, 1995.
+
+\bibitem{skalna2013minrange}
+Iwona Skalna.
+\newblock Algorithm for min-range multiplication of affine forms.
+\newblock {\em Numerical Algorithms}, 63(4):601--614, 2013.
 
 \bibitem{chabert2009}
 Gilles Chabert and Luc Jaulin.
