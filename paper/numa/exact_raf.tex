@@ -33,7 +33,7 @@
 \maketitle
 
 \begin{abstract}
-Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation errors in a single error term. The product of two such forms must be enclosed by a new reduced affine form, and the error of this enclosure determines the quality of the whole computation. Skalna and Hlad\'{\i}k (Numer.\ Algorithms 76, 2017) computed in linear time the exact range of the quadratic part of the product and called the resulting multiplication optimal. We show that it is not exact when both operands carry errors, since the terms that are linear in the error symbols are bounded separately, and we give a multiplication that computes the exact range of the whole nonlinear part of the product. It reduces the problem to four evaluations of the range of a product of two linear functions over a planar zonotope, one for each vertex of the square of the error symbols, and runs in $O(n\log n)$ time. We place the new multiplication in a hierarchy of the existing ones, including the standard multiplication used in the affine arithmetic of the Ibex library, which we identify with AF2 followed by a re-centering of its one-sided error terms, and we show that the new multiplication coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and can be up to $3/2$ times narrower otherwise. On the test functions of Skalna and Hlad\'{\i}k, the overestimation of the range decreases from 33\% to 14\% for the Colville and Dixon functions; on random products and on constraints of a benchmark of nonlinear systems, the gains are smaller but systematic.
+Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation errors in a single error term. The product of two such forms must be enclosed by a new reduced affine form, and the error of this enclosure determines the quality of the whole computation. Skalna and Hlad\'{\i}k (Numer.\ Algorithms 76, 2017) computed in linear time the exact range of the quadratic part of the product and called the resulting multiplication optimal. We show that it is not exact when both operands carry errors, since the terms that are linear in the error symbols are bounded separately, and we give a multiplication that computes the exact range of the whole nonlinear part of the product. It reduces the problem to four evaluations of the range of a product of two linear functions over a planar zonotope, one for each vertex of the square of the error symbols, and runs in $O(n\log n)$ time. We place the new multiplication in a hierarchy of the existing ones, including the standard multiplication used in the affine arithmetic of the Ibex library, which we identify with AF2 followed by a re-centering of its one-sided error terms, and we show that the new multiplication coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and is at most $3/2$ times narrower otherwise, a bound that is attained. On the test functions of Skalna and Hlad\'{\i}k, the overestimation of the range decreases from 33\% to 14\% for the Colville and Dixon functions; on random products and on constraints of a benchmark of nonlinear systems, the gains are smaller but systematic.
 
 \medskip\noindent
 \textit{Keywords:} reduced affine arithmetic, multiplication, range enclosure, linear relaxation, zonotope
@@ -55,7 +55,7 @@ In this paper we observe that the multiplication of Skalna and Hlad\'{\i}k is no
 \paragraph{Contributions.}
 \begin{itemize}
 \item An exact multiplication of reduced affine forms (Section~\ref{sec:exact}): Theorem~\ref{thm:exact} shows that it computes the narrowest enclosure of the product with the usual linear part, and Algorithm~\ref{alg:exact} computes it in $O(n\log n)$ time.
-\item A hierarchy of multiplication formulae (Section~\ref{sec:hierarchy}): the exact multiplication is contained in all the others; it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error (Proposition~\ref{prop:oneerror}) and can be $3/2$ times narrower otherwise (Example~\ref{ex:32}). We also show that the standard multiplication, which is the one of the affine arithmetic of the Ibex library, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}), and that AF2 and the monomial-wise formulae do not coincide on products of affine forms in general.
+\item A hierarchy of multiplication formulae (Section~\ref{sec:hierarchy}): the exact multiplication is contained in all the others; it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error (Proposition~\ref{prop:oneerror}) and is at most $3/2$ times narrower otherwise, a tight bound (Proposition~\ref{prop:32}). We also show that the standard multiplication, which is the one of the affine arithmetic of the Ibex library, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}), and that AF2 and the monomial-wise formulae do not coincide on products of affine forms in general.
 \item Experiments (Section~\ref{sec:experiments}) on random products, on the test functions of Skalna and Hlad\'{\i}k, and on controlled expressions and constraints of a benchmark of nonlinear systems, with the exact ranges computed by a global optimizer.
 \end{itemize}
 
@@ -192,14 +192,41 @@ If $x_r=0$ or $y_r=0$, then $[\hat z]_E=[\hat z]_{SH}$.
 Let $y_r=0$, so that $N = y_0x_r\ex + R$ with $R(e,\ex)=(e^Tx+x_r\ex)\,e^Ty$. Since $R$ is affine in $\ex$ for fixed $e$, its maximum over $\U^{n+1}$ is attained at some $(e^*,\ex^*)$ with $\ex^*\in\{-1,1\}$, and since $R(-e,-\ex)=R(e,\ex)$, also at $(-e^*,-\ex^*)$. Choosing the one with $\ex^*=\operatorname{sign}(y_0)$ (either, if $y_0=0$) gives $N = |y_0|x_r + R_{\max}$, which is the upper bound of $[\hat z]_{SH}$. The same argument applies to the lower bound, and to $x_r=0$.
 \end{proof}
 
-When both operands carry errors, E can be noticeably narrower than SH.
+When both operands carry errors, E can be narrower than SH, but by a bounded factor. Denote $A=|y_0|x_r+|x_0|y_r$ and, for the two pairs of opposite vertices of $\U^2$, $\Lambda_\alpha=|x_0y_r+y_0x_r|$, the value of $|x_0y_r\ey+y_0x_r\ex|$ at $(\ex,\ey)=\pm(1,1)$, and $\Lambda_\beta=|x_0y_r-y_0x_r|$, its value at $\pm(1,-1)$, so that $\max(\Lambda_\alpha,\Lambda_\beta)=A$.
+
+\begin{lemma}
+\label{lem:classes}
+The maximum of $R$ over $\U^{n+2}$ is attained at a point with $(\ex,\ey)=(1,1)$, and its minimum at a point with $(\ex,\ey)=(1,-1)$.
+\end{lemma}
+\begin{proof}
+Write $R=(u+x_r\ex)(v+y_r\ey)$ with $(u,v)=(e^Tx,e^Ty)$. Since $R(0,0,0)=0$, $\max R\ge0$. If $\max R=0$, it is attained at $(e,\ex,\ey)=(0,1,1)$, where $R=x_ry_r\ge0$. Otherwise, at a maximizer both factors have the same sign, and since $R(-e,-\ex,-\ey)=R(e,\ex,\ey)$, we may assume that both are positive. Increasing $\ex$ and $\ey$ to $1$ does not decrease them, because $x_r,y_r\ge0$, so $R$ does not decrease and the maximum is also attained with $(\ex,\ey)=(1,1)$. The argument for the minimum is the same: if $\min R=0$, it is attained at $(0,1,-1)$, where $R=-x_ry_r\le0$; otherwise, at a minimizer the factors have opposite signs, we may assume that the first one is positive, and moving $(\ex,\ey)$ to $(1,-1)$ increases the first factor and decreases the second, so that $R$ does not increase.
+\end{proof}
+
+\begin{propo}
+\label{prop:32}
+For all operands, $\wid[\hat z]_E\ \ge\ \wid\rng R+\Lambda_\alpha+\Lambda_\beta$ and
+\[
+\wid[\hat z]_E\ \le\ \wid[\hat z]_{SH}\ \le\ \tfrac32\,\wid[\hat z]_E .
+\]
+The constant $3/2$ cannot be improved.
+\end{propo}
+\begin{proof}
+Write $N=L+R$ with $L=x_0y_r\ey+y_0x_r\ex$, and let $p=(e,\ex,\ey)$. Since $R(-p)=R(p)$ and $L(-p)=-L(p)$, one of $N(p)$, $N(-p)$ is at least $R(p)+|L(p)|$ and the other is at most $R(p)-|L(p)|$; hence
+\begin{equation}
+\label{eq:pm}
+\max N\ \ge\ R(p)+|L(p)|,\qquad \min N\ \le\ R(p)-|L(p)|\qquad\text{for every } p\in\U^{n+2}.
+\end{equation}
+Taking $p$ as the maximizer of $R$ given by Lemma~\ref{lem:classes}, where $|L(p)|=\Lambda_\alpha$, and then as its minimizer, where $|L(p)|=\Lambda_\beta$, gives $\wid[\hat z]_E=\max N-\min N\ge\wid\rng R+\Lambda_\alpha+\Lambda_\beta\ge\wid\rng R+A$. Taking in~\eqref{eq:pm} the same point $p=(0,\ex,\ey)$ for both bounds, with the vertex $(\ex,\ey)$ where $|L|=A$, gives $\wid[\hat z]_E\ge 2A$. Since $\wid[\hat z]_{SH}=\wid\rng R+2A$,
+\[
+\wid[\hat z]_{SH}\ \le\ \tfrac32\max\big(\wid\rng R+A,\ 2A\big)\ \le\ \tfrac32\,\wid[\hat z]_E ,
+\]
+where the first inequality is checked separately for $\wid\rng R\ge A$ and $\wid\rng R\le A$. The lower bound $\wid[\hat z]_E\le\wid[\hat z]_{SH}$ is Proposition~\ref{prop:chain}, and Example~\ref{ex:32} attains the ratio $3/2$.
+\end{proof}
 
 \begin{example}
 \label{ex:32}
 Let $n=0$, $\hat x = -1+\ex$ and $\hat y = 1+\ey$, i.e., $x\in[-2,0]$ and $y\in[0,2]$. Then $N = -\ey+\ex+\ex\ey$, whose values at the four vertices are $1,1,1,-3$, so $[\hat z]_E=[-3,1]$ and $\hat x\hat y\in -1+[-3,1]=[-4,0]$, the exact range of $xy$. SH gives $\rng R=[-1,1]$ and $|y_0|x_r+|x_0|y_r = 2$, so $[\hat z]_{SH}=[-3,3]$ and $\hat x\hat y\in[-4,2]$: the width ratio is $3/2$.
 \end{example}
-
-In a numerical search over operands with $n\le 3$ (random restarts followed by local maximization of the width ratio), the ratio $\wid[\hat z]_{SH}/\wid[\hat z]_E$ never exceeded $3/2$; we conjecture that this is its supremum.
 
 \paragraph{The standard multiplication is AF2 with re-centering.} The affine arithmetic of the Ibex library (model fAF2 of its affine plugin) implements formula S, with the rounding errors accumulated in the error term. The next result relates it to AF2.
 
@@ -277,7 +304,7 @@ On the benchmark constraints, SH is 6.5\% narrower than M on average. E is narro
 
 \section{Conclusion}
 
-The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from four ranges of shifted products over a planar zonotope, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and is strictly narrower, up to a factor $3/2$, otherwise. Its effect is large on products of squares of forms that already carry errors, such as the Colville and Dixon functions, and small but systematic elsewhere.
+The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from four ranges of shifted products over a planar zonotope, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and can be narrower, by at most a factor $3/2$, otherwise. Its effect is large on products of squares of forms that already carry errors, such as the Colville and Dixon functions, and small but systematic elsewhere.
 
 We also related the standard multiplication of the Ibex library to AF2, as AF2 with its one-sided terms re-centered after each product, and showed that, contrary to what one might expect, AF2 and the monomial-wise formulae do not coincide on products of affine forms when bilinear terms cancel. Natural continuations are a rigorous implementation of Algorithm~\ref{alg:exact} in Ibex, to measure its effect in branch-and-bound solvers, a linear-time version, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
 
