@@ -1,4 +1,5 @@
-"""Compute the residual widths of RAA and AF2 and the optimal width (IbexOpt).
+"""Compute the residual widths of ZCAA, AF2 and first-order Taylor models (TM) and the
+optimal width (IbexOpt).
 
     python experiments/run_experiments.py controlled   # Table 2 of the paper
     python experiments/run_experiments.py instances    # Table 3 of the paper
@@ -44,10 +45,11 @@ def run(name, max_runs=None):
                 box = random_box(f, size, SIZES)
                 if max_runs is not None and k >= max_runs:
                     continue               # keep the random sequence of the full run
-                r, a = evaluate(f, box)
+                r, a, t = evaluate(f, box)
                 w_opt = optimal_residual_width(f, r.slopes, box, prec, timeout)
                 records.append({"function": f.name, "size": size, "run": k, "box": box,
-                                "raa_width": r.residual_width(), "af2_width": a.residual_width(),
+                                "zcaa_width": r.residual_width(), "af2_width": a.residual_width(),
+                                "tm_width": t.residual_width(),
                                 "opt_width": w_opt})
         print(f"{f.name}: done in {time.time() - t0:.0f} s", flush=True)
     return records

@@ -10,7 +10,7 @@ import tempfile
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from raa import set_box, raa_variables, af2_variables      # noqa: E402
+from zcaa import set_box, zcaa_variables, af2_variables, tm_variables   # noqa: E402
 
 RESULTS = os.path.join(ROOT, "results")
 
@@ -29,11 +29,12 @@ def random_box(function, size, sizes):
 
 
 def evaluate(function, box):
-    """Residual widths of RAA and AF2 and the slopes of the RAA linear part."""
+    """Enclosures of the function over the box with ZCAA, AF2 and first-order Taylor models."""
     set_box(box)
-    r = function(*raa_variables(3))
+    r = function(*zcaa_variables(3))
     a = function(*af2_variables(box))
-    return r, a
+    t = function(*tm_variables(3))
+    return r, a, t
 
 
 def ibexopt_path():

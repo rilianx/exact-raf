@@ -1,7 +1,7 @@
 """Test expressions of the paper.
 
 Each expression is written once, in Ibex syntax (^ for powers, x_1, x_2, x_3 for
-the variables), and evaluated in Python with RAA forms, AF2 forms or numbers.
+the variables), and evaluated in Python with ZCAA forms, AF2 forms or numbers.
 
   - Cases 1-4: controlled products (Table 1 of the paper).
   - Constraints with products of nonlinear factors taken from the benchmark of
@@ -9,7 +9,7 @@ the variables), and evaluated in Python with RAA forms, AF2 forms or numbers.
 """
 import re
 
-from raa import sin, cos, exp, log, sqrt, sinh, power
+from zcaa import sin, cos, exp, log, sqrt, sinh, power
 
 _NAMESPACE = {"sin": sin, "cos": cos, "exp": exp, "log": log, "sqrt": sqrt,
               "sinh": sinh, "power": power}
