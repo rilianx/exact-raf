@@ -22,7 +22,10 @@ first-order Taylor models (Makino and Berz, 2003).
 
 ```
 zcaa/                   the three methods
-  zcaa.py               ZCAA forms, square and product (Sections 3.1-3.4 of the paper)
+  zcaa.py               ZCAA forms, square and product (Sections 3.1-3.4 of the paper), and
+                        other multiplication rules on the same representation (set_product):
+                        faf2 (fAF2 of Ibex = Skalna-Hladik Eq. 5), skalna (Skalna-Hladik
+                        Eq. 10) and exact (exact range of the nonlinear part)
   af2.py                AF2 baseline (see "Notes on the AF2 baseline" below)
   tm.py                 first-order Taylor model baseline (TM)
   unary.py              sin, cos, exp, log, sqrt, sinh and integer powers, with the same
@@ -33,6 +36,8 @@ benchmarks/
   instances/            original benchmark files (Ibex/minibex format) of these constraints
 experiments/
   run_experiments.py    residual widths of ZCAA, AF2 and TM and optimal width with IbexOpt
+                        (sets: controlled, mixed, instances)
+  product_rules.py      residual widths of the multiplication rules on the same boxes
   make_tables.py        Tables 2 and 3, win/tie/loss counts and Wilcoxon tests
   make_figure.py        Figure 2
   timing.py             running time of ZCAA, AF2 and TM

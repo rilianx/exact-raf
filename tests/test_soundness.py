@@ -13,7 +13,8 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, ROOT)
 
-from zcaa import set_box, zcaa_variables, af2_variables, tm_variables, AF2, ZCAAForm, mul_zcaa   # noqa: E402
+from zcaa import (set_box, zcaa_variables, af2_variables, tm_variables, AF2, ZCAAForm, mul_zcaa,
+                  mul_faf2, mul_skalna, mul_exact, set_product, PRODUCTS)   # noqa: E402
 from benchmarks.functions import ALL, SIZES                                     # noqa: E402
 
 BOXES, POINTS = 20, 200
@@ -93,6 +94,60 @@ def test_lemma_example():
     u = mul_zcaa(ZCAAForm([1.0, 2.0], -1, 1), ZCAAForm([2.0, 3.0], 0, 2))
     assert [round(s, 12) for s in u.slopes] == [12.0, 21.0]
     assert abs(u.lo + 38) < 1e-12 and abs(u.hi - 18) < 1e-12
+
+
+def test_product_rules_enclose():
+    """Every multiplication rule gives valid envelopes on the test expressions."""
+    random.seed(3)
+    try:
+        for rule in PRODUCTS:
+            set_product(rule)
+            for f in ALL:
+                for size in f.sizes:
+                    for _ in range(5):
+                        box = _box(f, size)
+                        set_box(box)
+                        r = f(*zcaa_variables(3))
+                        for _ in range(POINTS):
+                            x = [random.uniform(lo, hi) for lo, hi in box]
+                            v = f(*x)
+                            tol = 1e-7 * max(1.0, abs(v))
+                            lo, hi = r(x)
+                            assert lo - tol <= v <= hi + tol, (f.name, rule, box, x)
+    finally:
+        set_product("zcaa")
+
+
+def test_product_rules_inclusions():
+    """Single product: exact in skalna and in zcaa, zcaa and skalna in faf2, same linear part."""
+    random.seed(4)
+    for _ in range(2000):
+        n = random.randint(1, 6)
+        box = []
+        for _ in range(n):
+            lo = random.uniform(-5, 5)
+            box.append((lo, lo + random.uniform(0, 4)))
+        set_box(box)
+
+        def rand_form():
+            c, w = random.uniform(-3, 3), random.uniform(0, 2) * random.random()
+            return ZCAAForm([random.gauss(0, 1) for _ in range(n)], c - w * random.random(), c + w * random.random())
+
+        v, w = rand_form(), rand_form()
+        e, s, z, f = mul_exact(v, w), mul_skalna(v, w), mul_zcaa(v, w), mul_faf2(v, w)
+        for p, q in ((e, s), (e, z), (z, f), (s, f)):
+            assert all(abs(a - b) <= 1e-9 * (1 + abs(a)) for a, b in zip(p.slopes, q.slopes))
+            tol = 1e-9 * (1 + abs(q.lo) + abs(q.hi))
+            assert q.lo - tol <= p.lo and p.hi <= q.hi + tol
+
+
+def test_exact_product_mixed_signs():
+    # (x1 + x2)(x1 - x2) = x1^2 - x2^2 over [-1, 1]^2: exact residual [-1, 1], AF2 and fAF2 width 6
+    set_box([(-1, 1), (-1, 1)])
+    v, w = ZCAAForm([1.0, 1.0], 0, 0), ZCAAForm([1.0, -1.0], 0, 0)
+    e, f = mul_exact(v, w), mul_faf2(v, w)
+    assert abs(e.lo + 1) < 1e-12 and abs(e.hi - 1) < 1e-12
+    assert abs(f.residual_width() - 6) < 1e-12
 
 
 if __name__ == "__main__":

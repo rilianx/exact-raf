@@ -73,7 +73,7 @@ class ZCAAForm:
         if isinstance(other, (int, float)):
             return self.scale(other)
         if isinstance(other, ZCAAForm):
-            return mul_zcaa(self, other)
+            return PRODUCTS[_PRODUCT](self, other)
         return NotImplemented
 
     def __rmul__(self, other):
@@ -195,3 +195,119 @@ def mul_zcaa(v, w):
             ghi = max(ghi, hi)
 
     return ZCAAForm(slopes, elo + glo, ehi + ghi)
+
+
+# ---- other multiplication rules on the same representation ---------------------
+#
+# In noise coordinates, x_i = m_i + rho_i e_i with e_i in [-1, 1], and a form
+# v = sum_i a_i x_i + [lo, hi] is the reduced affine form
+#     v = v0 + sum_i alpha_i e_i + v_r xi,     v0 = a.m + mid([lo, hi]), alpha_i = a_i rho_i,
+# with v_r = rad([lo, hi]) and xi in [-1, 1] (Skalna and Hladik, Numer. Algor. 2017, Eq. 1).
+# The product of v and w = w0 + sum_i beta_i e_i + w_r eta is
+#     v w = v0 w0 + sum_i (v0 beta_i + w0 alpha_i) e_i + N,
+#     N = v0 w_r eta + w0 v_r xi + (alpha.e + v_r xi)(beta.e + w_r eta)        (*)
+# The rules below share this linear part, which is also the linear part of mul_zcaa,
+# and differ only in the interval that encloses N.
+
+def _noise(v):
+    box = get_box()
+    m = [0.5 * (p + q) for p, q in box]
+    rho = [0.5 * (q - p) for p, q in box]
+    v0 = sum(a * mi for a, mi in zip(v.slopes, m)) + 0.5 * (v.lo + v.hi)
+    return v0, [a * r for a, r in zip(v.slopes, rho)], 0.5 * (v.hi - v.lo), m
+
+
+def _assemble(v, w, nlo, nhi):
+    """Form v0 w0 + sum_i (v0 b_i + w0 a_i)(x_i - m_i) + [nlo, nhi]."""
+    v0, _, _, m = _noise(v)
+    w0, _, _, _ = _noise(w)
+    slopes = [v0 * b + w0 * a for a, b in zip(v.slopes, w.slopes)]
+    c = v0 * w0 - sum(s * mi for s, mi in zip(slopes, m))
+    return ZCAAForm(slopes, c + nlo, c + nhi)
+
+
+def _uv_range(gens, c0=0.0, c1=0.0):
+    """Exact range of (u + c0)(v + c1) for (u, v) in the zonotope sum_k e_k g_k, e in [-1, 1]^K.
+
+    The only critical point of uv is a saddle, so the extrema lie on the boundary of the
+    zonotope, a convex polygon whose edges are the generators sorted by angle
+    (Skalna and Hladik 2017, Prop. 4). O(K log K)."""
+    g = []
+    for gu, gv in gens:
+        if gu < 0 or (gu == 0 and gv < 0):
+            gu, gv = -gu, -gv
+        if gu != 0 or gv != 0:
+            g.append((gu, gv))
+    if not g:
+        return c0 * c1, c0 * c1
+    import math
+    g.sort(key=lambda t: math.atan2(t[1], t[0]))
+    pu, pv = c0 - sum(t[0] for t in g), c1 - sum(t[1] for t in g)
+    lo = hi = pu * pv
+    for sign in (2.0, -2.0):
+        for gu, gv in g:
+            du, dv = sign * gu, sign * gv
+            qu, qv = pu + du, pv + dv
+            val = qu * qv
+            lo, hi = min(lo, val), max(hi, val)
+            a, b = du * dv, pu * dv + pv * du          # (pu + t du)(pv + t dv) = pu pv + b t + a t^2
+            if a != 0:
+                t = -b / (2.0 * a)
+                if 0.0 < t < 1.0:
+                    val = (pu + t * du) * (pv + t * dv)
+                    lo, hi = min(lo, val), max(hi, val)
+            pu, pv = qu, qv
+    return lo, hi
+
+
+def mul_faf2(v, w):
+    """'Standard' multiplication of reduced affine forms (Skalna and Hladik 2017, Eq. 5),
+    the rule of the fAF2 model of the Ibex affine plugin."""
+    v0, a, vr, _ = _noise(v)
+    w0, b, wr, _ = _noise(w)
+    sx, sy = sum(abs(t) for t in a), sum(abs(t) for t in b)
+    c = 0.5 * sum(ai * bi for ai, bi in zip(a, b))
+    r = abs(w0) * vr + abs(v0) * wr + (sx + vr) * (sy + wr) - 0.5 * sum(abs(ai * bi) for ai, bi in zip(a, b))
+    return _assemble(v, w, c - r, c + r)
+
+
+def mul_skalna(v, w):
+    """Chebyshev minimum-error multiplication of Skalna and Hladik (2017, Eq. 10): exact range of
+    R = (alpha.e + v_r xi)(beta.e + w_r eta), plus |w0| v_r + |v0| w_r for the other terms of (*)."""
+    v0, a, vr, _ = _noise(v)
+    w0, b, wr, _ = _noise(w)
+    rlo, rhi = _uv_range(list(zip(a, b)) + [(vr, 0.0), (0.0, wr)])
+    e = abs(w0) * vr + abs(v0) * wr
+    return _assemble(v, w, rlo - e, rhi + e)
+
+
+def mul_exact(v, w):
+    """Exact range of N in (*). N is affine in xi and in eta, so its extrema are attained with
+    xi, eta in {-1, 1} (the four vertices of mul_zcaa); for each vertex, N is a product of two
+    shifted linear forms in e, whose exact range follows from _uv_range. O(n log n)."""
+    v0, a, vr, _ = _noise(v)
+    w0, b, wr, _ = _noise(w)
+    gens = list(zip(a, b))
+    nlo, nhi = float("inf"), float("-inf")
+    for xi in (-1.0, 1.0):
+        for eta in (-1.0, 1.0):
+            lo, hi = _uv_range(gens, vr * xi, wr * eta)
+            k = v0 * wr * eta + w0 * vr * xi
+            nlo, nhi = min(nlo, lo + k), max(nhi, hi + k)
+    return _assemble(v, w, nlo, nhi)
+
+
+PRODUCTS = {"zcaa": mul_zcaa, "faf2": mul_faf2, "skalna": mul_skalna, "exact": mul_exact}
+_PRODUCT = "zcaa"
+
+
+def set_product(name):
+    """Select the multiplication rule used by ZCAAForm.__mul__ (one of PRODUCTS)."""
+    global _PRODUCT
+    if name not in PRODUCTS:
+        raise ValueError(f"unknown product {name!r}; choose one of {sorted(PRODUCTS)}")
+    _PRODUCT = name
+
+
+def get_product():
+    return _PRODUCT

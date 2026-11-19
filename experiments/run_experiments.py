@@ -2,6 +2,7 @@
 optimal width (IbexOpt).
 
     python experiments/run_experiments.py controlled   # Table 2 of the paper
+    python experiments/run_experiments.py mixed        # Cases 1-4 with mixed signs
     python experiments/run_experiments.py instances    # Table 3 of the paper
 
 Results are written to results/<set>.json. The seeds, numbers of runs and IbexOpt
@@ -14,11 +15,12 @@ import random
 import time
 
 from common import RESULTS, random_box, evaluate, optimal_residual_width
-from benchmarks.functions import CASES, INSTANCES, SIZES
+from benchmarks.functions import CASES, MIXED, INSTANCES, SIZES
 
 # (function, seed, runs per size, IbexOpt precision, IbexOpt timeout in s)
 CONFIG = {
     "controlled": {"seed": 2026, "functions": [(f, 100, 1e-8, 30) for f in CASES]},
+    "mixed": {"seed": 2027, "functions": [(f, 100, 1e-8, 30) for f in MIXED]},
     "instances": {"functions": [
         (INSTANCES[0], 2030, 100, 1e-8, 30),
         (INSTANCES[1], 2031, 50, 1e-6, 10),

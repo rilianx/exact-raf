@@ -5,10 +5,12 @@ plus a bounded residual interval, and re-centers the residuals at every
 multiplication. See the README for the reference to the paper.
 """
 from .box import set_box, get_box
-from .zcaa import ZCAAForm, zcaa_variables, pow_zcaa, mul_zcaa
+from .zcaa import (ZCAAForm, zcaa_variables, pow_zcaa, mul_zcaa, mul_faf2, mul_skalna, mul_exact,
+                   set_product, get_product, PRODUCTS)
 from .af2 import AF2, af2_variables
 from .tm import TM1, tm_variables
 from .unary import sin, cos, exp, log, sqrt, sinh, power
 
 __all__ = ["set_box", "get_box", "ZCAAForm", "zcaa_variables", "pow_zcaa", "mul_zcaa",
+           "mul_faf2", "mul_skalna", "mul_exact", "set_product", "get_product", "PRODUCTS",
            "AF2", "af2_variables", "TM1", "tm_variables", "sin", "cos", "exp", "log", "sqrt", "sinh", "power"]
