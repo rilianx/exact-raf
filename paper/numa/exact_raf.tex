@@ -263,7 +263,29 @@ $f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 (53) & 57.4 & 39.9 (37) & 39.9 \\
 
 If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$ (which is exact for $t^2$), all the formulae give 47.0, 19.9, 22.5, 22.4, 24.4, 32.4, 32.3 and 30.7\% for $f_1$--$f_4$ and $f_6$--$f_9$, since these functions contain no other products of forms with errors, and 99.0, 98.3, 98.6 and 98.1\% (S, M, SH, E) for Goldstein--Price.
 
-%BNB_TABLE
+Table~\ref{tab:bnb} reports a simple best-first branch-and-bound in the spirit of~\cite[Sect.~5.3]{skalna2017new}: the lower bound of a box is the lower end of the enclosure of $f$, the upper bound is $f$ at the midpoint, boxes are bisected along their widest side, and a box is accepted when $f(\mathrm{mid})$ minus its lower bound is below $\epsilon$. The numbers of iterations of S and SH are close to those reported in~\cite[Table~4]{skalna2017new} for Beale and Booth (1738 and 1416, 308 and 226). E never needs more iterations than SH, but the differences are small (at most 4\%, for Goldstein--Price), even for Colville, whose root enclosure is much tighter with E: in the small boxes explored by the search, the errors carried by the operands are small and the coupled terms matter less.
+
+\begin{table}[t]
+\centering
+\caption{Iterations of a simple best-first interval branch-and-bound for the global minimum of the test functions of~\cite{skalna2017new} (integer powers as repeated products, $\epsilon=10^{-4}$, limit of 200\,000 iterations).}
+\label{tab:bnb}
+\small
+\begin{tabular}{lrrrr}
+\toprule
+Function & S & M & SH & E \\
+\midrule
+$f_1$ Beale & 1890 & 1880 & 1495 & 1486 \\
+$f_2$ Booth & 294 & 294 & 206 & 206 \\
+$f_3$ Colville & $>$200000 & $>$200000 & 161503 & 160787 \\
+$f_4$ Dixon (n=5) & $>$200000 & $>$200000 & $>$200000 & $>$200000 \\
+$f_5$ Goldstein-Price & 1194 & 1068 & 888 & 852 \\
+$f_6$ Leon & 2142 & 2142 & 1405 & 1405 \\
+$f_7$ Matyas & 395 & 395 & 395 & 395 \\
+$f_8$ Rosenbrock (n=4) & 182255 & 182151 & 95038 & 94984 \\
+$f_9$ Six-hump camel & 483 & 483 & 477 & 477 \\
+\bottomrule
+\end{tabular}
+\end{table}
 
 \subsection{Controlled products and benchmark constraints}
 
