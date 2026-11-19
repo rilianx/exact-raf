@@ -55,7 +55,7 @@ In this paper we observe that the multiplication of Skalna and Hlad\'{\i}k is no
 \paragraph{Contributions.}
 \begin{itemize}
 \item An exact multiplication of reduced affine forms (Section~\ref{sec:exact}): Theorem~\ref{thm:exact} shows that it computes the narrowest enclosure of the product with the usual linear part, and Algorithm~\ref{alg:exact} computes it in $O(n\log n)$ time.
-\item A hierarchy of multiplication formulae (Section~\ref{sec:hierarchy}): the exact multiplication is contained in all the others; it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error (Proposition~\ref{prop:oneerror}) and is at most $3/2$ times narrower otherwise, a tight bound (Proposition~\ref{prop:32}). We also show that the standard multiplication, which is the one of the affine arithmetic of the Ibex library, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}), and that AF2 and the monomial-wise formulae do not coincide on products of affine forms in general.
+\item A hierarchy of multiplication formulae (Section~\ref{sec:hierarchy}): the exact multiplication is contained in all the others; it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error (Proposition~\ref{prop:oneerror}) and is at most $3/2$ times narrower otherwise, a tight bound (Proposition~\ref{prop:32}); more precisely, the difference of widths is at most $2\min(|x_0|y_r,|y_0|x_r)$, and usually equal to it, so that E helps only when both operands carry errors and are away from zero (Corollary~\ref{cor:gain}). We also show that the standard multiplication, which is the one of the affine arithmetic of the Ibex library, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}), and that AF2 and the monomial-wise formulae do not coincide on products of affine forms in general.
 \item Experiments (Section~\ref{sec:experiments}) on random products, on the test functions of Skalna and Hlad\'{\i}k, and on controlled expressions and constraints of a benchmark of nonlinear systems, with the exact ranges computed by a global optimizer.
 \end{itemize}
 
@@ -228,6 +228,22 @@ where the first inequality is checked separately for $\wid\rng R\ge A$ and $\wid
 Let $n=0$, $\hat x = -1+\ex$ and $\hat y = 1+\ey$, i.e., $x\in[-2,0]$ and $y\in[0,2]$. Then $N = -\ey+\ex+\ex\ey$, whose values at the four vertices are $1,1,1,-3$, so $[\hat z]_E=[-3,1]$ and $\hat x\hat y\in -1+[-3,1]=[-4,0]$, the exact range of $xy$. SH gives $\rng R=[-1,1]$ and $|y_0|x_r+|x_0|y_r = 2$, so $[\hat z]_{SH}=[-3,3]$ and $\hat x\hat y\in[-4,2]$: the width ratio is $3/2$.
 \end{example}
 
+The lower bound of Proposition~\ref{prop:32} also tells when E can improve on SH, and by how much.
+
+\begin{corollary}
+\label{cor:gain}
+For all operands,
+\[
+0\ \le\ \wid[\hat z]_{SH}-\wid[\hat z]_E\ \le\ 2\min\big(|x_0|\,y_r,\ |y_0|\,x_r\big).
+\]
+In particular, $[\hat z]_E=[\hat z]_{SH}$ whenever one of the operands has no error ($x_r=0$ or $y_r=0$) or a zero center ($x_0=0$ or $y_0=0$).
+\end{corollary}
+\begin{proof}
+$\wid[\hat z]_{SH}=\wid\rng R+2A$ and, by Proposition~\ref{prop:32}, $\wid[\hat z]_E\ge\wid\rng R+\Lambda_\alpha+\Lambda_\beta$. Since $\Lambda_\alpha+\Lambda_\beta = |a+b|+|a-b| = 2\max(|a|,|b|)$ and $A=|a|+|b|$, with $a=x_0y_r$ and $b=y_0x_r$, the difference is at most $2A-2\max(|a|,|b|)=2\min(|a|,|b|)$.
+\end{proof}
+
+The bound is attained in most cases: in 100\,000 random products with $n\le6$ and nonzero bound, the difference was equal to $2\min(|x_0|y_r,|y_0|x_r)$ in 68\% of them, and its median ratio to the bound was 1. E is therefore useful when \emph{both} operands carry errors and are \emph{both} away from zero, and its relative gain, at most $1/3$ of $\wid[\hat z]_{SH}$ by Proposition~\ref{prop:32}, is largest when $|x_0|y_r$ and $|y_0|x_r$ are comparable and large with respect to the width of $\rng R$, i.e., when the errors and the centers of the operands dominate their noise coefficients. This is the typical situation of products of subexpressions that have accumulated errors in previous nonlinear operations, such as a square $\hat v\cdot\hat v$ of a nonlinear form, for which $|x_0|y_r=|y_0|x_r$.
+
 \paragraph{The standard multiplication is AF2 with re-centering.} The affine arithmetic of the Ibex library (model fAF2 of its affine plugin) implements formula S, with the rounding errors accumulated in the error term. The next result relates it to AF2.
 
 \begin{propo}
@@ -258,7 +274,7 @@ The six formulae, AF2 and first-order Taylor models (TM) were implemented in Pyt
 
 \subsection{Random products}
 
-Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the quadratic part, which both compute exactly, dominates the width. S and M are 1.4--2.0 and 1.2--1.6 times wider than E. In our Python implementation, E costs 1.7--2 times as much as SH (four walks instead of one) and, for $n\ge 20$, less than M, whose cost is quadratic in $n$.
+Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the gain is bounded by $2\min(|x_0|y_r,|y_0|x_r)$ (Corollary~\ref{cor:gain}), while the width of the quadratic part, which both compute exactly, grows with $n$. S and M are 1.4--2.0 and 1.2--1.6 times wider than E. In our Python implementation, E costs 1.7--2 times as much as SH (four walks instead of one) and, for $n\ge 20$, less than M, whose cost is quadratic in $n$.
 
 \input{../../results/table_rules_random.tex}
 
@@ -288,7 +304,7 @@ $f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 57.4 & 39.9 & 39.9 \\
 \end{tabular}
 \end{table}
 
-E is never wider than the other formulae, and is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), whose squares $(x_i^2-x_j)^2$ multiply forms that carry errors, and also for Leon and Rosenbrock. If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$, which is exact for $t^2$, the four formulae coincide on all the functions except Goldstein--Price, since no other product of forms with errors remains.
+E is never wider than the other formulae, and is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and also for Leon and Rosenbrock. These functions contain squares $(x_i^2-x_j)^2$ computed as products $\hat v\cdot\hat v$ of a form that carries the error of the product $x_i\cdot x_i$ and whose center is far from zero, which is the most favorable case of Corollary~\ref{cor:gain}; in Booth and Matyas, every product has an operand without error, and E and SH coincide. If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$, which is exact for $t^2$, the four formulae coincide on all the functions except Goldstein--Price, since no other product of forms with errors remains.
 
 We also ran a simple best-first branch-and-bound for the global minimum of these functions, in the spirit of~\cite[Sect.~5.3]{skalna2017new}: the lower bound of a box is the lower end of the enclosure of $f$, the upper bound is $f$ at the midpoint, boxes are bisected along their widest side and accepted when $f(\mathrm{mid})$ minus the lower bound is below $10^{-4}$. The numbers of iterations of S and SH are close to those reported in~\cite[Table~4]{skalna2017new} (1890 and 1495 for Beale, against 1738 and 1416; 294 and 206 for Booth, against 308 and 226), and SH needs 21--48\% fewer iterations than S on Beale, Booth, Goldstein--Price, Leon and Rosenbrock. E never needs more iterations than SH, but saves at most 4\% (852 against 888 for Goldstein--Price, 160\,787 against 161\,503 for Colville), even where its root enclosure is much tighter: in the small boxes explored by the search, the errors carried by the operands are small and the coupled terms matter less.
 
@@ -300,7 +316,7 @@ Finally, we consider expressions in three variables evaluated over random boxes 
 
 For affine operands (Cases~1 and 1m), SH and E are exact, while the monomial-wise formulae lose more than 50\%, and AF2 and S lose 122\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the boxes of Cases~2 and~3 (and of 2m and 3m), by 1.8\% on average and by up to 15.1\% (20.5\% in Case~2m; one-sided Wilcoxon signed-rank test over the 2400 controlled boxes, $p=4\times10^{-198}$). The advantage grows with the size of the box: in the largest boxes, the mean gap of Case~3 drops from 7.6\% with SH to 2.8\% with E. In Case~4, each product has an operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}; S is tighter than AF2 in this chained product, as expected from Proposition~\ref{prop:af2}.
 
-On the benchmark constraints, SH is 6.5\% narrower than M on average. E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%, since the residuals of these constraints are dominated by the linearization of the univariate functions. E and SH coincide in all the boxes of the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and of Pramanik.
+On the benchmark constraints, SH is 6.5\% narrower than M on average. E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%: the residuals of these constraints are dominated by the linearization of the univariate functions, and the factors of their products are sines, whose centers are close to zero when they are linearized over wide intervals, and exponentials or affine expressions without error. E and SH coincide in all the boxes of the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and of Pramanik.
 
 \section{Conclusion}
 
