@@ -62,6 +62,12 @@ Masahide Kashiwagi.
 \newblock \url{https://github.com/mskashi/kv}, file \texttt{kv/affine.hpp}.
 \newblock Accessed 2026.
 
+\bibitem{rump2015implementation}
+Siegfried~M. Rump and Masahide Kashiwagi.
+\newblock Implementation and improvements of affine arithmetic.
+\newblock {\em Nonlinear Theory and Its Applications, IEICE}, 6(3):341--359,
+  2015.
+
 \bibitem{makino2003}
 Kyoko Makino and Martin Berz.
 \newblock Taylor models and other validated functional inclusion methods.
