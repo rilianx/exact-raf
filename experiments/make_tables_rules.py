@@ -44,6 +44,32 @@ def table(records, caption, label):
                       r"\small", r"\setlength{\tabcolsep}{4pt}"] + lines + [r"\end{table}"])
 
 
+def combined_table(groups):
+    """One row per expression (gaps averaged over the three box sizes), several record sets."""
+    lines = [r"\begin{table}[t]", r"\centering",
+             r"\caption{Controlled products and constraints from a benchmark of nonlinear systems: mean gap (\%) of each "
+             r"method with respect to the optimal residual width for its own linear part, over all boxes "
+             r"(100 per size for the controlled cases and Trigexp1, 50 for the other constraints), number of boxes "
+             r"where E is strictly narrower than SH, and largest width reduction of E with respect to SH.}",
+             r"\label{tab:expressions}", r"\small", r"\setlength{\tabcolsep}{4pt}",
+             r"\begin{tabular}{l" + "r" * len(METHODS) + "rr}", r"\toprule",
+             r" & \multicolumn{" + str(len(METHODS)) + r"}{c}{Mean gap (\%)} & \multicolumn{2}{c}{E vs SH} \\",
+             r"\cmidrule(lr){2-" + str(1 + len(METHODS)) + r"}\cmidrule(lr){" + str(2 + len(METHODS)) + "-"
+             + str(3 + len(METHODS)) + "}",
+             "Expression & " + " & ".join(n for _, n in METHODS) + r" & E $<$ SH & max red. \\", r"\midrule"]
+    for k, (records, functions) in enumerate(groups):
+        if k:
+            lines.append(r"\midrule")
+        for f in functions:
+            sel = [r for r in records if r["function"] == f]
+            cells = [f"{np.mean([gap(r, m) for r in sel]):.1f}" for m, _ in METHODS]
+            strict = sum(r["exact_width"] < r["skalna_width"] * (1 - 1e-9) for r in sel)
+            red = max((r["skalna_width"] - r["exact_width"]) / r["skalna_width"] * 100 for r in sel)
+            lines.append(f"{f} & " + " & ".join(cells) + f" & {strict}/{len(sel)} & {max(red, 0.0):.1f}\\% \\\\")
+    lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
+    return "\n".join(lines)
+
+
 def stats_block(name, records):
     e = np.array([r["exact_width"] for r in records])
     s = np.array([r["skalna_width"] for r in records])
@@ -100,7 +126,10 @@ if __name__ == "__main__":
                r"where E is strictly narrower than SH (100 boxes per row for Trigexp1, 50 for the others).")
     with open(os.path.join(RESULTS, "table_rules_instances.tex"), "w") as fh:
         fh.write(table(data["instances"], caption, "tab:instances"))
+    with open(os.path.join(RESULTS, "table_rules_expressions.tex"), "w") as fh:
+        fh.write(combined_table([(ctrl, ["Case 1", "Case 1m", "Case 2", "Case 3", "Case 4"]),
+                                 (data["instances"], ["Trigexp1", "Trigexp2 (1)", "Trigexp2 (2)", "Pramanik"])]))
     with open(os.path.join(RESULTS, "random_products.json")) as fh:
         with open(os.path.join(RESULTS, "table_rules_random.tex"), "w") as out:
             out.write(random_table(json.load(fh)))
-    print("written results/table_rules_{controlled,instances,random}.tex")
+    print("written results/table_rules_{controlled,instances,expressions,random}.tex")

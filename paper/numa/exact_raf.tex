@@ -237,67 +237,43 @@ Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (
 
 \subsection{Test functions of Skalna and Hlad\'{\i}k}
 
-Table~\ref{tab:sh} reproduces the range-bounding experiment of~\cite[Table~3]{skalna2017new}: the nine test functions are evaluated over the given boxes, with integer powers computed as repeated products with the corresponding formula, as in that paper, and the overestimation $1-\wid(f^H)/\wid(\hat f)$ of the exact range $f^H$ (computed with IbexOpt) is reported. Our values of S and SH agree with those of~\cite{skalna2017new} for Beale, Booth, Colville, Dixon and Goldstein--Price; for the other functions the differences are presumably due to the way the expressions and powers are evaluated. E is never wider than the other formulae, and is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), whose squares $(x_i^2-x_j)^2$ multiply forms that carry errors, and also for Leon and Rosenbrock.
+Table~\ref{tab:sh} repeats the range-bounding experiment of~\cite[Table~3]{skalna2017new}: the nine test functions are evaluated over the same boxes, with integer powers computed as repeated products with the corresponding formula, and the overestimation $1-\wid(f^H)/\wid(\hat f)$ of the exact range $f^H$, computed with IbexOpt, is reported. For $f_1$--$f_5$, our values of S and SH agree with those of~\cite{skalna2017new} up to rounding, which validates our implementation of their formulae. For Matyas, the widths of the enclosures agree with theirs (the ratio between the widths of formulae T and S is $0.74$ in both cases), but the overestimations reported in~\cite{skalna2017new} (96--97\%) correspond to a reference range of width about 6, whereas the range of $f_7$ over $[-10,10]^2$ is $[0,100]$. For Leon, the 9\% reported for SH is below what E attains with any of the evaluation orders of the powers that we tried, so the expressions must have been evaluated in another form; the remaining differences, for $f_6$, $f_8$ and $f_9$, are presumably of the same origin.
 
 \begin{table}[t]
 \centering
-\caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products. In parentheses, the values of S and SH reported in~\cite[Table~3]{skalna2017new}.}
+\caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products.}
 \label{tab:sh}
 \small
 \begin{tabular}{llrrrr}
 \toprule
 Function & Box & S & M & SH & E \\
 \midrule
-$f_1$ Beale & $[-5,5]^2$ & 49.9 (50) & 48.8 & 49.1 (49) & 48.8 \\
-$f_2$ Booth & $[-10,10]^2$ & 35.8 (36) & 35.8 & 19.9 (20) & 19.9 \\
-$f_3$ Colville & $[-10,10]^4$ & 36.6 (37) & 14.2 & 33.2 (33) & 13.6 \\
-$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 (37) & 14.2 & 33.1 (33) & 13.6 \\
-$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 (100) & 98.7 & 98.6 (100) & 98.1 \\
-$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 (43) & 33.1 & 28.4 (9) & 24.4 \\
-$f_7$ Matyas & $[-10,10]^2$ & 32.4 (96) & 32.4 & 32.4 (96) & 32.4 \\
-$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 (37) & 42.2 & 36.0 (33) & 32.3 \\
-$f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 (53) & 57.4 & 39.9 (37) & 39.9 \\
+$f_1$ Beale & $[-5,5]^2$ & 49.9 & 48.8 & 49.1 & 48.8 \\
+$f_2$ Booth & $[-10,10]^2$ & 35.8 & 35.8 & 19.9 & 19.9 \\
+$f_3$ Colville & $[-10,10]^4$ & 36.6 & 14.2 & 33.2 & 13.6 \\
+$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 & 14.2 & 33.1 & 13.6 \\
+$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 & 98.7 & 98.6 & 98.1 \\
+$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 & 33.1 & 28.4 & 24.4 \\
+$f_7$ Matyas & $[-10,10]^2$ & 32.4 & 32.4 & 32.4 & 32.4 \\
+$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 & 42.2 & 36.0 & 32.3 \\
+$f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 57.4 & 39.9 & 39.9 \\
 \bottomrule
 \end{tabular}
 \end{table}
 
-If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$ (which is exact for $t^2$), all the formulae give 47.0, 19.9, 22.5, 22.4, 24.4, 32.4, 32.3 and 30.7\% for $f_1$--$f_4$ and $f_6$--$f_9$, since these functions contain no other products of forms with errors, and 99.0, 98.3, 98.6 and 98.1\% (S, M, SH, E) for Goldstein--Price.
+E is never wider than the other formulae, and is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), whose squares $(x_i^2-x_j)^2$ multiply forms that carry errors, and also for Leon and Rosenbrock. If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$, which is exact for $t^2$, the four formulae coincide on all the functions except Goldstein--Price, since no other product of forms with errors remains.
 
-Table~\ref{tab:bnb} reports a simple best-first branch-and-bound in the spirit of~\cite[Sect.~5.3]{skalna2017new}: the lower bound of a box is the lower end of the enclosure of $f$, the upper bound is $f$ at the midpoint, boxes are bisected along their widest side, and a box is accepted when $f(\mathrm{mid})$ minus its lower bound is below $\epsilon$. The numbers of iterations of S and SH are close to those reported in~\cite[Table~4]{skalna2017new} for Beale and Booth (1738 and 1416, 308 and 226). E never needs more iterations than SH, but the differences are small (at most 4\%, for Goldstein--Price), even for Colville, whose root enclosure is much tighter with E: in the small boxes explored by the search, the errors carried by the operands are small and the coupled terms matter less.
-
-\begin{table}[t]
-\centering
-\caption{Iterations of a simple best-first interval branch-and-bound for the global minimum of the test functions of~\cite{skalna2017new} (integer powers as repeated products, $\epsilon=10^{-4}$, limit of 200\,000 iterations).}
-\label{tab:bnb}
-\small
-\begin{tabular}{lrrrr}
-\toprule
-Function & S & M & SH & E \\
-\midrule
-$f_1$ Beale & 1890 & 1880 & 1495 & 1486 \\
-$f_2$ Booth & 294 & 294 & 206 & 206 \\
-$f_3$ Colville & $>$200000 & $>$200000 & 161503 & 160787 \\
-$f_4$ Dixon (n=5) & $>$200000 & $>$200000 & $>$200000 & $>$200000 \\
-$f_5$ Goldstein-Price & 1194 & 1068 & 888 & 852 \\
-$f_6$ Leon & 2142 & 2142 & 1405 & 1405 \\
-$f_7$ Matyas & 395 & 395 & 395 & 395 \\
-$f_8$ Rosenbrock (n=4) & 182255 & 182151 & 95038 & 94984 \\
-$f_9$ Six-hump camel & 483 & 483 & 477 & 477 \\
-\bottomrule
-\end{tabular}
-\end{table}
+We also ran a simple best-first branch-and-bound for the global minimum of these functions, in the spirit of~\cite[Sect.~5.3]{skalna2017new}: the lower bound of a box is the lower end of the enclosure of $f$, the upper bound is $f$ at the midpoint, boxes are bisected along their widest side and accepted when $f(\mathrm{mid})$ minus the lower bound is below $10^{-4}$. The numbers of iterations of S and SH are close to those reported in~\cite[Table~4]{skalna2017new} (1890 and 1495 for Beale, against 1738 and 1416; 294 and 206 for Booth, against 308 and 226), and SH needs 21--48\% fewer iterations than S on Beale, Booth, Goldstein--Price, Leon and Rosenbrock. E never needs more iterations than SH, but saves at most 4\% (852 against 888 for Goldstein--Price, 160\,787 against 161\,503 for Colville), even where its root enclosure is much tighter: in the small boxes explored by the search, the errors carried by the operands are small and the coupled terms matter less.
 
 \subsection{Controlled products and benchmark constraints}
 
-Finally, we consider expressions in three variables evaluated over random boxes inside $[-10,10]^3$ of three sizes, with widths in $[0.01,0.1]$ (S), $[0.1,1]$ (M) and $[1,10]$ (L): four controlled products, Case~1 $(x_1+2x_2+3x_3)(4x_1+5x_2+6x_3)$, Case~2 $(x_1+2x_2^2+3x_3)(4x_1+5x_2+6x_3^2)$, Case~3 $(x_1+2x_2x_3)(3x_2+4x_1x_3)$ and Case~4 $(x_1+2x_2)(3x_2+4x_3)(5x_3+6x_1)$, the same expressions with some coefficients negated (Cases 1m--4m), and four constraints with products of nonlinear factors taken from a benchmark of nonlinear systems~\cite{coprin} (Trigexp1, two constraints of Trigexp2, and Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the method, computed with IbexOpt.
+Finally, we consider expressions in three variables evaluated over random boxes inside $[-10,10]^3$ of three sizes, with widths in $[0.01,0.1]$, $[0.1,1]$ and $[1,10]$: four controlled products, Case~1 $(x_1+2x_2+3x_3)(4x_1+5x_2+6x_3)$, Case~2 $(x_1+2x_2^2+3x_3)(4x_1+5x_2+6x_3^2)$, Case~3 $(x_1+2x_2x_3)(3x_2+4x_1x_3)$ and Case~4 $(x_1+2x_2)(3x_2+4x_3)(5x_3+6x_1)$, the same expressions with some coefficients negated (Cases 1m--4m), and four constraints with products of nonlinear factors taken from a benchmark of nonlinear systems~\cite{coprin} (Trigexp1, two constraints of Trigexp2, and Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the method, computed with IbexOpt. Table~\ref{tab:expressions} shows Cases~1--4, Case~1m and the four constraints; Cases~2m--4m behave as Cases~2--4 (all the results are in the repository).
 
-\input{../../results/table_rules_controlled.tex}
+\input{../../results/table_rules_expressions.tex}
 
-Table~\ref{tab:controlled} confirms the hierarchy. For affine operands (Cases~1 and 1m), SH and E are exact, while the monomial-wise formulae lose more than 50\%, and AF2 and S lose 120\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the runs of Cases~2, 3, 2m and 3m, by 1.8\% on average and by up to 20.5\% (one-sided Wilcoxon signed-rank test over the 2400 runs, $p=4\times10^{-198}$); the advantage grows with the size of the box. In Cases~4 and 4m, each product has an affine operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}. S is tighter than AF2 in these chained products, as expected from Proposition~\ref{prop:af2}.
+For affine operands (Cases~1 and 1m), SH and E are exact, while the monomial-wise formulae lose more than 50\%, and AF2 and S lose 122\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the boxes of Cases~2 and~3 (and of 2m and 3m), by 1.8\% on average and by up to 15.1\% (20.5\% in Case~2m; one-sided Wilcoxon signed-rank test over the 2400 controlled boxes, $p=4\times10^{-198}$). The advantage grows with the size of the box: in the largest boxes, the mean gap of Case~3 drops from 7.6\% with SH to 2.8\% with E. In Case~4, each product has an operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}; S is tighter than AF2 in this chained product, as expected from Proposition~\ref{prop:af2}.
 
-\input{../../results/table_rules_instances.tex}
-
-On the benchmark constraints (Table~\ref{tab:instances}), SH is 6.5\% narrower than M on average. E is narrower than SH in 435 of the 700 runs (in 285 of 300 for Trigexp1 and in all the runs of the first constraint of Trigexp2) and never wider, but only by 0.1\% on average and by at most 4.1\%, since the residuals of these constraints are dominated by the linearization of the univariate functions. E and SH coincide in all the runs of the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and of Pramanik.
+On the benchmark constraints, SH is 6.5\% narrower than M on average. E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%, since the residuals of these constraints are dominated by the linearization of the univariate functions. E and SH coincide in all the boxes of the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and of Pramanik.
 
 \section{Conclusion}
 
