@@ -1,0 +1,295 @@
+\documentclass[11pt]{article}
+\usepackage[a4paper,margin=27mm]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{url}
+\usepackage{algorithm}
+\usepackage{algpseudocode}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{propo}[theorem]{Proposition}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{corollary}[theorem]{Corollary}
+\theoremstyle{definition}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{remark}[theorem]{Remark}
+
+\newcommand{\U}{\mathbf{U}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\eps}{\varepsilon}
+\newcommand{\ex}{\eps_x}
+\newcommand{\ey}{\eps_y}
+\newcommand{\rng}{\operatorname{rng}}
+\newcommand{\wid}{\operatorname{wid}}
+\newcommand{\mmid}{\operatorname{mid}}
+
+\title{Exact multiplication of reduced affine forms}
+\author{Ignacio Araya \and Angelo Alvear Tapia \and Daniel Miranda \and Juan Aramayo \and Victor Reyes}
+\date{}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation errors in a single error term. The product of two such forms must be enclosed by a new reduced affine form, and the error of this enclosure determines the quality of the whole computation. Skalna and Hlad\'{\i}k (Numer.\ Algorithms 76, 2017) computed in linear time the exact range of the quadratic part of the product and called the resulting multiplication optimal. We show that it is not exact when both operands carry errors, since the terms that are linear in the error symbols are bounded separately, and we give a multiplication that computes the exact range of the whole nonlinear part of the product. It reduces the problem to four evaluations of the range of a product of two linear functions over a planar zonotope, one for each vertex of the square of the error symbols, and runs in $O(n\log n)$ time. We place the new multiplication in a hierarchy of the existing ones, including the standard multiplication used in the affine arithmetic of the Ibex library, which we identify with AF2 followed by a re-centering of its one-sided error terms, and we show that the new multiplication coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and can be up to $3/2$ times narrower otherwise. On the test functions of Skalna and Hlad\'{\i}k, the overestimation of the range decreases from 33\% to 14\% for the Colville and Dixon functions; on random products and on constraints of a benchmark of nonlinear systems, the gains are smaller but systematic.
+
+\medskip\noindent
+\textit{Keywords:} reduced affine arithmetic, multiplication, range enclosure, linear relaxation, zonotope
+\end{abstract}
+
+\section{Introduction}
+
+Affine arithmetic (AA)~\cite{combastolfi1993,stolfi1997self,defigueiredo2004affine} represents an uncertain quantity by an affine function of noise symbols $\eps_i\in\U=[-1,1]$, and keeps the linear dependencies between quantities that share symbols. Each nonlinear operation of standard AA introduces a new symbol, so the forms grow along long computations. Reduced affine forms~\cite{messine2002extentions,vu2009enhancing,skalna2017new} keep only the $n$ symbols of the initial uncertain parameters and accumulate all the errors in one term,
+\begin{equation}
+\label{eq:raf}
+\hat x = x_0 + \sum_{i=1}^n x_i\eps_i + x_r\ex,\qquad x_r\ge 0,\ \ex\in\U .
+\end{equation}
+They are the basis of the reliable affine relaxations used in interval branch-and-bound solvers~\cite{ninin2015reliable}: over a box, each $\eps_i$ is an affine function of the variable $x_i$, so that a form is a linear function of the variables plus an interval, and its two bounding hyperplanes are a range enclosure and a linear relaxation of the corresponding expression. The vertical distance between them, $2x_r$, measures the quality of the relaxation.
+
+The product of two reduced affine forms is a quadratic function of the symbols and must be enclosed by a new reduced affine form. Several multiplication formulae have been proposed: the trivial one of standard AA~\cite{stolfi1997self}, the \emph{standard} one that accounts for the nonnegativity of the squares~\cite{kolev2004improved,vu2009enhancing}, a sharper bound of the bilinear terms attributed to Miyajima~\cite{skalna2017new}, and the Chebyshev minimum-error multiplication of Skalna and Hlad\'{\i}k~\cite{skalna2017new}, which computes in linear time the exact range of the quadratic part of the product over the box of the symbols. The latter is described as yielding the minimum Chebyshev-type bounds; it is the tightest of the existing formulae.
+
+In this paper we observe that the multiplication of Skalna and Hlad\'{\i}k is not exact when both operands carry errors: two terms of the product, $x_0 y_r\ey$ and $y_0 x_r\ex$, are bounded separately from the quadratic part, although they share the error symbols with it. We show that the whole nonlinear part of the product is affine in each of the two error symbols, so that its range is the union of four ranges obtained with the error symbols fixed at the vertices of $\U^2$; for each vertex, what remains is a product of two shifted linear functions of the symbols, whose exact range follows from the geometry of planar zonotopes used by Skalna and Hlad\'{\i}k. The resulting multiplication computes the exact range of the nonlinear part of the product, in $O(n\log n)$ time.
+
+\paragraph{Contributions.}
+\begin{itemize}
+\item An exact multiplication of reduced affine forms (Section~\ref{sec:exact}): Theorem~\ref{thm:exact} shows that it computes the narrowest enclosure of the product with the usual linear part, and Algorithm~\ref{alg:exact} computes it in $O(n\log n)$ time.
+\item A hierarchy of multiplication formulae (Section~\ref{sec:hierarchy}): the exact multiplication is contained in all the others; it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error (Proposition~\ref{prop:oneerror}) and can be $3/2$ times narrower otherwise (Example~\ref{ex:32}). We also show that the standard multiplication, which is the one of the affine arithmetic of the Ibex library, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}), and that AF2 and the monomial-wise formulae do not coincide on products of affine forms in general.
+\item Experiments (Section~\ref{sec:experiments}) on random products, on the test functions of Skalna and Hlad\'{\i}k, and on controlled expressions and constraints of a benchmark of nonlinear systems, with the exact ranges computed by a global optimizer.
+\end{itemize}
+
+\section{Products of reduced affine forms}
+\label{sec:products}
+
+Let $\hat x$ be as in~\eqref{eq:raf} and $\hat y = y_0+\sum_i y_i\eps_i + y_r\ey$, and write $x=(x_1,\dots,x_n)$, $y=(y_1,\dots,y_n)$ and $e=(\eps_1,\dots,\eps_n)\in\U^n$. Following~\cite{skalna2017new},
+\begin{equation}
+\label{eq:product}
+\hat x\hat y = x_0y_0 + e^T(y_0x+x_0y) + N(e,\ex,\ey),
+\end{equation}
+\begin{equation}
+\label{eq:N}
+N(e,\ex,\ey) = x_0y_r\ey + y_0x_r\ex + (e^Tx + x_r\ex)(e^Ty + y_r\ey).
+\end{equation}
+All the formulae considered here keep the linear part $x_0y_0+e^T(y_0x+x_0y)$ and enclose $N$ over $\U^{n+2}$ by an interval $[c-z_r,\,c+z_r]$, which gives the reduced affine form
+\begin{equation}
+\label{eq:zhat}
+\hat z = x_0y_0 + c + e^T(y_0x+x_0y) + z_r\eps_z .
+\end{equation}
+A multiplication formula is therefore an enclosure of $\rng N$, the range of $N$ over $\U^{n+2}$, and its quality is the width $2z_r$, the thickness of the resulting relaxation. Denote $\|x\|_1=\sum_i|x_i|$, $|x|=(|x_1|,\dots,|x_n|)$, and
+\[
+R(e,\ex,\ey) = (e^Tx + x_r\ex)(e^Ty + y_r\ey), \qquad Q(e) = (e^Tx)(e^Ty) = \sum_i x_iy_i\eps_i^2 + \sum_{i<j}(x_iy_j+x_jy_i)\eps_i\eps_j .
+\]
+We consider the following formulae, labeled as in~\cite{skalna2017new} when they appear there.
+\begin{description}
+\item[T, trivial~\cite{stolfi1997self} (Eq.~4 of~\cite{skalna2017new}).] $c=0$, $z_r = |y_0|x_r+|x_0|y_r+(\|x\|_1+x_r)(\|y\|_1+y_r)$.
+\item[S, standard~\cite{kolev2004improved,vu2009enhancing} (Eq.~5).] $c=\tfrac12 x^Ty$, $z_r = |y_0|x_r+|x_0|y_r+(\|x\|_1+x_r)(\|y\|_1+y_r) - \tfrac12|x|^T|y|$. The squares $x_iy_i\eps_i^2\in x_iy_i[0,1]$ are enclosed by their exact range.
+\item[Mi, Miyajima (Eq.~6).] $c=\tfrac12 x^Ty$, $z_r = x_ry_r + x_r(|y_0|+\|y\|_1)+y_r(|x_0|+\|x\|_1)+\tfrac12|x|^T|y| + \sum_{i<j}|x_iy_j+x_jy_i|$. The two bilinear terms of each pair $\{i,j\}$ are grouped before bounding.
+\item[M, monomial-wise with joint error terms.] $Q$ is enclosed monomial by monomial as in Mi, by $[\tfrac12x^Ty-\tfrac12|x|^T|y|-\sigma,\ \tfrac12x^Ty+\tfrac12|x|^T|y|+\sigma]$ with $\sigma=\sum_{i<j}|x_iy_j+x_jy_i|$, and the remaining part $N-Q = x_0y_r\ey + y_0x_r\ex + x_r\ex\, e^Ty + y_r\ey\, e^Tx + x_ry_r\ex\ey$ is enclosed by its exact range,
+\begin{equation}
+\label{eq:corners}
+\Big[\min_{s,t\in\{\pm1\}}\big(\kappa_{st} - \lambda_{st}\big),\ \max_{s,t\in\{\pm1\}}\big(\kappa_{st}+\lambda_{st}\big)\Big],\quad \kappa_{st}=x_0y_rt+y_0x_rs+x_ry_rst,\ \ \lambda_{st}=\sum_i|y_rt\,x_i+x_rs\,y_i|,
+\end{equation}
+since $N-Q$ is affine in $e$ for fixed $(\ex,\ey)$ and affine in each of $\ex$ and $\ey$. This is the multiplication obtained when each quadratic and bilinear monomial of the product is enclosed in the variable space by its own pair of parallel planes (the Chebyshev envelope of $x_i^2$ and the tangent plane of $x_ix_j$ at the center of the box), and the residuals of the operands are split into their midpoints and zero-centered deviations.
+\item[SH, Skalna and Hlad\'{\i}k~\cite{skalna2017new} (Eq.~10).] $[c-z_r,c+z_r] = [R_{\min},R_{\max}] + [-1,1](|y_0|x_r+|x_0|y_r)$, where $[R_{\min},R_{\max}]=\rng R$ is computed exactly in $O(n)$ time.
+\item[E, exact (this paper).] $[c-z_r,c+z_r]=\rng N$.
+\end{description}
+
+\paragraph{AF2 and Taylor models.} Two related arithmetics are used as references in the experiments. AF2~\cite{messine2002extentions} keeps, besides the symmetric error term $a_\pm\eps_\pm$, two one-sided terms $a_+\eps_+$, $\eps_+\in[0,1]$, and $a_-\eps_-$, $\eps_-\in[-1,0]$; in a product, the positive and negative squares $x_iy_i\eps_i^2$ go to $\eps_+$ and $\eps_-$, and the other nonlinear terms to $\eps_\pm$. A first-order Taylor model~\cite{makino2003,neumaier2003taylor} is a linear polynomial plus an interval remainder; in a product, the second-order part is enclosed monomial by monomial and the remainders $I_1, I_2$ contribute $B(P_1)I_2+B(P_2)I_1+I_1I_2$, where $B(P)$ bounds the polynomial $P$ over the box, without re-centering the remainders.
+
+\section{The exact multiplication}
+\label{sec:exact}
+
+\begin{lemma}
+\label{lem:vertices}
+$\min N = \min_{s,t\in\{-1,1\}}\ \min_{e\in\U^n} N(e,s,t)$ and $\max N = \max_{s,t\in\{-1,1\}}\ \max_{e\in\U^n} N(e,s,t)$, where $\min N$ and $\max N$ are taken over $\U^{n+2}$. Hence $\rng N$, which is an interval since $N$ is continuous and $\U^{n+2}$ is compact and connected, is determined by the four ranges $\rng_e N(\cdot,s,t)$ over $e\in\U^n$.
+\end{lemma}
+\begin{proof}
+For fixed $e$, $N(e,\ex,\ey)$ is a bilinear function of $(\ex,\ey)$, by~\eqref{eq:N}, so its extrema over $\U^2$ are attained at vertices: for every $(e,\ex,\ey)\in\U^{n+2}$ there are $(s,t)$, $(s',t')\in\{-1,1\}^2$ with $N(e,s,t)\le N(e,\ex,\ey)\le N(e,s',t')$. The minimum and the maximum of $N$ are therefore attained with $(\ex,\ey)$ at a vertex of $\U^2$.
+\end{proof}
+
+For fixed $(s,t)$,
+\begin{equation}
+\label{eq:Nst}
+N(e,s,t) = x_0y_rt+y_0x_rs + (u + x_rs)(v + y_rt),\qquad (u,v)=(e^Tx,\,e^Ty)\in Z,
+\end{equation}
+where $Z=\{\sum_i\eps_i(x_i,y_i): e\in\U^n\}\subset\R^2$ is the joint range of $e^Tx$ and $e^Ty$, a planar zonotope with generators $g_i=(x_i,y_i)$~\cite{ziegler1995lectures}. The range of~\eqref{eq:Nst} is thus the range of a shifted product $\varphi_c(u,v)=(u+c_1)(v+c_2)$ over $Z$.
+
+\begin{lemma}
+\label{lem:zonotope}
+Let $Z$ be a planar zonotope and $c\in\R^2$. The minimum and the maximum of $\varphi_c$ over $Z$ are attained on the boundary of $Z$. If the nonzero generators are replaced by $\tilde g_i=\pm g_i$ so that they lie in the half-plane $\{u>0\}\cup\{u=0,v>0\}$ and are sorted by increasing angle, $\tilde g_{(1)},\dots,\tilde g_{(m)}$, the boundary of $Z$ is the polygon with vertices
+\begin{equation}
+\label{eq:boundary}
+p_0=-\sum_k\tilde g_{(k)},\quad p_k = p_{k-1}+2\tilde g_{(k)}\ (k=1,\dots,m),\quad p_{m+k} = p_{m+k-1}-2\tilde g_{(k)}\ (k=1,\dots,m).
+\end{equation}
+\end{lemma}
+\begin{proof}
+The only critical point of $\varphi_c$ is $(-c_1,-c_2)$, where the Hessian $\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ is indefinite. A local extremum in the interior of $Z$ would be a critical point with a semidefinite Hessian, so there is none, and the extrema of the continuous function $\varphi_c$ on the compact set $Z$ lie on its boundary. Replacing $g_i$ by $-g_i$ does not change $Z$, since $\eps_i$ ranges over a symmetric interval. The description of the boundary of a planar zonotope by its generators sorted by angle is classical; see~\cite{ziegler1995lectures} and~\cite[Prop.~7]{skalna2017new} for the part of the boundary in the nonnegative quadrant.
+\end{proof}
+
+On each edge $[p_{k-1},p_k]$, $\varphi_c(p_{k-1}+\tau(p_k-p_{k-1}))$ is a quadratic polynomial in $\tau\in[0,1]$, whose extrema are attained at $\tau\in\{0,1\}$ or at its stationary point. This gives Algorithm~\ref{alg:exact}.
+
+\begin{algorithm}[t]
+\caption{Exact multiplication of reduced affine forms}
+\label{alg:exact}
+\begin{algorithmic}[1]
+\Require $\hat x = x_0+\sum_ix_i\eps_i+x_r\ex$, $\hat y = y_0+\sum_iy_i\eps_i+y_r\ey$
+\Ensure $\hat z$ with $\hat x\hat y\in\hat z$ for all $e,\ex,\ey$, and $x_0y_0+c\pm z_r = x_0y_0+\rng N$
+\State $\tilde g_{(1)},\dots,\tilde g_{(m)}\gets$ the nonzero $(x_i,y_i)$, turned to the half-plane $u>0$ and sorted by angle
+\State $\ell\gets+\infty$, $h\gets-\infty$
+\For{$s\in\{-1,1\}$, $t\in\{-1,1\}$}
+  \State $c\gets(x_rs,\,y_rt)$, $\kappa\gets x_0y_rt+y_0x_rs$
+  \For{each edge $[p,q]$ of the polygon~\eqref{eq:boundary}, shifted by $c$}
+    \State evaluate $\varphi_0$ at $p$, at $q$, and at the stationary point of $\tau\mapsto\varphi_0(p+\tau(q-p))$ if $\tau\in(0,1)$
+    \State update $\ell$ and $h$ with $\kappa$ plus these values
+  \EndFor
+\EndFor
+\State $c\gets(\ell+h)/2$, $z_r\gets(h-\ell)/2$ (rounded outwards in a rigorous implementation)
+\State \Return $\hat z = x_0y_0+c+e^T(y_0x+x_0y)+z_r\eps_z$
+\end{algorithmic}
+\end{algorithm}
+
+\begin{theorem}
+\label{thm:exact}
+Algorithm~\ref{alg:exact} computes $\rng N$ exactly (in exact arithmetic) in $O(n\log n)$ time. Consequently, among all reduced affine forms with linear part $e^T(y_0x+x_0y)$ that enclose $\hat x\hat y$ over $\U^{n+2}$, the one returned by Algorithm~\ref{alg:exact} has the smallest error term $z_r$.
+\end{theorem}
+\begin{proof}
+By Lemma~\ref{lem:vertices}, the endpoints of $\rng N$ are the extreme endpoints of the ranges of $N(\cdot,s,t)$, and by~\eqref{eq:Nst} and Lemma~\ref{lem:zonotope}, each of them is the range of $\kappa+\varphi_c$ over the boundary of $Z$, which the inner loop computes exactly. The generators are sorted once, in $O(n\log n)$ time, and each of the four walks along the $2m\le 2n$ edges takes $O(n)$ time. For the second statement, a reduced affine form with that linear part encloses $\hat x\hat y$ if and only if $[c-z_r,c+z_r]\supseteq\rng N$, by~\eqref{eq:product}; the narrowest such interval is $\rng N$.
+\end{proof}
+
+\begin{remark}
+Skalna and Hlad\'{\i}k reduce the computation of $R_{\max}$ to linear time by replacing the sorting with repeated median selection~\cite[Prop.~8]{skalna2017new}. Their argument uses the central symmetry of $Z$ and of $\varphi_0$, which locates the maximizer in the nonnegative quadrant; for the shifted products of~\eqref{eq:Nst} this symmetry is lost, and we leave a linear-time version of Algorithm~\ref{alg:exact} open. In practice, the $O(n\log n)$ version is the one recommended in~\cite{skalna2017new} for moderate $n$, and in our implementation the sorting is shared by the four vertices.
+\end{remark}
+
+\begin{remark}
+When $x_r=y_r=0$, $N=Q$ and E gives the exact range of $\hat x\hat y - x_0y_0 - e^T(y_0x+x_0y)$; over a box, this is the narrowest residual of a linear relaxation of the product of two affine functions with the given slopes. All the multiplication formulae above keep the linear part~\eqref{eq:product}; choosing another linear part, as in a min-range approximation~\cite{stolfi1997self}, is a different problem that we do not consider.
+\end{remark}
+
+\section{A hierarchy of multiplication formulae}
+\label{sec:hierarchy}
+
+Denote by $[\hat z]_F$ the interval $[c-z_r,c+z_r]$ of formula $F$.
+
+\begin{propo}
+\label{prop:chain}
+For all operands, $[\hat z]_E \subseteq [\hat z]_{SH}\subseteq[\hat z]_{Mi}\subseteq[\hat z]_S\subseteq[\hat z]_T$ and $[\hat z]_E\subseteq[\hat z]_M\subseteq[\hat z]_{Mi}$.
+\end{propo}
+\begin{proof}
+$[\hat z]_E=\rng N$ is contained in every valid enclosure. The inclusions $[\hat z]_{SH}\subseteq[\hat z]_{Mi}\subseteq[\hat z]_S\subseteq[\hat z]_T$ are shown in~\cite[Prop.~3]{skalna2017new}; the first one holds because the part of $[\hat z]_{Mi}$ that does not come from $|y_0|x_r+|x_0|y_r$ is a valid enclosure of $R$, the second because $|x_iy_j+x_jy_i|\le|x_iy_j|+|x_jy_i|$ and
+\[
+(\|x\|_1+x_r)(\|y\|_1+y_r) - \tfrac12|x|^T|y| = \tfrac12|x|^T|y|+\sum_{i\ne j}|x_iy_j| + x_r\|y\|_1+y_r\|x\|_1+x_ry_r .
+\]
+Finally, M and Mi enclose $Q$ by the same interval, while M encloses $N-Q$ by its exact range~\eqref{eq:corners} and Mi by the sum of the absolute values of its monomials, $x_ry_r+x_r(|y_0|+\|y\|_1)+y_r(|x_0|+\|x\|_1)$.
+\end{proof}
+
+M and SH are not comparable: SH encloses $Q$ much better, while M encloses the terms $x_0y_r\ey$ and $y_0x_r\ex$ jointly with the other error terms. The next result shows that this joint treatment is what separates E from SH.
+
+\begin{propo}
+\label{prop:oneerror}
+If $x_r=0$ or $y_r=0$, then $[\hat z]_E=[\hat z]_{SH}$.
+\end{propo}
+\begin{proof}
+Let $y_r=0$, so that $N = y_0x_r\ex + R$ with $R(e,\ex)=(e^Tx+x_r\ex)\,e^Ty$. Since $R$ is affine in $\ex$ for fixed $e$, its maximum over $\U^{n+1}$ is attained at some $(e^*,\ex^*)$ with $\ex^*\in\{-1,1\}$, and since $R(-e,-\ex)=R(e,\ex)$, also at $(-e^*,-\ex^*)$. Choosing the one with $\ex^*=\operatorname{sign}(y_0)$ (either, if $y_0=0$) gives $N = |y_0|x_r + R_{\max}$, which is the upper bound of $[\hat z]_{SH}$. The same argument applies to the lower bound, and to $x_r=0$.
+\end{proof}
+
+When both operands carry errors, E can be noticeably narrower than SH.
+
+\begin{example}
+\label{ex:32}
+Let $n=0$, $\hat x = -1+\ex$ and $\hat y = 1+\ey$, i.e., $x\in[-2,0]$ and $y\in[0,2]$. Then $N = -\ey+\ex+\ex\ey$, whose values at the four vertices are $1,1,1,-3$, so $[\hat z]_E=[-3,1]$ and $\hat x\hat y\in -1+[-3,1]=[-4,0]$, the exact range of $xy$. SH gives $\rng R=[-1,1]$ and $|y_0|x_r+|x_0|y_r = 2$, so $[\hat z]_{SH}=[-3,3]$ and $\hat x\hat y\in[-4,2]$: the width ratio is $3/2$.
+\end{example}
+
+In a numerical search over operands with $n\le 3$ (random restarts followed by local maximization of the width ratio), the ratio $\wid[\hat z]_{SH}/\wid[\hat z]_E$ never exceeded $3/2$; we conjecture that this is its supremum.
+
+\paragraph{The standard multiplication is AF2 with re-centering.} The affine arithmetic of the Ibex library (model fAF2 of its affine plugin) implements formula S, with the rounding errors accumulated in the error term. The next result relates it to AF2.
+
+\begin{propo}
+\label{prop:af2}
+Let $\hat x$, $\hat y$ be AF2 forms without one-sided terms, i.e., reduced affine forms with $\eps_\pm$ as error symbol. The AF2 product~\cite{messine2002extentions}
+\[
+x_0y_0 + e^T(y_0x+x_0y) + k_1\eps_\pm + k_2\eps_+ + k_3\eps_-,\quad k_2=\sum_{x_iy_i>0}x_iy_i,\ k_3=\sum_{x_iy_i<0}|x_iy_i|,
+\]
+\[
+k_1 = |x_0|y_r+|y_0|x_r+\sum_{i\ne j}|x_iy_j| + x_r\|y\|_1+y_r\|x\|_1+x_ry_r,
+\]
+becomes the product given by formula S when $k_2\eps_+$ and $k_3\eps_-$ are replaced by their centers and radii, $k_2\eps_+\in \tfrac{k_2}{2}+\tfrac{k_2}{2}[-1,1]$ and $k_3\eps_-\in-\tfrac{k_3}{2}+\tfrac{k_3}{2}[-1,1]$.
+\end{propo}
+\begin{proof}
+The re-centered form has center shift $\tfrac12(k_2-k_3)=\tfrac12x^Ty$ and error radius $k_1+\tfrac12(k_2+k_3) = k_1+\tfrac12|x|^T|y|$, which equals $z_r$ of formula S by the identity in the proof of Proposition~\ref{prop:chain}.
+\end{proof}
+
+Thus S and AF2 have the same width after one product, and they differ only in the next operations, where AF2 carries the offsets of $\eps_+$ and $\eps_-$. Among residual intervals of a given radius, a zero-centered one minimizes the width propagated through a product with another interval: if $\mathbf r=[r_c-\rho,r_c+\rho]$ and $\mathbf y$ is an interval with $Y=\max_{y\in\mathbf y}|y|$, then $\wid(\mathbf r\mathbf y)\ge 2\rho Y$, with equality for $r_c=0$. This explains why S is tighter than AF2 in compositions of products (Section~\ref{sec:experiments}).
+
+\begin{remark}
+AF2 and the monomial-wise formulae Mi and M do not coincide on products of affine forms in general: for $\hat x=\eps_1+\eps_2$ and $\hat y=\eps_1-\eps_2$, AF2 and S give error width $6$, while Mi, M, SH and E give $2$, the width of the exact range $[-1,1]$ of $\eps_1^2-\eps_2^2$. They coincide when no pair cancels, i.e., when $|x_iy_j+x_jy_i| = |x_iy_j|+|x_jy_i|$ for all $i<j$.
+\end{remark}
+
+\section{Experiments}
+\label{sec:experiments}
+
+The six formulae, AF2 and first-order Taylor models (TM) were implemented in Python, in double precision without outward rounding, on the representation in the variable space described in the introduction (a linear function of the variables plus a residual interval), in which a product has the linear part of~\eqref{eq:product} for all the formulae. Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products. Every enclosure was checked by sampling, and the inclusions of Proposition~\ref{prop:chain} were verified on 2000 random products. Exact ranges were computed with IbexOpt~\cite{chabert2009}. The code, the data and the scripts that produce the tables are available at \url{https://github.com/rilianx/raa-affine-arithmetic}.
+
+\subsection{Random products}
+
+Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the quadratic part, which both compute exactly, dominates the width. S and M are 1.4--2.0 and 1.2--1.6 times wider than E. In our Python implementation, E costs 1.7--2 times as much as SH (four walks instead of one) and, for $n\ge 20$, less than M, whose cost is quadratic in $n$.
+
+\input{../../results/table_rules_random.tex}
+
+\subsection{Test functions of Skalna and Hlad\'{\i}k}
+
+Table~\ref{tab:sh} reproduces the range-bounding experiment of~\cite[Table~3]{skalna2017new}: the nine test functions are evaluated over the given boxes, with integer powers computed as repeated products with the corresponding formula, as in that paper, and the overestimation $1-\wid(f^H)/\wid(\hat f)$ of the exact range $f^H$ (computed with IbexOpt) is reported. Our values of S and SH agree with those of~\cite{skalna2017new} for Beale, Booth, Colville, Dixon and Goldstein--Price; for the other functions the differences are presumably due to the way the expressions and powers are evaluated. E is never wider than the other formulae, and is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), whose squares $(x_i^2-x_j)^2$ multiply forms that carry errors, and also for Leon and Rosenbrock.
+
+\begin{table}[t]
+\centering
+\caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products. In parentheses, the values of S and SH reported in~\cite[Table~3]{skalna2017new}.}
+\label{tab:sh}
+\small
+\begin{tabular}{llrrrr}
+\toprule
+Function & Box & S & M & SH & E \\
+\midrule
+$f_1$ Beale & $[-5,5]^2$ & 49.9 (50) & 48.8 & 49.1 (49) & 48.8 \\
+$f_2$ Booth & $[-10,10]^2$ & 35.8 (36) & 35.8 & 19.9 (20) & 19.9 \\
+$f_3$ Colville & $[-10,10]^4$ & 36.6 (37) & 14.2 & 33.2 (33) & 13.6 \\
+$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 (37) & 14.2 & 33.1 (33) & 13.6 \\
+$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 (100) & 98.7 & 98.6 (100) & 98.1 \\
+$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 (43) & 33.1 & 28.4 (9) & 24.4 \\
+$f_7$ Matyas & $[-10,10]^2$ & 32.4 (96) & 32.4 & 32.4 (96) & 32.4 \\
+$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 (37) & 42.2 & 36.0 (33) & 32.3 \\
+$f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 (53) & 57.4 & 39.9 (37) & 39.9 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+If the integer powers are instead enclosed by the univariate Chebyshev linearization of $t^k$ (which is exact for $t^2$), all the formulae give 47.0, 19.9, 22.5, 22.4, 24.4, 32.4, 32.3 and 30.7\% for $f_1$--$f_4$ and $f_6$--$f_9$, since these functions contain no other products of forms with errors, and 99.0, 98.3, 98.6 and 98.1\% (S, M, SH, E) for Goldstein--Price.
+
+%BNB_TABLE
+
+\subsection{Controlled products and benchmark constraints}
+
+Finally, we consider expressions in three variables evaluated over random boxes inside $[-10,10]^3$ of three sizes, with widths in $[0.01,0.1]$ (S), $[0.1,1]$ (M) and $[1,10]$ (L): four controlled products, Case~1 $(x_1+2x_2+3x_3)(4x_1+5x_2+6x_3)$, Case~2 $(x_1+2x_2^2+3x_3)(4x_1+5x_2+6x_3^2)$, Case~3 $(x_1+2x_2x_3)(3x_2+4x_1x_3)$ and Case~4 $(x_1+2x_2)(3x_2+4x_3)(5x_3+6x_1)$, the same expressions with some coefficients negated (Cases 1m--4m), and four constraints with products of nonlinear factors taken from a benchmark of nonlinear systems~\cite{coprin} (Trigexp1, two constraints of Trigexp2, and Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the method, computed with IbexOpt.
+
+\input{../../results/table_rules_controlled.tex}
+
+Table~\ref{tab:controlled} confirms the hierarchy. For affine operands (Cases~1 and 1m), SH and E are exact, while the monomial-wise formulae lose more than 50\%, and AF2 and S lose 120\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the runs of Cases~2, 3, 2m and 3m, by 1.8\% on average and by up to 20.5\% (one-sided Wilcoxon signed-rank test over the 2400 runs, $p=4\times10^{-198}$); the advantage grows with the size of the box. In Cases~4 and 4m, each product has an affine operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}. S is tighter than AF2 in these chained products, as expected from Proposition~\ref{prop:af2}.
+
+\input{../../results/table_rules_instances.tex}
+
+On the benchmark constraints (Table~\ref{tab:instances}), SH is 6.5\% narrower than M on average. E is narrower than SH in 435 of the 700 runs (in 285 of 300 for Trigexp1 and in all the runs of the first constraint of Trigexp2) and never wider, but only by 0.1\% on average and by at most 4.1\%, since the residuals of these constraints are dominated by the linearization of the univariate functions. E and SH coincide in all the runs of the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and of Pramanik.
+
+\section{Conclusion}
+
+The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from four ranges of shifted products over a planar zonotope, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and is strictly narrower, up to a factor $3/2$, otherwise. Its effect is large on products of squares of forms that already carry errors, such as the Colville and Dixon functions, and small but systematic elsewhere.
+
+We also related the standard multiplication of the Ibex library to AF2, as AF2 with its one-sided terms re-centered after each product, and showed that, contrary to what one might expect, AF2 and the monomial-wise formulae do not coincide on products of affine forms when bilinear terms cancel. Natural continuations are a rigorous implementation of Algorithm~\ref{alg:exact} in Ibex, to measure its effect in branch-and-bound solvers, a linear-time version, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
+
+\section*{Statements and declarations}
+\textbf{Funding.} ANID, Chile, FONDECYT Regular 2026, project No.~1260159.
+\textbf{Competing interests.} The authors have no relevant financial or non-financial interests to disclose.
+\textbf{Data availability.} Code, data and scripts: \url{https://github.com/rilianx/raa-affine-arithmetic}.
+\textbf{Use of AI.} The authors used an AI assistant (Claude, Anthropic) to help implement and verify the code, run the experiments and check the proofs; all code, results and proofs were reviewed by the authors, who take full responsibility for them.
+
+\bibliographystyle{unsrt}
+\bibliography{bibliography}
+
+\end{document}

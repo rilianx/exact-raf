@@ -1,0 +1,29 @@
+\begin{table}[t]
+\centering
+\caption{Constraints from a benchmark of nonlinear systems: mean gap of each method (\%) and number of boxes where E is strictly narrower than SH (100 boxes per row for Trigexp1, 50 for the others).}
+\label{tab:instances}
+\small
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{llrrrrrrr}
+\toprule
+ & & \multicolumn{6}{c}{Mean gap (\%)} & E $<$ SH \\
+\cmidrule(lr){3-8}
+Expression & Size & AF2 & TM & S & M & SH & E & (runs) \\
+\midrule
+Trigexp1 & small & 35.5 & 31.0 & 35.5 & 31.0 & 27.1 & 27.1 & 92/100 \\
+ & medium & 31.3 & 25.5 & 31.3 & 24.4 & 20.1 & 19.6 & 96/100 \\
+ & large & 58.2 & 58.1 & 58.2 & 57.6 & 44.5 & 44.5 & 97/100 \\
+\midrule
+Trigexp2 (1) & small & 18.1 & 12.9 & 18.1 & 12.7 & 11.2 & 11.1 & 50/50 \\
+ & medium & 11.8 & 8.6 & 11.8 & 7.6 & 6.6 & 6.1 & 50/50 \\
+ & large & 0.4 & 0.4 & 0.4 & 0.3 & 0.3 & 0.3 & 50/50 \\
+\midrule
+Trigexp2 (2) & small & 125.1 & 125.1 & 125.1 & 125.1 & 100.5 & 100.5 & 0/50 \\
+ & medium & 116.8 & 116.8 & 116.8 & 116.8 & 76.6 & 76.6 & 0/50 \\
+ & large & 90.6 & 90.6 & 90.6 & 90.6 & 52.0 & 52.0 & 0/50 \\
+\midrule
+Pramanik & small & 363.3 & 360.6 & 363.3 & 360.6 & 338.5 & 338.5 & 0/50 \\
+ & medium & 700.2 & 693.1 & 700.2 & 693.1 & 636.0 & 636.0 & 0/50 \\
+\bottomrule
+\end{tabular}
+\end{table}

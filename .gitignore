@@ -4,3 +4,7 @@ __pycache__/
 *.cov~
 .ipynb_checkpoints/
 results/*_first*.json
+*.aux
+*.log
+*.blg
+*.out

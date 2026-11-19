@@ -1,0 +1,95 @@
+[
+ {
+  "function": "f1 Beale",
+  "faf2": {
+   "iterations": 1890,
+   "boxes_left": 0,
+   "best": 3.152232094739013e-06,
+   "finished": true,
+   "time_s": 0.4024001400000543
+  },
+  "zcaa": {
+   "iterations": 1880,
+   "boxes_left": 0,
+   "best": 3.152232094739013e-06,
+   "finished": true,
+   "time_s": 0.2779649200000449
+  },
+  "skalna": {
+   "iterations": 1495,
+   "boxes_left": 1,
+   "best": 9.001322578087987e-06,
+   "finished": true,
+   "time_s": 0.39701395700001285
+  },
+  "exact": {
+   "iterations": 1486,
+   "boxes_left": 1,
+   "best": 9.001322578087987e-06,
+   "finished": true,
+   "time_s": 0.5202428979999922
+  }
+ },
+ {
+  "function": "f2 Booth",
+  "faf2": {
+   "iterations": 294,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.024262277000048016
+  },
+  "zcaa": {
+   "iterations": 294,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.021483403000047474
+  },
+  "skalna": {
+   "iterations": 206,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.023975882999934583
+  },
+  "exact": {
+   "iterations": 206,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.02870324499997423
+  }
+ },
+ {
+  "function": "f3 Colville",
+  "faf2": {
+   "iterations": 200000,
+   "boxes_left": 21502,
+   "best": 0.001939766281793709,
+   "finished": false,
+   "time_s": 62.14904762000003
+  },
+  "zcaa": {
+   "iterations": 200000,
+   "boxes_left": 21517,
+   "best": 0.001939766281793709,
+   "finished": false,
+   "time_s": 46.60216767600002
+  },
+  "skalna": {
+   "iterations": 161503,
+   "boxes_left": 0,
+   "best": 1.3822748535119445e-05,
+   "finished": true,
+   "time_s": 60.26075778999996
+  },
+  "exact": {
+   "iterations": 160787,
+   "boxes_left": 0,
+   "best": 1.3822748535119445e-05,
+   "finished": true,
+   "time_s": 68.17994397100006
+  }
+ }
+]

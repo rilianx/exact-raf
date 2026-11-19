@@ -1,0 +1,81 @@
+\begin{thebibliography}{10}
+
+\bibitem{combastolfi1993}
+J.L.D. Comba and J.~Stolfi.
+\newblock Affine arithmetic and its applications to computer graphics.
+\newblock In {\em Proceedings of SIBGRAPI'93 -- VI Simp{\'o}sio Brasileiro de
+  Computa\c{c}{\~a}o Gr{\'a}fica e Processamento de Imagens}, pages 9--18,
+  October 1993.
+
+\bibitem{stolfi1997self}
+Jorge Stolfi and Luiz Henrique~De Figueiredo.
+\newblock {\em Self-Validated Numerical Methods and Applications}.
+\newblock IMPA, Rio de Janeiro, 1997.
+\newblock Monograph, Course notes for the 21st Brazilian Mathematics Colloquium
+  held at IMPA, July 1997.
+
+\bibitem{defigueiredo2004affine}
+Luiz~Henrique de~Figueiredo and Jorge Stolfi.
+\newblock Affine arithmetic: concepts and applications.
+\newblock {\em Numerical Algorithms}, 37(1--4):147--158, 2004.
+
+\bibitem{messine2002extentions}
+Fr{\'e}d{\'e}ric Messine.
+\newblock Extensions of affine arithmetic: Application to unconstrained global
+  optimization.
+\newblock {\em Journal of Universal Computer Science}, 8(11):992--1015, 2002.
+
+\bibitem{vu2009enhancing}
+Xuan-Ha Vu, Djamila Sam-Haroud, and Boi Faltings.
+\newblock Enhancing numerical constraint propagation using multiple inclusion
+  representations.
+\newblock {\em Annals of Mathematics and Artificial Intelligence},
+  55(3--4):295--354, 2009.
+
+\bibitem{skalna2017new}
+Iwona Skalna and Milan Hlad{\'\i}k.
+\newblock A new algorithm for chebyshev minimum-error multiplication of reduced
+  affine forms.
+\newblock {\em Numerical Algorithms}, 76(4):1131--1152, 2017.
+
+\bibitem{ninin2015reliable}
+Jordan Ninin, Fr{\'e}d{\'e}ric Messine, and Pierre Hansen.
+\newblock A reliable affine relaxation method for global optimization.
+\newblock {\em 4OR}, 13(3):247--277, 2015.
+
+\bibitem{kolev2004improved}
+Lubomir~V. Kolev.
+\newblock An improved interval linearization for solving nonlinear problems.
+\newblock {\em Numerical Algorithms}, 37(1--4):213--224, 2004.
+
+\bibitem{makino2003}
+Kyoko Makino and Martin Berz.
+\newblock Taylor models and other validated functional inclusion methods.
+\newblock {\em International Journal of Pure and Applied Mathematics},
+  4(4):379--456, 2003.
+
+\bibitem{neumaier2003taylor}
+Arnold Neumaier.
+\newblock Taylor forms -- use and limits.
+\newblock {\em Reliable Computing}, 9(1):43--79, 2003.
+
+\bibitem{ziegler1995lectures}
+G{\"u}nter~M. Ziegler.
+\newblock {\em Lectures on Polytopes}, volume 152 of {\em Graduate Texts in
+  Mathematics}.
+\newblock Springer, New York, 1995.
+
+\bibitem{chabert2009}
+Gilles Chabert and Luc Jaulin.
+\newblock Contractor programming.
+\newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
+
+\bibitem{coprin}
+Coprin.
+\newblock The coprin examples page.
+\newblock
+  \url{https://www-sop.inria.fr/coprin/logiciels/ALIAS/Benches/benches.html},
+  2024.
+\newblock Accessed: 2024-09-12.
+
+\end{thebibliography}

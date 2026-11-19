@@ -85,6 +85,11 @@ class ZCAAForm:
         raise NotImplementedError("division by a form is not implemented")
 
     def __pow__(self, k):
+        if _SQUARE == "product" and isinstance(k, int) and k >= 1:
+            out = self                     # x^k as repeated multiplication with the selected rule
+            for _ in range(k - 1):
+                out = out * self
+            return out
         if k == 2:
             return pow_zcaa(self)
         from .unary import power
@@ -226,38 +231,52 @@ def _assemble(v, w, nlo, nhi):
     return ZCAAForm(slopes, c + nlo, c + nhi)
 
 
-def _uv_range(gens, c0=0.0, c1=0.0):
-    """Exact range of (u + c0)(v + c1) for (u, v) in the zonotope sum_k e_k g_k, e in [-1, 1]^K.
-
-    The only critical point of uv is a saddle, so the extrema lie on the boundary of the
-    zonotope, a convex polygon whose edges are the generators sorted by angle
-    (Skalna and Hladik 2017, Prop. 4). O(K log K)."""
+def _sorted_generators(gens):
+    """Nonzero generators turned to the half-plane u > 0 (or u = 0, v > 0), sorted by angle."""
+    import math
     g = []
     for gu, gv in gens:
         if gu < 0 or (gu == 0 and gv < 0):
             gu, gv = -gu, -gv
         if gu != 0 or gv != 0:
             g.append((gu, gv))
+    g.sort(key=lambda t: math.atan2(t[1], t[0]))
+    return g, sum(t[0] for t in g), sum(t[1] for t in g)
+
+
+def _uv_range_sorted(sg, c0=0.0, c1=0.0):
+    """Range of (u + c0)(v + c1) over the zonotope of the sorted generators sg (see _uv_range). O(K)."""
+    g, su, sv = sg
     if not g:
         return c0 * c1, c0 * c1
-    import math
-    g.sort(key=lambda t: math.atan2(t[1], t[0]))
-    pu, pv = c0 - sum(t[0] for t in g), c1 - sum(t[1] for t in g)
+    pu, pv = c0 - su, c1 - sv
     lo = hi = pu * pv
     for sign in (2.0, -2.0):
         for gu, gv in g:
             du, dv = sign * gu, sign * gv
             qu, qv = pu + du, pv + dv
             val = qu * qv
-            lo, hi = min(lo, val), max(hi, val)
-            a, b = du * dv, pu * dv + pv * du          # (pu + t du)(pv + t dv) = pu pv + b t + a t^2
+            if val < lo:
+                lo = val
+            elif val > hi:
+                hi = val
+            a = du * dv                                 # (pu + t du)(pv + t dv) = pu pv + b t + a t^2
             if a != 0:
-                t = -b / (2.0 * a)
+                t = -(pu * dv + pv * du) / (2.0 * a)
                 if 0.0 < t < 1.0:
                     val = (pu + t * du) * (pv + t * dv)
                     lo, hi = min(lo, val), max(hi, val)
             pu, pv = qu, qv
     return lo, hi
+
+
+def _uv_range(gens, c0=0.0, c1=0.0):
+    """Exact range of (u + c0)(v + c1) for (u, v) in the zonotope sum_k e_k g_k, e in [-1, 1]^K.
+
+    The only critical point of (u + c0)(v + c1) is a saddle, so the extrema lie on the boundary
+    of the zonotope, a convex polygon whose edges are the generators sorted by angle
+    (Skalna and Hladik 2017, Prop. 4). O(K log K)."""
+    return _uv_range_sorted(_sorted_generators(gens), c0, c1)
 
 
 def mul_faf2(v, w):
@@ -284,14 +303,15 @@ def mul_skalna(v, w):
 def mul_exact(v, w):
     """Exact range of N in (*). N is affine in xi and in eta, so its extrema are attained with
     xi, eta in {-1, 1} (the four vertices of mul_zcaa); for each vertex, N is a product of two
-    shifted linear forms in e, whose exact range follows from _uv_range. O(n log n)."""
+    shifted linear forms in e, whose exact range follows from _uv_range_sorted. The generators
+    are sorted once, so the cost is O(n log n) + 4 O(n)."""
     v0, a, vr, _ = _noise(v)
     w0, b, wr, _ = _noise(w)
-    gens = list(zip(a, b))
+    sg = _sorted_generators(zip(a, b))          # sorted once, shared by the four vertices
     nlo, nhi = float("inf"), float("-inf")
     for xi in (-1.0, 1.0):
         for eta in (-1.0, 1.0):
-            lo, hi = _uv_range(gens, vr * xi, wr * eta)
+            lo, hi = _uv_range_sorted(sg, vr * xi, wr * eta)
             k = v0 * wr * eta + w0 * vr * xi
             nlo, nhi = min(nlo, lo + k), max(nhi, hi + k)
     return _assemble(v, w, nlo, nhi)
@@ -311,3 +331,14 @@ def set_product(name):
 
 def get_product():
     return _PRODUCT
+
+
+_SQUARE = "chebyshev"
+
+
+def set_square(mode):
+    """Integer powers: 'chebyshev' (univariate envelope, default) or 'product' (repeated products)."""
+    global _SQUARE
+    if mode not in ("chebyshev", "product"):
+        raise ValueError(mode)
+    _SQUARE = mode
