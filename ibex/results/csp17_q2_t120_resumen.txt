@@ -1,0 +1,30 @@
+| instancia | af2 | sh | q2 | q2kn | q2pc |
+|---|---|---|---|---|---|
+| Dietmaier | 46843 c, 120.0 s, 41 sol (TIME_OUT, 3 unk, 5 pend) | 32985 c, 97.0 s, 54 sol (NOT_ALL_VALIDATED, 1 unk, 0 pend) | 45033 c, 120.0 s, 40 sol (TIME_OUT, 3 unk, 13 pend) | 32983 c, 102.2 s, 54 sol (NOT_ALL_VALIDATED, 1 unk, 0 pend) | 40519 c, 120.0 s, 48 sol (TIME_OUT, 1 unk, 11 pend) |
+| Directkin | 1993 c, 5.0 s, 2 sol | 1161 c, 2.9 s, 2 sol | 1319 c, 4.5 s, 2 sol | 1049 c, 4.4 s, 2 sol | 1157 c, 4.9 s, 2 sol |
+| Neveu1 | 287 c, 0.8 s, 128 sol | 277 c, 0.8 s, 128 sol | 287 c, 0.9 s, 128 sol | 277 c, 0.8 s, 128 sol | 277 c, 0.8 s, 128 sol |
+| Pramanik | 5335 c, 1.2 s, 2 sol | 2609 c, 0.8 s, 2 sol | 1721 c, 0.8 s, 2 sol | 1087 c, 2.4 s, 2 sol | 1215 c, 2.7 s, 2 sol |
+| Trigexp2-11 | 4875 c, 5.4 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 4835 c, 5.6 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 4837 c, 6.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 4833 c, 6.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 4823 c, 7.8 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-13 | 8361 c, 14.6 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 8311 c, 14.4 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 8321 c, 15.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 8299 c, 15.9 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 8271 c, 20.2 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-13sp | 1 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-15 | 13669 c, 30.9 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 13717 c, 31.7 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 13717 c, 33.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 13679 c, 32.7 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 13685 c, 44.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-17 | 22885 c, 65.8 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 22687 c, 67.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 22663 c, 70.9 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 22619 c, 72.2 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 22559 c, 91.7 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-19 | 35477 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 6 pend) | 34979 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 9 pend) | 32871 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 6 pend) | 31991 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 5 pend) | 25197 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 9 pend) |
+| Trigexp2-21 | 31093 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 9 pend) | 29857 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 11 pend) | 28573 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 5 pend) | 28677 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 6 pend) | 20091 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 10 pend) |
+| Trigexp2-23 | 26117 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 14 pend) | 25763 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 14 pend) | 23163 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 12 pend) | 22431 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 15 pend) | 16701 c, 120.0 s, 0 sol (TIME_OUT, 0 unk, 13 pend) |
+| Trigexp2-3 | 618127 c, 120.0 s, 0 sol (TIME_OUT, 308962 unk, 9 pend) | 595123 c, 120.0 s, 0 sol (TIME_OUT, 297459 unk, 10 pend) | 612001 c, 120.0 s, 0 sol (TIME_OUT, 305894 unk, 11 pend) | 568051 c, 120.0 s, 0 sol (TIME_OUT, 283921 unk, 10 pend) | 356309 c, 120.0 s, 0 sol (TIME_OUT, 178090 unk, 5 pend) |
+| Trigexp2-5 | 855 c, 0.2 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 855 c, 0.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 855 c, 0.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 855 c, 0.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 855 c, 0.4 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-7 | 1463 c, 0.8 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1459 c, 0.7 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1459 c, 0.7 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1457 c, 0.9 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 1457 c, 1.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| Trigexp2-9 | 2809 c, 2.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 2787 c, 2.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 2803 c, 2.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 2795 c, 2.3 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 2785 c, 3.4 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+| ponts-geo | 367 c, 1.4 s, 128 sol | 367 c, 1.4 s, 128 sol | 31 c, 0.0 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 31 c, 0.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) | 31 c, 0.1 s, 0 sol (INFEASIBLE, 0 unk, 0 pend) |
+
+resueltas por todas: 3
+| variante | resueltas (de 17) | celdas / af2 (geo) | tiempo / af2 (geo) |
+|---|---|---|---|
+| af2 | 4 | 1.000 | 1.000 |
+| sh | 4 | 0.650 | 0.721 |
+| q2 | 3 | 0.598 | 0.853 |
+| q2kn | 3 | 0.470 | 1.219 |
+| q2pc | 3 | 0.503 | 1.303 |
+
+soluciones distintas entre variantes (resueltas por todas): ninguna

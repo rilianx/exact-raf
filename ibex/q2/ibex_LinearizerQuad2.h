@@ -42,9 +42,9 @@ public:
 			// evaluacion de grado 2; ev = intervalo natural & intervalos por nodo intersectados con el rango de la forma
 			// (como el ev de AffineEval en LinearizerAffineT)
 			quad2::QF F; quad2::Eval E(n);
-			Interval evq;
+			Interval evq; double mag;
 			quad2_stats().evals++;
-			if (!E.eval(tapes[ctr], box, F, evq)) { quad2_stats().failed++; continue; }
+			if (!E.eval(tapes[ctr], box, F, evq, mag)) { quad2_stats().failed++; continue; }
 			const Interval ev = sys.ctrs[ctr].f.eval(box) & evq;
 			if (ev.is_empty()) continue;
 			// mismas salidas por infactibilidad que LinearizerAffineT
@@ -78,7 +78,7 @@ public:
 			quad2::remainder_bound(F, n, fb, L, U);
 			if (!(std::isfinite(L) && std::isfinite(U))) { quad2_stats().failed++; continue; }
 			// margen de seguridad (no riguroso): relativo a la magnitud de la forma
-			const double margin = quad2::QUAD2_MARGIN * (scale + std::fabs(L) + std::fabs(U)) + 1e-300;
+			const double margin = quad2::QUAD2_MARGIN * (scale + mag + std::fabs(L) + std::fabs(U)) + 1e-300;
 			// g(x) en [c - center + row.x + L, c - center + row.x + U]
 			const Interval cst = Interval(F.c) - center;
 			try {

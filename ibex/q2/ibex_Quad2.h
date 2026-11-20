@@ -297,12 +297,16 @@ struct Eval {
 
 	// Evaluacion de la cinta en la caja. Como AffineEval de ibex-affine, en cada nodo se lleva tambien un intervalo
 	// d = (operacion por intervalos sobre los intervalos de los hijos) & (rango de la forma, ensanchado por un margen
-	// relativo de 1e-12): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
+	// relativo de 1e-11 al tamano de los terminos de la forma): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
 	// evaluacion 'ev' que usa el linearizador. Devuelve false si la evaluacion no es posible en esta caja (dominio,
 	// valores no finitos, interseccion vacia).
-	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev) {
+	// mag: magnitud acumulada del calculo (suma, sobre todos los nodos del subarbol, del tamano de sus terminos);
+	// acota la escala de los errores de redondeo, tambien cuando hay cancelacion entre operandos grandes.
+	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev) { double mag; return eval(T, box, out, ev, mag); }
+	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev, double& mag_out) {
 		std::vector<QF> v(T.nodes.size());
 		std::vector<Interval> d(T.nodes.size());
+		std::vector<double> M(T.nodes.size(), 0.0);
 		for (size_t k = 0; k < T.nodes.size(); k++) {
 			const Node& N = T.nodes[k];
 			QF r;
@@ -355,7 +359,18 @@ struct Eval {
 			if (!std::isfinite(r.c)) return false;
 			double fl, fh; qf_range(r, fl, fh);
 			if (!(std::isfinite(fl) && std::isfinite(fh))) return false;
-			const double mg = 1e-12 * (std::fabs(fl) + std::fabs(fh)) + 1e-300;
+			// margen relativo al TAMANO DE LOS TERMINOS de la forma (no a su rango): con cancelacion (p. ej.
+			// (x-y)^2 + ... - 25 con valor cerca de 0) el error de redondeo es del orden de los terminos, no del rango
+			double mag = std::fabs(r.c);
+			for (size_t q = 0; q < r.lin.size(); q++) mag += std::fabs(r.lin[q].second);
+			for (size_t q = 0; q < r.Q.size(); q++) mag += std::fabs(r.Q[q].second);
+			if (N.op != V && N.op != C && N.op != CI) {
+				mag += M[N.a];
+				if (N.b >= 0 && N.op != REC) mag += M[N.b];
+				mag += std::fabs(d[N.a].mag()) + (N.b >= 0 ? std::fabs(d[N.b].mag()) : 0.0);
+			}
+			M[k] = mag;
+			const double mg = 1e-11 * mag + 1e-300;
 			di &= Interval(fl - mg, fh + mg);
 			if (di.is_empty()) return false;
 			v[k].c = r.c; v[k].lin.swap(r.lin); v[k].Q.swap(r.Q);
@@ -363,6 +378,7 @@ struct Eval {
 		}
 		out = v[T.root];
 		ev = d[T.root];
+		mag_out = M[T.root];
 		return true;
 	}
 };
