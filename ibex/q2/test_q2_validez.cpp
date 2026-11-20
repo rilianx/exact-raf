@@ -2,7 +2,9 @@
 // contienen, comprueba en cada restriccion que
 //   (1) el intervalo por nodos 'ev' de Quad2 contiene g(x*) (evaluada por intervalos en el punto), y
 //   (2) g(x*) cae en [c - center + row.x* + L - margen, c - center + row.x* + U + margen] (la relajacion).
-// Uso: test_q2_validez <sistema.bch> <soluciones.txt (formato --boxes de ibexsolve-raak)> [cajas por punto=200] [fb=0..3]
+// Uso: test_q2_validez <sistema.bch> <soluciones.txt (formato --boxes de ibexsolve-raak)> [cajas por punto=200] [fb=0..3] [ext=0|1]
+// Con ext=1 se prueba el sistema extendido de ibexopt (ExtendedSystem(sys, 1e-8): variable del objetivo y = f(x*)
+// e igualdades relajadas), que es el que recibe el linearizador en el optimizador.
 #include "ibex.h"
 #include "ibex_LinearizerQuad2.h"
 #include <cstdio>
@@ -12,7 +14,10 @@
 using namespace ibex;
 
 int main(int argc, char** argv) {
-	System sys(argv[1]);
+	System sys0(argv[1]);
+	const bool ext = argc > 5 && std::atoi(argv[5]) != 0;
+	ExtendedSystem* es = ext ? new ExtendedSystem(sys0, 1e-8) : NULL;
+	const System& sys = ext ? (const System&) *es : sys0;
 	const int nb = argc > 3 ? std::atoi(argv[3]) : 200;
 	const quad2::FinalBound fb = (quad2::FinalBound) (argc > 4 ? std::atoi(argv[4]) : 0);
 	const int n = sys.nb_var;
@@ -20,7 +25,13 @@ int main(int argc, char** argv) {
 	std::ifstream in(argv[2]); std::string line;
 	while (std::getline(in, line)) {
 		std::istringstream is(line); std::string t; is >> t;
-		Vector p(n); for (int i = 0; i < n; i++) { double lo, hi; is >> lo >> hi; p[i] = 0.5 * (lo + hi); }
+		const int n0 = sys0.nb_var;
+		Vector p0(n0); for (int i = 0; i < n0; i++) { double lo, hi; is >> lo >> hi; p0[i] = 0.5 * (lo + hi); }
+		Vector p(n);
+		if (ext) {   // variables del extendido: las originales con y en goal_var()
+			const int g = es->goal_var(); int k = 0;
+			for (int i = 0; i < n; i++) p[i] = (i == g) ? sys0.goal->eval(IntervalVector(p0)).mid() : p0[k++];
+		} else p = p0;
 		pts.push_back(p);
 	}
 	std::vector<quad2::Tape> tapes;

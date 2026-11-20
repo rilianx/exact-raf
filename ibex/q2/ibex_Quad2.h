@@ -18,7 +18,7 @@
 //   FULL  bloques producto, pares + triples + completo            (prodk.h)
 // y se intersecta con TT.
 //
-// RIGOR: la aritmetica es en dobles. Para la relajacion se agrega un margen relativo QUAD2_MARGIN (1e-9) a la
+// RIGOR: la aritmetica es en dobles. Para la relajacion se agrega un margen relativo QUAD2_MARGIN (1e-13) a la
 // cota del resto y a la constante; es un margen de seguridad, no una cota rigurosa del redondeo (pendiente: el
 // esquema de knomial_quad_bound, residuo en intervalos).
 //============================================================================
@@ -39,7 +39,10 @@ namespace ibex {
 namespace quad2 {
 
 enum FinalBound { FB_TT = 0, FB_KN = 1, FB_PC = 2, FB_FULL = 3 };
-static const double QUAD2_MARGIN = 1e-9;
+// Margenes de seguridad (no rigurosos) frente al redondeo en dobles: relativos a la magnitud acumulada del calculo
+// (suma del tamano de los terminos de todos los nodos), que ya crece con el numero de operaciones. El redondeo es
+// del orden de 1e-16 por operacion; se usa 1e-13 (mil veces mas).
+static const double QUAD2_MARGIN = 1e-13;
 
 typedef std::vector<double> Vec;
 typedef std::vector<std::pair<int, double> > SV;
@@ -297,7 +300,7 @@ struct Eval {
 
 	// Evaluacion de la cinta en la caja. Como AffineEval de ibex-affine, en cada nodo se lleva tambien un intervalo
 	// d = (operacion por intervalos sobre los intervalos de los hijos) & (rango de la forma, ensanchado por un margen
-	// relativo de 1e-11 al tamano de los terminos de la forma): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
+	// QUAD2_MARGIN relativo a la magnitud acumulada del calculo): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
 	// evaluacion 'ev' que usa el linearizador. Devuelve false si la evaluacion no es posible en esta caja (dominio,
 	// valores no finitos, interseccion vacia).
 	// mag: magnitud acumulada del calculo (suma, sobre todos los nodos del subarbol, del tamano de sus terminos);
@@ -370,7 +373,7 @@ struct Eval {
 				mag += std::fabs(d[N.a].mag()) + (N.b >= 0 ? std::fabs(d[N.b].mag()) : 0.0);
 			}
 			M[k] = mag;
-			const double mg = 1e-11 * mag + 1e-300;
+			const double mg = QUAD2_MARGIN * mag + 1e-300;
 			di &= Interval(fl - mg, fh + mg);
 			if (di.is_empty()) return false;
 			v[k].c = r.c; v[k].lin.swap(r.lin); v[k].Q.swap(r.Q);
