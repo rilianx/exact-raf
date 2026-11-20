@@ -1,0 +1,18 @@
+7532 expresiones/cajas, 58 instancias; ningun encierro por debajo del rango interior
+
+| metodo | ancho/M00 optim. | ancho/M00 NCSP | inst. con mejora > 2 % (de 58) | ancho/INNER optim. | ancho/INNER NCSP | tiempo por expresion, mediana / p90 (µs) | tiempo / M00 (mediana) |
+|---|---|---|---|---|---|---|---|
+| fAF2 de Ibex (formula S) | 1.000 | 1.000 | 0 | 1.76 | 1.59 | 0.43 / 8.2 | 1.00 |
+| fAF2 + SH | 0.987 | 0.947 | 12 | 1.74 | 1.50 | 0.57 / 8.4 | 1.11 |
+| grado 2 + encierro barato | 0.950 | 0.955 | 17 | 1.67 | 1.51 | 0.79 / 14.8 | 1.53 |
+| grado 2 + k-nomial k=6 | 0.946 | 0.922 | 17 | 1.66 | 1.46 | 1.35 / 18.2 | 2.16 |
+| grado 2 + bloques producto (pares + completo) | 0.934 | 0.914 | 27 | 1.64 | 1.45 | 4.99 / 58.4 | 7.99 |
+| grado 2 + bloques producto (completo) | 0.925 | 0.905 | 32 | 1.63 | 1.43 | 8.24 / 221.8 | 11.95 |
+
+Por profundidad (ancho / M00, todas las instancias juntas; media por instancia):
+| prof | M0 | M3c_tt | M3c_kn6 | M3c_pc | M3c_full |
+|---|---|---|---|---|---|
+| 0 | 0.964 | 0.966 | 0.942 | 0.934 | 0.926 |
+| 5 | 0.971 | 0.949 | 0.934 | 0.923 | 0.913 |
+| 10 | 0.974 | 0.945 | 0.933 | 0.922 | 0.911 |
+| 20 | 0.982 | 0.958 | 0.950 | 0.938 | 0.931 |
