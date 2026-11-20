@@ -33,6 +33,11 @@ def zono_vertices(u, v):
 
 
 def sh_width(u, v):
+    lo, hi = sh_range(u, v)
+    return hi - lo
+
+
+def sh_range(u, v):
     V = zono_vertices(u, v)
     lo, hi = math.inf, -math.inf
     for p, q in zip(V, V[1:] + V[:1]):
@@ -45,7 +50,7 @@ def sh_width(u, v):
         for t in ts:
             x, y = p + t * d
             lo, hi = min(lo, x * y), max(hi, x * y)
-    return hi - lo
+    return lo, hi
 
 
 def local_candidates(RS):
@@ -100,7 +105,19 @@ def supports(Q, max_triples_m=40, full_max=12):
     return S
 
 
+def tt_interval(R):
+    d = np.diag(R)
+    off = np.abs(R).sum() - np.abs(d).sum()
+    return np.minimum(d, 0).sum() - off, np.maximum(d, 0).sum() + off
+
+
 def prodk(Q, max_iter=100000, **kw):
+    """Devuelve (ancho, numero de bloques). prodk_interval devuelve ademas el intervalo [L, U]."""
+    L, U, nb = prodk_interval(Q, max_iter, **kw)
+    return U - L, nb
+
+
+def prodk_interval(Q, max_iter=100000, **kw):
     m = Q.shape[0]
     R = Q.copy()
     sup = supports(Q, **kw)
@@ -115,7 +132,7 @@ def prodk(Q, max_iter=100000, **kw):
         cache[s] = ps
         if ps is not None: heapq.heappush(heap, (-g, s, ver[s]))
     for s in range(len(sup)): push(s)
-    total_sh, nblocks = 0.0, 0
+    total_sh, nblocks, Lsh, Ush = 0.0, 0, 0.0, 0.0
     scale = max(1.0, tt(Q)) * 1e-12
     for _ in range(max_iter):
         while heap and heap[0][2] != ver[heap[0][1]]: heapq.heappop(heap)
@@ -123,8 +140,11 @@ def prodk(Q, max_iter=100000, **kw):
         _, s, _ = heapq.heappop(heap)
         S = list(sup[s]); ps = cache[s]
         R[np.ix_(S, S)] -= sym(ps, len(S))
-        total_sh += sum(sh_width(u, v) for u, v in ps); nblocks += len(ps)
+        for u, v in ps:
+            lo_, hi_ = sh_range(u, v); Lsh += lo_; Ush += hi_
+        nblocks += len(ps)
         touched = set(t for i in S for t in by_var[i])
         for t in touched:
             ver[t] += 1; push(t)
-    return total_sh + tt(R), nblocks
+    Lr, Ur = tt_interval(R)
+    return Lsh + Lr, Ush + Ur, nblocks
