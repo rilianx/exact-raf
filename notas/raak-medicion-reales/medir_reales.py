@@ -2,7 +2,8 @@
 
 Para cada objetivo y restriccion se recorre el arbol y se buscan los nodos 'suma' (combinaciones lineales maximales:
 +, -, producto o division por constante) con al menos 2 terminos cuadraticos. Un termino es cuadratico si es un
-producto de dos subexpresiones no constantes, A*B, o un cuadrado, A^2 (A, B pueden ser compuestas).
+producto de dos subexpresiones no constantes, A*B, un cuadrado, A^2, o una division A/B (= A * (1/B) en fAF2);
+A y B pueden ser compuestas (por ejemplo sin(x)*y, x*ln(x) o x/(x+y)).
 
 En la caja raiz cada factor se evalua en aritmetica afin: A = a0 + a^T eps + ea xi, con eps los simbolos de las
 variables y xi un simbolo de error propio de la subexpresion A (el mismo si A aparece varias veces). Con
@@ -114,6 +115,21 @@ def af_unary_minrange(x, f, df_end, lo, hi):
     return AF(r.c + (d1 + d2) / 2, r.lin, r.err + (d2 - d1) / 2)
 
 
+def af_secant(x, f, npts=4001):
+    """Linealizacion por secante para funciones no monotonas o sin forma cerrada (sin, cos, x^k, abs):
+    pendiente de la secante y residuo f - alpha t acotado por muestreo denso (medicion, no rigurosa).
+    Conserva la parte lineal en eps, que es la que genera los terminos bilineales en un producto."""
+    lo, hi = x.rng()
+    if hi - lo <= 1e-12: return AF(f(x.c))
+    a = (f(hi) - f(lo)) / (hi - lo)
+    ts = np.linspace(lo, hi, npts)
+    d = np.array([f(t) - a * t for t in ts])
+    pad = 0.01 * (d.max() - d.min())  # margen por el muestreo
+    d1, d2 = d.min() - pad, d.max() + pad
+    r = x.scale(a)
+    return AF(r.c + (d1 + d2) / 2, r.lin, r.err + (d2 - d1) / 2)
+
+
 def af_interval(lo, hi):
     return AF((lo + hi) / 2, {}, (hi - lo) / 2)
 
@@ -136,25 +152,18 @@ def af_unary(name, x):
             return AF(r.c + (min(ds) + max(ds)) / 2, r.lin, r.err + (max(ds) - min(ds)) / 2)
         df = {"log": 1 / hi, "sqrt": 0.5 / math.sqrt(hi)}[name]
         return af_unary_minrange(x, f, df, lo, hi)
-    if name in ("sin", "cos"):  # solo intervalo (los factores son iguales para todos los metodos)
-        f = getattr(math, name)
-        if hi - lo >= 2 * math.pi: return af_interval(-1, 1)
-        ph = 0.0 if name == "sin" else math.pi / 2
-        ks = range(math.floor((lo + ph) / (math.pi / 2)) - 1, math.ceil((hi + ph) / (math.pi / 2)) + 2)
-        vals = [f(lo), f(hi)] + [f(k * math.pi / 2 - ph) for k in ks if lo <= k * math.pi / 2 - ph <= hi]
-        return af_interval(min(vals), max(vals))
+    if name in ("sin", "cos"):
+        return af_secant(x, getattr(math, name))
     if name == "abs":
         if lo >= 0: return x
         if hi <= 0: return x.scale(-1)
-        return af_interval(0, max(-lo, hi))
+        return af_secant(x, abs)
     raise ValueError(name)
 
 
 def af_pow(x, k):
     if k == 2: return af_mul(x, x)
-    lo, hi = x.rng()
-    vals = [lo ** k, hi ** k] + ([0.0] if lo < 0 < hi else [])
-    return af_interval(min(vals), max(vals))
+    return af_secant(x, lambda t: t ** k)
 
 
 # ---------------------------------------------------------------- arbol
@@ -212,6 +221,8 @@ class Ev:
 
     def quad_factors(self, t):
         if isinstance(t, ast.BinOp) and isinstance(t.op, ast.Mult): return t.left, t.right
+        if isinstance(t, ast.BinOp) and isinstance(t.op, ast.Div):  # fAF2: A/B = A * (1/B)
+            return t.left, ast.Call(func=ast.Name("recip", ast.Load()), args=[t.right], keywords=[])
         if isinstance(t, ast.BinOp) and isinstance(t.op, ast.Pow) and self.is_const(t.right) and self.const(t.right) == 2:
             return t.left, t.left
         return None

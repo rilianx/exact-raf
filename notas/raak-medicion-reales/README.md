@@ -13,9 +13,18 @@ estática en la caja raíz declarada en cada `.bch`: no se corre el solver.
 
 1. En cada objetivo y restricción se buscan los **nodos suma**: combinaciones lineales maximales, con +, −, y
    producto o división por constante.
-2. Se miden los que tienen **2 o más términos cuadráticos**, es decir, `A*B` con A y B no constantes, o `A^2`.
-   A y B pueden ser subexpresiones compuestas.
-3. Cada factor se evalúa en aritmética afín: `A = a₀ + aᵀε + e_A ξ_A`, con min-range para exp, ln, sqrt y 1/x.
+2. Se miden los que tienen **2 o más términos cuadráticos**. Un término es cuadrático si es:
+   - un producto `A*B` con A y B no constantes;
+   - un cuadrado `A^2`;
+   - una división `A/B` con B no constante, porque fAF2 la calcula como `A * (1/B)`.
+
+   A y B pueden ser subexpresiones compuestas, por ejemplo `sin(x)*y`, `x*ln(x)` o `x/(x+y)`: en aritmética afín
+   cada factor tiene parte lineal en ε, así que el producto genera términos bilineales igual que `x*y`.
+3. Cada factor se evalúa en aritmética afín: `A = a₀ + aᵀε + e_A ξ_A`.
+   - exp, ln, sqrt y 1/x usan min-range.
+   - sin, cos, `x^k` con k ≥ 3 y abs (cuando su argumento cruza el 0) usan la secante, con el residuo acotado
+     por muestreo. Así conservan su parte lineal en ε.
+
    El error `ξ_A` es un símbolo propio de la subexpresión A, y es el mismo si A se repite.
 4. El residuo que se compara es `N = Σₖ cₖ (uₖᵀζ)(vₖᵀζ)`, con `ζ = (ε, ξ)`. El centro y los términos lineales
    son iguales para todos los métodos.
@@ -31,22 +40,23 @@ Métodos, con las mismas columnas que en synq:
 | `BEST` | la menor entre SH, Qk6 y EIG |
 | `EXACT` | rango exacto si hay a lo más 12 símbolos. Con más, una cota interior obtenida por búsqueda local, marcada (≥). |
 
-`like` y `like-1` dividen por expresiones cuyo intervalo contiene 0 en la raíz, así que no tienen sumas medibles.
+`like` y `like-1`, y un nodo de ex8_5_2_1, dividen por expresiones cuyo intervalo contiene 0 en la raíz, así que
+no se pueden medir.
 
 ## Resultados
 
-Se encontraron **93 nodos suma con 2 o más términos cuadráticos, en 36 de las 41 instancias**. En 37 de ellos
-los términos comparten algún símbolo.
+Se encontraron **113 nodos suma con 2 o más términos cuadráticos, en 38 de las 41 instancias**. En 59 de ellos
+los términos comparten algún símbolo. Las divisiones aportan 20 de esos nodos.
 
 Ancho relativo a SH, primero media geométrica sobre los nodos de cada instancia y después sobre las instancias
 (cada instancia pesa 1):
 
 | | S | **SH** | Qk0 | Qk2 | Qk6 | EIG | BEST | EXACT |
 |---|---|---|---|---|---|---|---|---|
-| 36 instancias | 1,05 | 1 | 0,99 | 0,97 | 0,95 | 1,74 | 0,93 | 0,92 |
-| 25 con símbolos compartidos | 1,06 | 1 | 0,98 | 0,95 | 0,93 | 1,77 | 0,90 | 0,89 |
+| 38 instancias | 1,05 | 1 | 1,00 | 0,97 | 0,95 | 1,69 | 0,93 | 0,92 |
+| 27 con símbolos compartidos | 1,06 | 1 | 0,99 | 0,95 | 0,93 | 1,69 | 0,90 | 0,89 |
 
-- **SH ya es exacto en 87 de los 93 nodos.** El margen que queda es, en media geométrica, de un 8 % del ancho, y
+- **SH ya es exacto en 86 de los 113 nodos.** El margen que queda es, en media geométrica, de un 8 % del ancho, y
   se concentra en pocas instancias:
 
   | instancia | Qk0 | Qk6 | EIG | EXACT | de dónde sale la ganancia |
@@ -54,24 +64,27 @@ Ancho relativo a SH, primero media geométrica sobre los nodos de cada instancia
   | ex6_2_6 | 0,35 | 0,35 | 0,77 | 0,35 | productos idénticos con coeficientes que se cancelan (`x2*ln(x2)` aparece 4 veces y sus coeficientes suman ≈ 0) y el mismo `ln(…)` en varios productos |
   | ex6_2_8 | 0,40 | 0,40 | 0,97 | 0,40 | ídem |
   | ex2_1_9, ex2_1_9fact | 1 | 1 | **0,76** | 0,73 | suma de 22 bilineales `xᵢxⱼ` con diagonal cero: el k-nomial SDSOS no forma bloques, la cota espectral sí aprovecha |
-  | ex8_5_1bis, ex8_5_2_1 | 1 | 0,95 | 1,07 | 0,88 | k-nomial y espectral; la menor de las dos da 0,90 |
+  | ex8_5_1bis, ex8_5_2_1 | 1 | 0,92–0,95 | 1,1–1,5 | 0,82–0,88 | k-nomial; con la espectral, 0,86–0,90 |
+  | ex14_2_3 | 1,10 | **0,94** | 1,57 | 0,89 | sumas de cocientes `xᵢ/(Σ cⱼxⱼ)` con el mismo denominador: el k-nomial sí gana a SH y a Qk0 |
+  | ex14_2_7 | 1,15 | 0,99 | 1,63 | 0,90 | ídem; el k-nomial casi empata con SH y queda un 10 % de margen |
 
-- **En ninguna de estas instancias el k-nomial es lo decisivo.**
+- **El k-nomial es lo decisivo solo en ex8_5_\* y ex14_2_\*, y gana poco: entre 1 y 8 %.**
   - En ex6_2_6 y ex6_2_8 basta con juntar los términos iguales (Qk0), lo que hace también una simplificación
     simbólica.
   - En ex2_1_9 el k-nomial no sirve, porque necesita diagonal.
-  - Solo en ex8_5_* aporta algo (5 %).
-- **El k-nomial agregado es peor que SH en 15 de los 93 nodos.** Ocurre en ex6_1_3bis, ex8_4_4bis y 3pk-borne,
-  con hasta 1,09× SH en 3pk-borne y 1,20× en ex6_1_3bis. Por eso, si se implementa, hay que quedarse con la menor
+  - En ex14_2_\* las sumas son de cocientes con el mismo denominador, que es un caso con estructura de verdad: Qk0
+    pierde frente a SH, el k-nomial lo recupera y gana algo, y el exacto está un 10 % más abajo.
+- **El k-nomial agregado es peor que SH en 21 de los 113 nodos.** Ocurre sobre todo en ex6_1_3bis, ex8_4_4bis y
+  3pk-borne, con hasta 1,20× SH. Por eso, si se implementa, hay que quedarse con la menor
   de las cotas, y SH tiene que estar entre ellas.
-- **La cota espectral sola es mala en instancias reales** (1,74× SH en media): las cajas no son cubos y Q no está
+- **La cota espectral sola es mala en instancias reales** (1,69× SH en media): las cajas no son cubos y Q no está
   normalizada. Solo sirve como una cota más dentro del mínimo.
 
 ## Comparación con synq
 
 | | synq (78) | reales (36) |
 |---|---|---|
-| SH / exacto | 6,0 | 1,08 |
+| SH / exacto | 6,0 | 1,09 |
 | mejor agregado / SH | 0,21 | 0,93 |
 
 La gran ganancia de synq viene de su generador, que factoriza `Q = AᵀM` con A aleatoria y crea a propósito
