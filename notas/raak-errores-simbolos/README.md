@@ -157,3 +157,70 @@ puede aprovecharlo.
 El costo es O(n²) por operación. El k-nomial, los bloques producto o la SDP volverían a tener sentido, porque
 acotarían esa Q al final, una vez por expresión. Antes de implementarlo se puede medir con el mismo esquema: un
 modo M3 con formas cuadráticas, truncando lo de grado mayor que 2 a un símbolo, en las mismas cajas.
+
+## M3: formas cuadráticas ([`aa_quad.py`](aa_quad.py), [`medir_m3.py`](medir_m3.py))
+
+**Qué cambia respecto de M1:** M3 guarda los términos de segundo orden. Cada forma es `c + aᵀz + zᵀQz` (más
+símbolos de error):
+- **Producto:** se conserva todo el grado 2. Lo de grado 3 y 4 se acota con intervalos y pasa a un símbolo nuevo.
+- **Funciones:** usan la misma linealización que M1, sobre el rango de la forma completa.
+
+**Dos variantes de encierro final:**
+- **M3a (barato):** cada símbolo con su parte lineal y su diagonal, exacto en una dimensión, más el resto término
+  a término.
+- **M3b:** la menor entre M3a, los bloques producto y la SDP de Shor sobre la forma homogeneizada.
+
+**Medición:** todos los modos se midieron en las **mismas cajas**, con la semilla determinista (crc32). La
+atribución de arriba se rehízo con esas cajas y no cambia ([`resumen_atribucion.txt`](resumen_atribucion.txt)).
+Ningún encierro quedó por debajo del rango interior en ninguna de las 7534 combinaciones de expresión y caja.
+
+**Error encontrado y corregido.** Con esta medición apareció un error en el rango SH: el orden angular con
+`atan2` empataba cuando u y v tenían escalas muy distintas, y el rango salía demasiado angosto. Se corrigió en
+`../raak-qplib/prodk_fast.py`, con producto cruz y normalización, y se recalcularon todas las mediciones que lo
+usaban. Solo cambiaron un poco los pares espectrales de `../raak-pares`, y las conclusiones se mantienen.
+
+**Ancho / M0** (media geométrica; `M2|M3b` es la intersección de M2 y M3b, ambos válidos):
+
+| conjunto | prof | M1 | M2 | M3a | M3b | M2\|M3b | M0 / INNER | (M2\|M3b) / INNER |
+|---|---|---|---|---|---|---|---|---|
+| optimización (41) | 0 | 0,99 | 0,975 | 0,99 | 0,92 | **0,92** | 2,50 | 2,31 |
+| | 5 | 0,99 | 0,96 | 0,97 | 0,91 | **0,91** | 2,01 | 1,83 |
+| | 10 | 0,99 | 0,96 | 0,96 | 0,91 | **0,91** | 1,74 | 1,58 |
+| | 20 | 0,99 | 0,97 | 0,96 | 0,93 | **0,93** | 1,40 | 1,31 |
+| NCSP (17) | 0 | 0,98 | 0,965 | 1,04 | 0,98 | **0,96** | 1,62 | 1,55 |
+| | 5 | 0,99 | 0,97 | 1,01 | 0,95 | **0,94** | 1,61 | 1,51 |
+| | 10 | 1,00 | 0,98 | 1,01 | 0,94 | **0,94** | 1,50 | 1,41 |
+| | 20 | 1,00 | 0,99 | 1,01 | 0,95 | **0,95** | 1,38 | 1,31 |
+
+Por instancia, en [`resumen_m3.txt`](resumen_m3.txt). Las que más bajan con `M2|M3b`:
+
+| instancias | ancho / M0 |
+|---|---|
+| ex6_2_6, ex6_2_8 | 0,45–0,55 |
+| Pramanik | 0,66 |
+| s365mod | 0,77 |
+| Directkin | 0,83 |
+| 3pk-borne, ex6_1_3, ex6_2_11, ex6_1_4, Dietmaier, ex2_1_9 | 0,84–0,89 |
+
+### Lectura de M3
+
+1. **M3 mejora más instancias, pero recupera poco de la brecha.** Con `M2|M3b`, 37 de las 58 instancias mejoran
+   más de un 2 %, contra 6 con M2. Aun así, la brecha frente al rango interior solo se cierra entre un 13 y un
+   22 %: por ejemplo, en optimización a profundidad 10 pasa de 1,74 a 1,58.
+2. **La ganancia viene sobre todo del encierro final fuerte (M3b), no de la aritmética.**
+   - M3a, con el encierro barato, queda en 0,96–1,04 y es **peor que M1 en el 10 %** de los casos. El resto de
+     grado 3 y 4 acotado con intervalos pierde más de lo que gana el grado 2.
+   - En las instancias cuadráticas (ex2_1_9, ex5_3_2, ex6_1_4) M3b es justamente la cota SDP de la Q completa, que
+     ya habíamos visto en QPLIB.
+3. **Costo.** M3 es O(n²) por operación, y el encierro final de M3b (SDP y bloques en Python) tiene una mediana
+   de 0,03 s por expresión y caja. Es demasiado para hacerlo en cada nodo.
+4. **Queda mucha sobreestimación sin explicar por lo bilineal:** `M2|M3b` sigue entre 1,3 y 2,3 veces el rango
+   interior.
+
+### Qué haría falta para que M3 valga la pena
+
+- **Acotar mejor lo de grado 3 y 4 en el producto de formas cuadráticas**, en vez de intervalos sueltos. Por
+  ejemplo, acotar `(aᵀz)(zᵀQz)` con la forma conjunta. Sin eso, M3 barato no le gana a M1.
+- **Un encierro final barato pero fuerte:** un certificado tipo SDP reutilizable, o el k-nomial y los bloques
+  producto en C++, en lugar de la SDP en cada evaluación. Falta medir M3 solo con bloques producto, sin la SDP,
+  para separar esos dos efectos.
