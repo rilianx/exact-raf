@@ -247,7 +247,7 @@ For the square of a form, $\rng N_2 = [-2|x_0|x_r,\ 2|x_0|x_r+(\|x\|_1+x_r)^2]$ 
 \begin{proof}
 Write $u=e^Tx$, which ranges over $[-\|x\|_1,\|x\|_1]$. The interval is an enclosure of $\rng N_2$, since $(u+x_r\ex)^2\in[0,(\|x\|_1+x_r)^2]$ and $|2x_0x_r\ex|\le2|x_0|x_r$. Its upper end is attained with $\ex=\sigma$ and $u=\sigma\|x\|_1$, where $\sigma=\operatorname{sign}(x_0)$ ($\sigma=1$ if $x_0=0$). Its lower end is attained with $\ex=-\sigma$ and $u=\sigma x_r$, which is a value of $u$ because $x_r\le\|x\|_1$, so that $u+x_r\ex=0$ and $N_2=-2|x_0|x_r$.
 \end{proof}
-The radius of S for a square exceeds that of SH by $\tfrac12(\|x\|_1+x_r)^2-\tfrac12x^Tx$, which approaches $\tfrac12(\|x\|_1+x_r)^2$, half the width of the exact range of the quadratic part, when the noise coefficients are spread over many symbols. Products and squares are thus two separate places where S loses with respect to the exact ranges, and in a solver both matter (Section~\ref{sec:solver}).
+The SH enclosure of a square is not new: with $r=\|x\|_1+x_r$, it is the Chebyshev linearization of $t\mapsto t^2$ over the range $[x_0-r,x_0+r]$ of $\hat x$, $t^2\in 2x_0t-x_0^2+[0,r^2]$, which is the usual way of enclosing univariate functions in AA~\cite{stolfi1997self}. The radius of S for a square exceeds that of SH by $\tfrac12(\|x\|_1+x_r)^2-\tfrac12x^Tx$, which approaches $\tfrac12(\|x\|_1+x_r)^2$, half the width of the exact range of the quadratic part, when the noise coefficients are spread over many symbols. Products and squares are thus two separate places where S loses with respect to the exact ranges, and in a solver both matter (Section~\ref{sec:solver}).
 
 \paragraph{The standard multiplication is AF2 with re-centering.} The affine arithmetic of the Ibex library (model fAF2 of its affine plugin) implements formula S, with the rounding errors accumulated in the error term. The next result relates it to AF2.
 
@@ -275,7 +275,7 @@ S can be much wider than SH even without errors: for $\hat x=\eps_1+\eps_2$ and 
 \section{Implementation in Ibex}
 \label{sec:ibex}
 
-We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabert2009,ibexaffine} (model fAF2 of its affine plugin), whose multiplication and square are those of formula S, with the rounding errors of each operation accumulated in the error term. Only the enclosure $[c-z_r,c+z_r]$ of $N$ (or $N_2$) changes: the linear part, its rounding errors and the way they are added to the error term are those of fAF2. For squares, both SH and E use the SH bound, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}).
+We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabert2009,ibexaffine} (model fAF2 of its affine plugin), whose multiplication and square are those of formula S, with the rounding errors of each operation accumulated in the error term. Only the enclosure $[c-z_r,c+z_r]$ of $N$ (or $N_2$) changes: the linear part, its rounding errors and the way they are added to the error term are those of fAF2. For squares, both SH and E use the SH bound, that is, the Chebyshev linearization of $t^2$, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}). Note that S is exact for the products and squares of the variables themselves, whose forms have a single noise symbol and no error; the formulae differ only for compound factors.
 
 \paragraph{Rigor.} The computed interval must contain $\rng N$ although the walk is performed in floating point. Two points need care.
 \begin{itemize}
