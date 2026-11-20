@@ -1,0 +1,74 @@
+familia,variante,casos,violaciones_seguras,posibles,peor_exceso_relativo
+"corner: (L*L)*(L*L)",af2_k0,20000,0,2,0.000e+00
+"corner: (L*L)*(L*L)",raa_k0,20000,0,2,0.000e+00
+"corner: (L*L)*(L*L)",raa_k4,20000,0,2,0.000e+00
+"corner: (L*L)*(L*L)",raa_k4_cheb,20000,0,2,0.000e+00
+"corner: (L*L)*(L*L)",raa_k4_minrange,20000,0,2,0.000e+00
+"corner: (L*L)*(L*L)",sh_k0,20000,0,8,0.000e+00
+"corner: (L*L)*(L*L)",exact_k0,20000,0,10,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",af2_k0,20000,0,1,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",raa_k0,20000,0,1,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",raa_k4,20000,0,1,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",raa_k4_cheb,20000,0,1,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",raa_k4_minrange,20000,0,0,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",sh_k0,20000,0,4,0.000e+00
+"corner: (L*L+L)*(sin(L)+L)",exact_k0,20000,0,5,0.000e+00
+"corner: (L*L)*(L^2+L)",af2_k0,20000,0,1,0.000e+00
+"corner: (L*L)*(L^2+L)",raa_k0,20000,0,1,0.000e+00
+"corner: (L*L)*(L^2+L)",raa_k4,20000,0,1,0.000e+00
+"corner: (L*L)*(L^2+L)",raa_k4_cheb,20000,0,1,0.000e+00
+"corner: (L*L)*(L^2+L)",raa_k4_minrange,20000,0,1,0.000e+00
+"corner: (L*L)*(L^2+L)",sh_k0,20000,0,4,0.000e+00
+"corner: (L*L)*(L^2+L)",exact_k0,20000,0,5,0.000e+00
+"sqr: (L*L+L)^2",af2_k0,20000,0,14,0.000e+00
+"sqr: (L*L+L)^2",raa_k0,20000,0,13,0.000e+00
+"sqr: (L*L+L)^2",raa_k4,20000,0,13,0.000e+00
+"sqr: (L*L+L)^2",raa_k4_cheb,20000,0,13,0.000e+00
+"sqr: (L*L+L)^2",raa_k4_minrange,20000,0,13,0.000e+00
+"sqr: (L*L+L)^2",sh_k0,20000,0,17,0.000e+00
+"sqr: (L*L+L)^2",exact_k0,20000,0,18,0.000e+00
+"sqr: L^2 y (L^2+L)^2",af2_k0,20000,0,3,0.000e+00
+"sqr: L^2 y (L^2+L)^2",raa_k0,20000,0,2,0.000e+00
+"sqr: L^2 y (L^2+L)^2",raa_k4,20000,0,2,0.000e+00
+"sqr: L^2 y (L^2+L)^2",raa_k4_cheb,20000,0,2,0.000e+00
+"sqr: L^2 y (L^2+L)^2",raa_k4_minrange,20000,0,2,0.000e+00
+"sqr: L^2 y (L^2+L)^2",sh_k0,20000,0,2,0.000e+00
+"sqr: L^2 y (L^2+L)^2",exact_k0,20000,0,2,0.000e+00
+"trig: sin(L), cos(L)",af2_k0,20000,0,1,0.000e+00
+"trig: sin(L), cos(L)",raa_k0,20000,0,1,0.000e+00
+"trig: sin(L), cos(L)",raa_k4,20000,0,1,0.000e+00
+"trig: sin(L), cos(L)",raa_k4_cheb,20000,0,1,0.000e+00
+"trig: sin(L), cos(L)",raa_k4_minrange,20000,0,0,0.000e+00
+"trig: sin(L), cos(L)",sh_k0,20000,0,1,0.000e+00
+"trig: sin(L), cos(L)",exact_k0,20000,0,1,0.000e+00
+"trig: sin(L*L)+cos(L)*L",af2_k0,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",raa_k0,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",raa_k4,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",raa_k4_cheb,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",raa_k4_minrange,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",sh_k0,20000,0,0,0.000e+00
+"trig: sin(L*L)+cos(L)*L",exact_k0,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",af2_k0,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",raa_k0,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",raa_k4,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",raa_k4_cheb,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",raa_k4_minrange,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",sh_k0,20000,0,0,0.000e+00
+"exp/log: exp(L)*L + ln(4+L^2)",exact_k0,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",af2_k0,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",raa_k0,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",raa_k4,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",raa_k4_cheb,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",raa_k4_minrange,20000,0,1,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",sh_k0,20000,0,0,0.000e+00
+"mezcla: (sin(L)+L)^2*(L*L)",exact_k0,20000,0,0,0.000e+00
+familia,err/err_af2 (media geometrica): raa_k0 sh exact | exact<sh exact>sh
+"corner: (L*L)*(L*L)",0.8741,0.6350,0.6277,10910,0
+"corner: (L*L+L)*(sin(L)+L)",0.8822,0.6663,0.6623,8794,2
+"corner: (L*L)*(L^2+L)",0.8460,0.6484,0.6415,10170,0
+"sqr: (L*L+L)^2",0.7207,0.6377,0.6377,0,0
+"sqr: L^2 y (L^2+L)^2",0.6691,0.6691,0.6691,0,0
+"trig: sin(L), cos(L)",1.0000,1.0000,1.0000,0,0
+"trig: sin(L*L)+cos(L)*L",0.9231,0.7714,0.7714,0,0
+"exp/log: exp(L)*L + ln(4+L^2)",0.8788,0.7342,0.7342,0,0
+"mezcla: (sin(L)+L)^2*(L*L)",0.8305,0.6612,0.6509,10924,0

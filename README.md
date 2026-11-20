@@ -1,44 +1,69 @@
-# ZCAA: a symbolic-free affine arithmetic with zero-centered residuals
+# Exact multiplication of reduced affine forms
 
 This repository contains the implementation and the experiments of the paper
 
 > I. Araya, A. Alvear Tapia, D. Miranda, J. Aramayo, V. Reyes.
-> *A Symbolic-Free Affine Arithmetic with Zero-Centered Residuals.* Submitted.
+> *Exact multiplication of reduced affine forms.* In preparation (Numerical Algorithms).
 
-**Zero-centered affine arithmetic (ZCAA)** represents every subexpression of a factorable
-function as a linear function of the input variables plus a bounded residual interval,
+A reduced affine form `x0 + x1 e1 + ... + xn en + xr ex` keeps a fixed number of noise symbols
+and accumulates all the approximation errors in a single error term. The product of two such forms
+keeps the linear part `x0 y0 + e^T(y0 x + x0 y)` and must enclose the nonlinear part
 
-    f(x) ∈ a_1 x_1 + ... + a_n x_n + [r_lo, r_hi]     for all x in the box,
+    N = x0 yr ey + y0 xr ex + (e^T x + xr ex)(e^T y + yr ey)
 
-without the symbolic noise variables of classical affine arithmetic. The two parallel
-hyperplanes give a range enclosure and a linear relaxation of f over the box. Products of
-forms are decomposed into linear, quadratic and bilinear terms, each enclosed by its own
-envelope, and the midpoints of the residuals are absorbed into the linear part at every
-multiplication, so that the residuals propagated to the next operations are centered at zero.
-The experiments compare ZCAA with the AF2 variant of affine arithmetic (Messine, 2002) and with
-first-order Taylor models (Makino and Berz, 2003).
+by an interval. The multiplication of Skalna and Hladik (Numer. Algorithms 76, 2017) computes the
+exact range of the quadratic part `(e^T x + xr ex)(e^T y + yr ey)` but bounds `x0 yr ey + y0 xr ex`
+separately. The paper gives a multiplication **E** that computes the exact range of the whole of
+`N` in O(n log n) time (four walks along the boundary of a planar zonotope), and shows that
+
+- E is contained in the multiplication SH of Skalna and Hladik, which is contained in the standard
+  (S) and trivial (T) ones;
+- E = SH when one operand has no error or a zero center, and `wid SH <= 3/2 wid E` otherwise (tight);
+  the difference of widths is at most `2 min(|x0| yr, |y0| xr)`;
+- S, the multiplication of the affine arithmetic of Ibex (fAF2), is AF2 with its one-sided error
+  terms re-centered after each product.
+
+In the global optimizer IbexOpt, SH and E reduce the number of nodes about four times with
+respect to S on problems dominated by products of compound factors, and E saves a further 4-7%
+exactly where the theory predicts a gain.
+
+The repository started with the zero-centered affine arithmetic (ZCAA) of an earlier manuscript,
+*A Symbolic-Free Affine Arithmetic with Zero-Centered Residuals*: the Python code keeps its
+representation (a linear function of the input variables plus a residual interval, which is a
+reduced affine form written in the variables) and its experiments, see
+[Earlier work: ZCAA](#earlier-work-zcaa).
 
 ## Repository layout
 
 ```
-zcaa/                   the three methods
-  zcaa.py               ZCAA forms, square and product (Sections 3.1-3.4 of the paper)
-  af2.py                AF2 baseline (see "Notes on the AF2 baseline" below)
-  tm.py                 first-order Taylor model baseline (TM)
-  unary.py              sin, cos, exp, log, sqrt, sinh and integer powers, with the same
-                        Chebyshev linearization for the three methods
-  box.py                input box shared by the ZCAA forms
+paper/numa/             the paper (exact_raf.tex, exact_raf.pdf) and the specification of the
+                        Ibex implementation (IBEX_EXACT_SPEC.md)
+paper/optl/             short version of the ZCAA manuscript (superseded)
+zcaa/                   Python implementation (double precision, no outward rounding)
+  zcaa.py               forms in the variables, products and squares; multiplication rules
+                        selected with set_product: faf2 (S), skalna (SH), exact (E), zcaa (earlier
+                        ZCAA rule); set_square('chebyshev' | 'product') for integer powers
+  af2.py, tm.py         AF2 and first-order Taylor model baselines
+  unary.py              sin, cos, exp, log, sqrt, sinh, powers (same Chebyshev linearization)
+  box.py                input box
 benchmarks/
-  functions.py          test expressions: Cases 1-4 (Table 1) and the benchmark constraints
-  instances/            original benchmark files (Ibex/minibex format) of these constraints
-experiments/
-  run_experiments.py    residual widths of ZCAA, AF2 and TM and optimal width with IbexOpt
-  make_tables.py        Tables 2 and 3, win/tie/loss counts and Wilcoxon tests
-  make_figure.py        Figure 2
-  timing.py             running time of ZCAA, AF2 and TM
-tests/
-  test_soundness.py     sampling checks of the enclosures and regression tests
-results/                results used in the paper (JSON), tables (LaTeX) and figure
+  functions.py          test expressions (controlled cases, mixed-sign cases, benchmark constraints)
+  instances/            original benchmark files of these constraints
+  ibex/synp/            synp instances for IbexOpt (generated by ibex/analysis/gen_synp.py)
+experiments/            Python experiments of the paper (Section 6.1) and of the ZCAA manuscript
+tests/test_soundness.py sampling checks of all the rules and regression tests
+results/                JSON results and LaTeX tables used in the paper
+ibex/                   implementation in Ibex and solver experiments (Sections 6.2-6.3)
+  patches/              0016 (modes --arith=sh|exact) and 0017 (fast rigorous version) for ibex-affine
+  cli/                  ibexopt-raak and ibexsolve-raak with --arith=af2|raa|sh|exact
+  fast/                 floating-point version with a priori rounding bound, checked against
+                        rational arithmetic (verify.py)
+  tests/                containment test and time per product
+  analysis/             summaries and the solver table of the paper
+  results/              CSV results of all the solver runs
+  build.sh              clones, patches and builds Ibex, ibex-affine and the CLI
+  run_experiments.sh    solver sweeps
+notas/                  notes (in Spanish), e.g. the change of focus suggested for RAA-K
 ```
 
 ## Installation
@@ -55,18 +80,68 @@ The scripts are run from the root of the repository; no installation of the pack
 
 - Python 3.9 or later with `numpy`, `scipy` and `matplotlib`.
   The arithmetics themselves use only the Python standard library.
-- [Ibex](https://github.com/ibex-team/ibex-lib) with the IbexOpt optimizer, only to compute
-  the optimal widths used as reference in the tables (`run_experiments.py`). Install Ibex
-  following its documentation and set the path to the `ibexopt` executable:
+- [Ibex](https://github.com/ibex-team/ibex-lib) with the IbexOpt optimizer, to compute the exact
+  ranges used as reference in the Python experiments. Set the path to the `ibexopt` executable:
 
   ```
   export IBEXOPT=/path/to/ibexopt
   ```
 
-  The results used in the paper are included in `results/`, so the tables and the figure can
+  The results used in the paper are included in `results/` and `ibex/results/`, so the tables can
   be regenerated without Ibex.
+- For the Ibex implementation and the solver experiments: a C++ compiler, CMake, an LP solver for
+  Ibex (CLP or SoPlex) and the RAA-K patches of `JCGeraldo/ibex-lib` (branch `raak-experimentos`);
+  `ibex/build.sh` fetches and builds everything.
 
-## Quick start
+## Reproducing the results of the paper
+
+Python (range enclosures, Section 6.1):
+
+```
+python tests/test_soundness.py                       # checks
+python experiments/random_products.py                # Table "random products"
+IBEXOPT=/path/to/ibexopt python experiments/sh_benchmark.py    # test functions of Skalna and Hladik
+IBEXOPT=/path/to/ibexopt python experiments/product_rules.py   # controlled products and constraints
+python experiments/make_tables_rules.py              # results/table_rules_*.tex
+```
+
+Ibex (implementation and solver, Sections 6.2-6.3): see `ibex/README.md`.
+
+```
+ROOT=$HOME/ibex-local LP_LIB=clp bash ibex/build.sh  # Ibex + ibex-affine (RAA-K patches 0001-0015 + 0016 + 0017) + CLI
+python ibex/analysis/make_table_solver.py            # results/table_solver.tex from the sweep results
+```
+
+The rules on the same representation, in Python:
+
+```python
+from zcaa import set_box, zcaa_variables, set_product
+
+for rule in ["faf2", "skalna", "exact"]:        # S, SH, E
+    set_box([(0.0, 2.0), (1.0, 3.0)])
+    set_product(rule)
+    x1, x2 = zcaa_variables()
+    f = (x1 + 2 * x1 * x2) * (3 * x2 - x1 * x2)
+    print(rule, f.get_range(), f.residual_width())
+# faf2   (-62.0, 96.0)    102.0
+# skalna (-46.0, 74.225)  64.225
+# exact  (-36.0, 74.225)  54.225
+```
+
+## Earlier work: ZCAA
+
+**Zero-centered affine arithmetic (ZCAA)** represents every subexpression of a factorable
+function as a linear function of the input variables plus a bounded residual interval,
+
+    f(x) ∈ a_1 x_1 + ... + a_n x_n + [r_lo, r_hi]     for all x in the box,
+
+without the symbolic noise variables of classical affine arithmetic. Products of forms are
+decomposed into linear, quadratic and bilinear terms, each enclosed by its own envelope, and the
+midpoints of the residuals are absorbed into the linear part at every multiplication. This rule is
+`set_product("zcaa")` (the default). The sections below describe the experiments of that
+manuscript, which compare ZCAA with AF2 and first-order Taylor models.
+
+### Quick start
 
 ```python
 from zcaa import set_box, zcaa_variables, af2_variables, sin
@@ -86,7 +161,7 @@ print(g.get_range())         # (-63.53, 97.35)
 print(g.residual_width())    # 104.41
 ```
 
-## Reproducing the results of the paper
+### Reproducing the results of the ZCAA manuscript
 
 ```
 python tests/test_soundness.py                      # checks (about 1 min)
@@ -118,7 +193,7 @@ relative 1e-9 are counted as equal.
 Running times depend on the machine and on the Python version; the relevant quantity is the
 ratio between the methods.
 
-## Benchmark constraints
+### Benchmark constraints
 
 The constraints of `benchmarks/functions.py` come from the benchmark of systems of
 equations used to test interval solvers (COPRIN examples, distributed with Ibex); the original
@@ -129,7 +204,7 @@ contain products of two factors depending on at least two variables each:
 - `Trigexp2-3.bch`, constraints 1 and 2;
 - `Pramanik.bch`, constraint 1, with the constants f0, f1, y0, y1 replaced by their values.
 
-## Notes on the Taylor model baseline
+### Notes on the Taylor model baseline
 
 `zcaa/tm.py` implements first-order Taylor models T(x) = c0 + sum_i c_i (x_i - m_i) + I, centered
 at the midpoint m of the box. The product keeps the first-order part and encloses the rest by
@@ -139,7 +214,7 @@ Univariate functions use the same Chebyshev linearization as ZCAA and AF2, with 
 of the residual moved to c0, so that the remainder they produce is centered. The remainders
 produced by the products are not re-centered.
 
-## Notes on the AF2 baseline
+### Notes on the AF2 baseline
 
 `zcaa/af2.py` implements AF2 as described by Messine (2002). It corrects four issues of the
 implementation used in an earlier version of our experiments, which could produce enclosures
@@ -156,23 +231,23 @@ For example, over x1, x2 in [-1, 1], the product (x1^2 - 0.5)(0.5 - x2^2) ranges
 [-0.25, 0.25]; the earlier implementation returned [0, 0.25]. `tests/test_soundness.py`
 contains regression tests for these cases.
 
-## Numerical remarks
+### Numerical remarks
 
-Both arithmetics are implemented in floating point **without outward rounding**: the
+The Python arithmetics are implemented in floating point **without outward rounding**: the
 enclosures are correct up to rounding errors, and they are checked numerically by sampling
-(`tests/test_soundness.py`), not rigorously. A rigorous implementation would round every
-bound outward, for example with an interval library.
+(`tests/test_soundness.py`), not rigorously. The Ibex implementation of SH and E (`ibex/`) is
+rigorous.
 
 ## Citation
 
 If you use this code, please cite the paper (the reference will be updated upon publication):
 
 ```bibtex
-@unpublished{araya2026zcaa,
-  title  = {A Symbolic-Free Affine Arithmetic with Zero-Centered Residuals},
+@unpublished{araya2026exact,
+  title  = {Exact multiplication of reduced affine forms},
   author = {Araya, Ignacio and Alvear Tapia, Angelo and Miranda, Daniel and
             Aramayo, Juan and Reyes, Victor},
-  note   = {Submitted},
+  note   = {In preparation},
   year   = {2026}
 }
 ```

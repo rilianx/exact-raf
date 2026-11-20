@@ -1,0 +1,281 @@
+[
+ {
+  "function": "f1 Beale",
+  "faf2": {
+   "iterations": 1890,
+   "boxes_left": 0,
+   "best": 3.152232094739013e-06,
+   "finished": true,
+   "time_s": 0.4024001400000543
+  },
+  "zcaa": {
+   "iterations": 1880,
+   "boxes_left": 0,
+   "best": 3.152232094739013e-06,
+   "finished": true,
+   "time_s": 0.2779649200000449
+  },
+  "skalna": {
+   "iterations": 1495,
+   "boxes_left": 1,
+   "best": 9.001322578087987e-06,
+   "finished": true,
+   "time_s": 0.39701395700001285
+  },
+  "exact": {
+   "iterations": 1486,
+   "boxes_left": 1,
+   "best": 9.001322578087987e-06,
+   "finished": true,
+   "time_s": 0.5202428979999922
+  }
+ },
+ {
+  "function": "f2 Booth",
+  "faf2": {
+   "iterations": 294,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.024262277000048016
+  },
+  "zcaa": {
+   "iterations": 294,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.021483403000047474
+  },
+  "skalna": {
+   "iterations": 206,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.023975882999934583
+  },
+  "exact": {
+   "iterations": 206,
+   "boxes_left": 0,
+   "best": 8.58306884765625e-06,
+   "finished": true,
+   "time_s": 0.02870324499997423
+  }
+ },
+ {
+  "function": "f3 Colville",
+  "faf2": {
+   "iterations": 200000,
+   "boxes_left": 21502,
+   "best": 0.001939766281793709,
+   "finished": false,
+   "time_s": 62.14904762000003
+  },
+  "zcaa": {
+   "iterations": 200000,
+   "boxes_left": 21517,
+   "best": 0.001939766281793709,
+   "finished": false,
+   "time_s": 46.60216767600002
+  },
+  "skalna": {
+   "iterations": 161503,
+   "boxes_left": 0,
+   "best": 1.3822748535119445e-05,
+   "finished": true,
+   "time_s": 60.26075778999996
+  },
+  "exact": {
+   "iterations": 160787,
+   "boxes_left": 0,
+   "best": 1.3822748535119445e-05,
+   "finished": true,
+   "time_s": 68.17994397100006
+  }
+ },
+ {
+  "function": "f4 Dixon (n=5)",
+  "faf2": {
+   "iterations": 200000,
+   "boxes_left": 37971,
+   "best": 0.08519864082336426,
+   "finished": false,
+   "time_s": 63.628479602999846
+  },
+  "zcaa": {
+   "iterations": 200000,
+   "boxes_left": 37960,
+   "best": 0.08519864082336426,
+   "finished": false,
+   "time_s": 43.62296246300002
+  },
+  "skalna": {
+   "iterations": 200000,
+   "boxes_left": 18569,
+   "best": 3.069116380061132e-05,
+   "finished": false,
+   "time_s": 74.891460542
+  },
+  "exact": {
+   "iterations": 200000,
+   "boxes_left": 17439,
+   "best": 3.0495877098246638e-05,
+   "finished": false,
+   "time_s": 87.41474550999988
+  }
+ },
+ {
+  "function": "f5 Goldstein-Price",
+  "faf2": {
+   "iterations": 1194,
+   "boxes_left": 0,
+   "best": 3.0000278877171556,
+   "finished": true,
+   "time_s": 0.3483513789999506
+  },
+  "zcaa": {
+   "iterations": 1068,
+   "boxes_left": 0,
+   "best": 3.0000278877171556,
+   "finished": true,
+   "time_s": 0.24612733499998285
+  },
+  "skalna": {
+   "iterations": 888,
+   "boxes_left": 1,
+   "best": 3.000027902269086,
+   "finished": true,
+   "time_s": 0.3165241149999929
+  },
+  "exact": {
+   "iterations": 852,
+   "boxes_left": 1,
+   "best": 3.000027902269086,
+   "finished": true,
+   "time_s": 0.37011543200014785
+  }
+ },
+ {
+  "function": "f6 Leon",
+  "faf2": {
+   "iterations": 2142,
+   "boxes_left": 1,
+   "best": 1.8888131307976725e-06,
+   "finished": true,
+   "time_s": 0.20638794000001326
+  },
+  "zcaa": {
+   "iterations": 2142,
+   "boxes_left": 1,
+   "best": 1.8888131307976725e-06,
+   "finished": true,
+   "time_s": 0.18655304300000353
+  },
+  "skalna": {
+   "iterations": 1405,
+   "boxes_left": 0,
+   "best": 1.5399458352489694e-05,
+   "finished": true,
+   "time_s": 0.16975787300020784
+  },
+  "exact": {
+   "iterations": 1405,
+   "boxes_left": 0,
+   "best": 1.5399458352489694e-05,
+   "finished": true,
+   "time_s": 0.22385099000007358
+  }
+ },
+ {
+  "function": "f7 Matyas",
+  "faf2": {
+   "iterations": 395,
+   "boxes_left": 0,
+   "best": 0.0,
+   "finished": true,
+   "time_s": 0.04291808000016317
+  },
+  "zcaa": {
+   "iterations": 395,
+   "boxes_left": 0,
+   "best": 0.0,
+   "finished": true,
+   "time_s": 0.03549584200004574
+  },
+  "skalna": {
+   "iterations": 395,
+   "boxes_left": 0,
+   "best": 0.0,
+   "finished": true,
+   "time_s": 0.0492601849998664
+  },
+  "exact": {
+   "iterations": 395,
+   "boxes_left": 0,
+   "best": 0.0,
+   "finished": true,
+   "time_s": 0.0654390820000117
+  }
+ },
+ {
+  "function": "f8 Rosenbrock (n=4)",
+  "faf2": {
+   "iterations": 182255,
+   "boxes_left": 0,
+   "best": 2.5392562503605276e-06,
+   "finished": true,
+   "time_s": 50.840993604999994
+  },
+  "zcaa": {
+   "iterations": 182151,
+   "boxes_left": 0,
+   "best": 2.5392562503605276e-06,
+   "finished": true,
+   "time_s": 36.021656071999814
+  },
+  "skalna": {
+   "iterations": 95038,
+   "boxes_left": 0,
+   "best": 1.5112878393824108e-05,
+   "finished": true,
+   "time_s": 31.550091416999976
+  },
+  "exact": {
+   "iterations": 94984,
+   "boxes_left": 0,
+   "best": 1.5112878393824108e-05,
+   "finished": true,
+   "time_s": 37.27439350099985
+  }
+ },
+ {
+  "function": "f9 Six-hump camel",
+  "faf2": {
+   "iterations": 483,
+   "boxes_left": 0,
+   "best": -1.0316126958600362,
+   "finished": true,
+   "time_s": 0.12195899399989685
+  },
+  "zcaa": {
+   "iterations": 483,
+   "boxes_left": 0,
+   "best": -1.0316126958600362,
+   "finished": true,
+   "time_s": 0.0761340649999056
+  },
+  "skalna": {
+   "iterations": 477,
+   "boxes_left": 0,
+   "best": -1.0316126958600362,
+   "finished": true,
+   "time_s": 0.15202476199988268
+  },
+  "exact": {
+   "iterations": 477,
+   "boxes_left": 0,
+   "best": -1.0316126958600362,
+   "finished": true,
+   "time_s": 0.18489713600001778
+  }
+ }
+]

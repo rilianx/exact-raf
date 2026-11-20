@@ -1,0 +1,326 @@
+% Online Resource 1 for "A Symbolic-Free Affine Arithmetic with Zero-Centered Residuals"
+\documentclass[10pt]{article}
+\usepackage[margin=25mm]{geometry}
+\usepackage{mathptmx}
+\usepackage{amsmath,amsthm,cancel}
+\usepackage{intmacros}
+\newcommand{\Rset}{\mathbb{R}}
+\newcommand{\IRset}{\mathbb{IR}}
+\newtheorem{lem}{Lemma}
+\newtheorem{propo}{Proposition}
+\title{Online Resource 1: Proof of Proposition 1}
+\author{}
+\date{}
+\begin{document}
+\maketitle
+This resource proves Proposition~1 of the paper (ZCAA and AF2 coincide on products of affine forms) through three lemmas.
+
+\begin{lem}
+\label{lem:raa-af2-quadratic}
+Let $x = a_0 + a_1 \epsilon_1$ be the affine form representation of \(x\) over the interval \(x = [\underline{x}, \overline{x}]\),
+where
+\[
+a_0 = \mathrm{mid}(x) = \frac{\underline{x} + \overline{x}}{2} = \frac{m}{2},
+\qquad
+a_1 = \frac{\mathrm{wid}(\x)}{2} = \frac{\overline{x} - \underline{x}}{2},
+\]
+and \(m = \underline{x} + \overline{x}\).
+
+If we consider the quadratic function:
+\(
+x^2 = (a_0 + a_1 \epsilon_1)(a_0 + a_1 \epsilon_1).
+\)
+Then, the enclosures obtained by applying ZCAA and AF2 are equivalent:
+\[
+\mathrm{ZCAA}(x^2)
+= \mathrm{AF2}\left((a_0 + a_1 \epsilon_1)(a_0 + a_1 \epsilon_1)\right)
+\Big|_{\epsilon_1 = \frac{x - a_0}{a_1}}.
+\]
+
+Both methods yield the same affine linear enclosure:
+\[
+\widehat{x^2} = m x + r, \quad r\in \left[-\frac{m^2}{4}, -\overline{x}\underline{x}\right].
+\]
+
+\end{lem}
+
+
+\begin{lem}
+\label{lem:raa-af2-bilinear}
+
+Let
+\(
+x_i = a_0 + a_i \epsilon_i,
+%\qquad
+x_j = b_0 + b_j \epsilon_j
+\)
+be the affine form representations of the variables \(x_i \in \x_i = [\underline{x}_i, \overline{x}_i]\) and
+\(x_j \in \x_j = [\underline{x}_j, \overline{x}_j]\), respectively, where
+\[
+a_0 = \mathrm{mid}(\x_i) = \frac{\underline{x}_i + \overline{x}_i}{2},
+\qquad
+a_i = \frac{\mathrm{wid}(\x_i)}{2} = \frac{\overline{x}_i - \underline{x}_i}{2},
+\]
+and analogously,
+\[
+b_0 = \mathrm{mid}(\x_j) = \frac{\underline{x}_j + \overline{x}_j}{2},
+\qquad
+b_j = \frac{\mathrm{wid}(\x_j)}{2} = \frac{\overline{x}_j - \underline{x}_j}{2}.
+\]
+
+Consider the bilinear function expressed as the product of two affine forms,
+\[
+x_i x_j = (a_0 + a_i \epsilon_i)(b_0 + b_j \epsilon_j).
+\]
+Then, the enclosures obtained by applying ZCAA and AF2 are equivalent:
+
+\[
+\mathrm{ZCAA}(x_i x_j)
+= \mathrm{AF2}(x_i x_j) = \mathrm{AF2}\left((a_0 + a_i \epsilon_i)(b_0 + b_j \epsilon_j)\right)
+\Big|_{\epsilon_i = \frac{x_i - a_0}{a_i}, \epsilon_j = \frac{x_j - b_0}{b_j}}.
+\]
+
+Both methods yield the same affine linear enclosure:
+\[
+\widehat{x_i x_j} = m_i x_i + m_j x_j + r_u, \quad r_u \in
+ \left[
+  -\frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4},
+  \frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4}
+  \right]- m_i m_j.
+  \]
+
+
+\end{lem}
+
+\begin{lem}
+\label{lem:af2-linear-product}
+Let
+\[
+f(x) = \sum_{i=1}^n a_i x_i,
+\qquad
+g(x) = \sum_{j=1}^n b_j x_j,
+\]
+where each variable \(x_k \in \x_k = [\underline{x}_k, \overline{x}_k]\) is represented by its affine form
+\[
+x_k = c_{k0} + c_k\,\epsilon_k, \qquad \epsilon_k \in [-1,1].
+\]
+Then, the AF2 enclosure of the product \(f(x)\,g(x)\)is equivalently obtained by applying AF2 to each quadratic and bilinear term of its algebraic expansion:
+\[
+\mathrm{AF2}\big(f(x)\,g(x)\big)
+=
+\sum_i a_i b_i\,\mathrm{AF2}(x_i^2)
+\;+\;
+\sum_{i<j}(a_i b_j + a_j b_i)\,\mathrm{AF2}(x_i x_j),
+\]
+where \(\mathrm{AF2}(x_i^2)\) and \(\mathrm{AF2}(x_i x_j)\) denote the AF2 enclosures of the quadratic and bilinear monomials, respectively.
+\end{lem}
+
+\begin{propo}[Proposition 1 of the paper]
+Let $f(x)=\sum_i a_i x_i$ and $g(x)=\sum_j b_j x_j$ with $x\in\x$. Then $\mathrm{ZCAA}(f g)=\mathrm{AF2}(f g)$.
+\end{propo}
+\begin{proof}
+ZCAA expands $fg$ into quadratic and bilinear monomials and encloses each of them separately. By Lemmas~\ref{lem:raa-af2-quadratic} and~\ref{lem:raa-af2-bilinear}, these enclosures coincide with those of AF2, and by Lemma~\ref{lem:af2-linear-product}, the termwise AF2 enclosure is the AF2 enclosure of $fg$.
+\end{proof}
+
+\section*{Proofs of the lemmas}
+\begin{proof} Lemma \ref{lem:raa-af2-quadratic}.
+
+\noindent
+\textbf{(1) Zero-Centered Affine Arithmetic (ZCAA):}  
+
+We approximate $x^2$ over $\x$ by a linear function $m x + r$, where:
+\[
+m = \frac{\ol{x}^2 - \ul{x}^2}{\ol{x} - \ul{x}} = \ol{x} + \ul{x}
+\]
+We then bound the residual function $g(x) = x^2 - m x$. 
+As $x^2$ is convex, the critical point is given by:
+\[
+g'(x) = 2x - m = 0 \Rightarrow x = \frac{m}{2}
+\]
+Evaluating at the critical point:
+\[
+\min g(x) = \left( \frac{m}{2} \right)^2 - m \cdot \frac{m}{2} = -\frac{m^2}{4}
+\]
+The maximum occurs at one of the endpoints. Evaluating at $x = \ol{x}$:
+\[
+\max g(x) = \ol{x}^2 - m \ol{x} = \ol{x}^2 - (\ol{x} + \ul{x})\ol{x} = -\ol{x} \ul{x}
+\]
+Thus, the enclosure becomes:
+\[
+\mathrm{ZCAA}(x^2) = m x + r, \quad r \in \left[ -\frac{m^2}{4},\; -\ol{x}\ul{x} \right]
+\]
+
+\bigskip
+
+\noindent
+\textbf{(2) Affine Arithmetic with AF2:}  
+Applying the AF2 multiplication:
+\[
+\mathrm{AF2}(\cdot) = (a_0 + a_1 \epsilon_1)\cdot(a_0 + a_1 \epsilon_1) = a_0^2 + 2 a_0 a_1 \epsilon_1 + a_1^2 \epsilon^+,
+\]
+where \(\epsilon^+ \in [0, 1]\) bounds the quadratic term.
+
+We now substitute
+\[
+\epsilon_1 = \frac{x - a_0}{a_1}
+\]
+and thus
+\[
+\mathrm{AF2}(\cdot)\Big|_{\epsilon_1 = \frac{x - a_0}{a_1}} = a_0^2 + 2 a_0 a_1 \frac{x - a_0}{a_1} + a_1^2 [0, 1].
+\]
+
+Simplifying and applying interval arithmetic:
+\begin{align*}
+\mathrm{AF2}(\cdot)\Big|_{\epsilon_1 = \frac{x - a_0}{a_1}}
+&= a_0^2 + 2 a_0 (x - a_0) + [0,  a_1^2] \\
+&= -a_0^2 + 2 a_0 x +  [0, a_1^2] \\
+&= -\frac{m^2}{4} + m x + \left[0,\frac{\mathrm{wid}(\x)^2}{4}\right] \\
+&= m x + \left[ -\frac{m^2}{4},\frac{\mathrm{wid}(\x)^2-m^2}{4}\right].
+\end{align*}
+
+
+Now observe that:
+\[
+\frac{\mathrm{wid}(\x)^2 - m^2}{4} = \frac{(\ol{x} - \ul{x})^2 - (\ol{x} + \ul{x})^2}{4} = -\ol{x} \ul{x}
+\]
+
+Therefore, the AF2-based enclosure simplifies to:
+\[
+\mathrm{AF2}((a_0 + a_1 \epsilon_1)(a_0 + a_1 \epsilon_1))\Big|_{\epsilon_1 = \frac{x - a_0}{a_1}} = m x + \left[-\frac{m^2}{4}, -\overline{x}\underline{x}\right].
+\]
+\end{proof}
+
+\begin{proof} Lemma \ref{lem:raa-af2-bilinear}.
+
+\noindent
+\textbf{(1) Zero-Centered Affine Arithmetic (ZCAA).}
+
+From the previous derivation of the bilinear operator (Section~2.1 of the paper), the ZCAA enclosure of $x_i x_j$ is given by
+\[
+\mathrm{ZCAA}(x_i x_j)
+= m_i x_i + m_j x_j
++ \left[
+  -\frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4} - m_i m_j,
+  \frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4} - m_i m_j
+  \right],
+  \]
+  where $m_i = \mathrm{mid}(\x_j)$ and $m_j = \mathrm{mid}(\x_i)$.
+
+\noindent
+\textbf{(2) Affine Arithmetic with AF2.}
+
+We now represent $x_i$ and $x_j$ by their affine forms:
+\[
+x_i = a_0 + a_i \epsilon_i,
+\qquad
+x_j = b_0 + b_j \epsilon_j,
+\qquad
+\epsilon_i, \epsilon_j \in [-1,1].
+\]
+
+Applying the AF2 multiplication rule gives:
+\[
+\mathrm{AF2}(\cdot)
+= (a_0 + a_i \epsilon_i)(b_0 + b_j \epsilon_j)
+= a_0 b_0 + a_0 b_j \epsilon_j + b_0 a_i \epsilon_i + a_i b_j,\epsilon_{\pm},
+\]
+where $\epsilon_{\pm} \in [-1,1]$ bounds the nonlinear interaction of the noise symbols.
+
+To express the result in terms of $x_i$ and $x_j$, we substitute
+\[
+\epsilon_i = \frac{x_i - a_0}{a_i},
+\qquad
+\epsilon_j = \frac{x_j - b_0}{b_j},
+\]
+and obtain:
+\begin{align*}
+\mathrm{AF2}(x_i x_j)
+&= a_0 b_0 + a_0 b_j \frac{x_j - b_0}{b_j} + b_0 a_i \frac{x_i - a_0}{a_i} + a_i b_j [-1,1] \\
+  &= a_0 b_0 + a_0 (x_j - b_0) + b_0 (x_i - a_0) +  [-a_i b_j,a_i b_j] \\
+  &= a_0 x_j + b_0 x_i + [-a_i b_j - a_0 b_0,a_i b_j - a_0 b_0].
+  \end{align*}
+
+Considering that $a_0 = \mathrm{mid}(\x_i) = m_j$,
+$b_0 = \mathrm{mid}(\x_j) = m_i$,
+and $a_i = \tfrac{\mathrm{wid}(\x_i)}{2}, b_j = \tfrac{\mathrm{wid}(\x_j)}{2}$,
+we obtain the AF2 enclosure:
+\[
+AF2(x_i x_j)
+= m_i x_i + m_j x_j
++ \left[
+  -\frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4} - m_i m_j,
+  \frac{\mathrm{wid}(\x_i)\mathrm{wid}(\x_j)}{4} - m_i m_j
+  \right].
+  \]
+
+\end{proof}
+
+\begin{proof} Lemma \ref{lem:af2-linear-product}.
+
+\noindent
+Each variable \(x_k\) has the affine representation
+\[
+x_k = c_{k0} + c_k\,\epsilon_k, \qquad \epsilon_k \in [-1,1].
+\]
+Then the affine expressions \(f(x)\) and \(g(x)\) can be written in canonical affine form as
+\[
+f(x) = F_0 + \sum_i F_i \epsilon_i,
+\qquad
+g(x) = G_0 + \sum_j G_j \epsilon_j,
+\]
+with coefficients
+\[
+F_0 = \sum_i a_i c_{i0}, \quad F_i = a_i c_i,
+\qquad
+G_0 = \sum_j b_j c_{j0}, \quad G_j = b_j c_j.
+\]
+
+Applying the AF2 multiplication rule to the product of two affine forms gives
+\[
+\mathrm{AF2}(f g)
+= F_0 G_0
++ \sum_i (F_0 G_i + G_0 F_i)\,\epsilon_i
++ \sum_i F_i G_i\,\eta_i^{+}
++ \sum_{i<j} (F_i G_j + F_j G_i)\,\eta_{ij}^{\pm},
+\]
+where new noise symbols \(\eta_i^{+} \in [0,1]\) bound the quadratic terms \(\epsilon_i^2\), 
+and \(\eta_{ij}^{\pm} \in [-1,1]\) bound the bilinear terms \(\epsilon_i \epsilon_j\).
+
+On the other hand, expanding the product algebraically gives
+\[
+f(x)g(x)
+= \sum_i a_i b_i\,x_i^2
++ \sum_{i<j} (a_i b_j + a_j b_i)\,x_i x_j.
+\]
+Applying AF2 independently to each monomial yields
+\[
+\sum_i a_i b_i\,\mathrm{AF2}(x_i^2)
++ \sum_{i<j} (a_i b_j + a_j b_i)\,\mathrm{AF2}(x_i x_j),
+\]
+where
+\begin{align*}
+\mathrm{AF2}(x_i^2)
+&= c_{i0}^2 + 2 c_{i0} c_i\,\epsilon_i + c_i^2\,\eta_i^{+}, \\
+\mathrm{AF2}(x_i x_j)
+&= c_{i0} c_{j0} + c_{i0} c_j\,\epsilon_j + c_{j0} c_i\,\epsilon_i + c_i c_j\,\eta_{ij}^{\pm}.
+\end{align*}
+
+Substituting these expressions and collecting like terms yields exactly
+\[
+F_0 G_0
++ \sum_i (F_0 G_i + G_0 F_i)\,\epsilon_i
++ \sum_i F_i G_i\,\eta_i^{+}
++ \sum_{i<j} (F_i G_j + F_j G_i)\,\eta_{ij}^{\pm},
+\]
+which coincides with the direct AF2 product rule. Therefore,
+\[
+\boxed{
+\mathrm{AF2}\big(f(x)g(x)\big)
+=
+\sum_i a_i b_i\,\mathrm{AF2}(x_i^2)
+\;+\;
+\sum_{i<j}(a_i b_j + a_j b_i)\,\mathrm{AF2}(x_i x_j).
+}
+\]
+\end{proof}
+\end{document}

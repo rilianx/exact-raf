@@ -1,0 +1,614 @@
+[
+ {
+  "function": "f1 Beale",
+  "n": 2,
+  "box": [
+   -5,
+   5
+  ],
+  "true_range": [
+   6.11498267665e-12,
+   415071.7033325
+  ],
+  "faf2_product": {
+   "range": [
+    -412684.546875,
+    416069.203125
+   ],
+   "overestimation": 49.916159856591904
+  },
+  "zcaa_product": {
+   "range": [
+    -395359.546875,
+    416069.203125
+   ],
+   "overestimation": 48.84680838182034
+  },
+  "skalna_product": {
+   "range": [
+    -398997.046875,
+    416069.203125
+   ],
+   "overestimation": 49.07509624739094
+  },
+  "exact_product": {
+   "range": [
+    -395359.546875,
+    416069.203125
+   ],
+   "overestimation": 48.84680838182034
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -5103.750588854931,
+    778311.4185346493
+   ],
+   "overestimation": 47.0176581088048
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -5103.750588854931,
+    778311.4185346493
+   ],
+   "overestimation": 47.0176581088048
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -5103.750588854931,
+    778311.4185346493
+   ],
+   "overestimation": 47.0176581088048
+  },
+  "exact_chebyshev": {
+   "range": [
+    -5103.750588854931,
+    778311.4185346493
+   ],
+   "overestimation": 47.0176581088048
+  }
+ },
+ {
+  "function": "f2 Booth",
+  "n": 2,
+  "box": [
+   -10,
+   10
+  ],
+  "true_range": [
+   4.395401463175e-15,
+   2594.000001295
+  ],
+  "faf2_product": {
+   "range": [
+    -1446.0,
+    2594.0
+   ],
+   "overestimation": 35.79207917586634
+  },
+  "zcaa_product": {
+   "range": [
+    -1446.0,
+    2594.0
+   ],
+   "overestimation": 35.79207917586634
+  },
+  "skalna_product": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  },
+  "exact_product": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  },
+  "exact_chebyshev": {
+   "range": [
+    -646.0,
+    2594.0
+   ],
+   "overestimation": 19.938271564969135
+  }
+ },
+ {
+  "function": "f3 Colville",
+  "n": 4,
+  "box": [
+   -10,
+   10
+  ],
+  "true_range": [
+   3.986130611599998e-11,
+   2304082.0011449996
+  ],
+  "faf2_product": {
+   "range": [
+    -1332778.0,
+    2304082.0
+   ],
+   "overestimation": 36.64639273590405
+  },
+  "zcaa_product": {
+   "range": [
+    -382778.0,
+    2304082.0
+   ],
+   "overestimation": 14.246294889015443
+  },
+  "skalna_product": {
+   "range": [
+    -1142778.0,
+    2304082.0
+   ],
+   "overestimation": 33.154175071079194
+  },
+  "exact_product": {
+   "range": [
+    -363778.0,
+    2304082.0
+   ],
+   "overestimation": 13.635573038127946
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -667778.0,
+    2304082.0
+   ],
+   "overestimation": 22.470035562072255
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -667778.0,
+    2304082.0
+   ],
+   "overestimation": 22.470035562072255
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -667778.0,
+    2304082.0
+   ],
+   "overestimation": 22.470035562072255
+  },
+  "exact_chebyshev": {
+   "range": [
+    -667778.0,
+    2304082.0
+   ],
+   "overestimation": 22.470035562072255
+  }
+ },
+ {
+  "function": "f4 Dixon (n=5)",
+  "n": 5,
+  "box": [
+   -5,
+   5
+  ],
+  "true_range": [
+   3.46457234064e-10,
+   42386.00002115
+  ],
+  "faf2_product": {
+   "range": [
+    -24509.0,
+    42386.0
+   ],
+   "overestimation": 36.638014767696156
+  },
+  "zcaa_product": {
+   "range": [
+    -7009.0,
+    42386.0
+   ],
+   "overestimation": 14.189695270473424
+  },
+  "skalna_product": {
+   "range": [
+    -21009.0,
+    42386.0
+   ],
+   "overestimation": 33.13983749325712
+  },
+  "exact_product": {
+   "range": [
+    -6659.0,
+    42386.0
+   ],
+   "overestimation": 13.577326901519726
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -12259.0,
+    42386.0
+   ],
+   "overestimation": 22.433891442676092
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -12259.0,
+    42386.0
+   ],
+   "overestimation": 22.433891442676092
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -12259.0,
+    42386.0
+   ],
+   "overestimation": 22.433891442676092
+  },
+  "exact_chebyshev": {
+   "range": [
+    -12259.0,
+    42386.0
+   ],
+   "overestimation": 22.433891442676092
+  }
+ },
+ {
+  "function": "f5 Goldstein-Price",
+  "n": 2,
+  "box": [
+   -2,
+   2
+  ],
+  "true_range": [
+   2.9999999985050003,
+   2946399.02552
+  ],
+  "faf2_product": {
+   "range": [
+    -156245800.0,
+    157026536.0
+   ],
+   "overestimation": 99.05947774925137
+  },
+  "zcaa_product": {
+   "range": [
+    -111876360.0,
+    109833448.0
+   ],
+   "overestimation": 98.67105742768042
+  },
+  "skalna_product": {
+   "range": [
+    -107330520.0,
+    105282600.0
+   ],
+   "overestimation": 98.61419839682519
+  },
+  "exact_product": {
+   "range": [
+    -71437240.0,
+    87050600.0
+   ],
+   "overestimation": 98.14093243650743
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -141232920.0,
+    144517800.0
+   ],
+   "overestimation": 98.96889287784822
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -73536440.0,
+    97994920.0
+   ],
+   "overestimation": 98.28229891868169
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -107330520.0,
+    105282600.0
+   ],
+   "overestimation": 98.61419839682519
+  },
+  "exact_chebyshev": {
+   "range": [
+    -71437240.0,
+    87050600.0
+   ],
+   "overestimation": 98.14093243650743
+  }
+ },
+ {
+  "function": "f6 Leon",
+  "n": 2,
+  "box": [
+   -1.2,
+   1.2
+  ],
+  "true_range": [
+   0.0,
+   701.8000003505
+  ],
+  "faf2_product": {
+   "range": [
+    -450.6800000000001,
+    701.8
+   ],
+   "overestimation": 39.105233899894145
+  },
+  "zcaa_product": {
+   "range": [
+    -347.0,
+    701.8
+   ],
+   "overestimation": 33.085430935307016
+  },
+  "skalna_product": {
+   "range": [
+    -277.88,
+    701.8
+   ],
+   "overestimation": 28.364363838141028
+  },
+  "exact_product": {
+   "range": [
+    -226.04,
+    701.8
+   ],
+   "overestimation": 24.361958920665195
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -226.03999999999994,
+    701.8
+   ],
+   "overestimation": 24.361958920665195
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -226.03999999999994,
+    701.8
+   ],
+   "overestimation": 24.361958920665195
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -226.03999999999994,
+    701.8
+   ],
+   "overestimation": 24.361958920665195
+  },
+  "exact_chebyshev": {
+   "range": [
+    -226.03999999999994,
+    701.8
+   ],
+   "overestimation": 24.361958920665195
+  }
+ },
+ {
+  "function": "f7 Matyas",
+  "n": 2,
+  "box": [
+   -10,
+   10
+  ],
+  "true_range": [
+   -4.999999999995e-10,
+   100.0000000495
+  ],
+  "faf2_product": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "zcaa_product": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "skalna_product": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "exact_product": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  },
+  "exact_chebyshev": {
+   "range": [
+    -48.0,
+    100.0
+   ],
+   "overestimation": 32.43243239864865
+  }
+ },
+ {
+  "function": "f8 Rosenbrock (n=4)",
+  "n": 4,
+  "box": [
+   -5,
+   10
+  ],
+  "true_range": [
+   4.727483271345e-10,
+   2722743.00136
+  ],
+  "faf2_product": {
+   "range": [
+    -2067951.375,
+    3116493.0
+   ],
+   "overestimation": 47.48245319229605
+  },
+  "zcaa_product": {
+   "range": [
+    -1593342.0,
+    3116493.0
+   ],
+   "overestimation": 42.19026778305398
+  },
+  "skalna_product": {
+   "range": [
+    -1139826.375,
+    3116493.0
+   ],
+   "overestimation": 36.03057568113061
+  },
+  "exact_product": {
+   "range": [
+    -902521.6875,
+    3116493.0
+   ],
+   "overestimation": 32.25346974151859
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -902521.6875,
+    3116493.0
+   ],
+   "overestimation": 32.25346974151859
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -902521.6875,
+    3116493.0
+   ],
+   "overestimation": 32.25346974151859
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -902521.6875,
+    3116493.0
+   ],
+   "overestimation": 32.25346974151859
+  },
+  "exact_chebyshev": {
+   "range": [
+    -902521.6875,
+    3116493.0
+   ],
+   "overestimation": 32.25346974151859
+  }
+ },
+ {
+  "function": "f9 Six-hump camel",
+  "n": 2,
+  "box": [
+   -5,
+   5
+  ],
+  "true_range": [
+   -1.031628453995,
+   6420.833336539999
+  ],
+  "faf2_product": {
+   "range": [
+    -6593.75,
+    8489.583333333332
+   ],
+   "overestimation": 57.42409967959783
+  },
+  "zcaa_product": {
+   "range": [
+    -6593.75,
+    8489.583333333332
+   ],
+   "overestimation": 57.42409967959783
+  },
+  "skalna_product": {
+   "range": [
+    -2691.685267857143,
+    7997.395833333333
+   ],
+   "overestimation": 39.92126260246289
+  },
+  "exact_product": {
+   "range": [
+    -2691.685267857143,
+    7997.395833333333
+   ],
+   "overestimation": 39.92126260246289
+  },
+  "faf2_chebyshev": {
+   "range": [
+    -1437.5000000006435,
+    7833.333333333977
+   ],
+   "overestimation": 30.730445321422707
+  },
+  "zcaa_chebyshev": {
+   "range": [
+    -1437.5000000006435,
+    7833.333333333977
+   ],
+   "overestimation": 30.730445321422707
+  },
+  "skalna_chebyshev": {
+   "range": [
+    -1437.5000000006435,
+    7833.333333333977
+   ],
+   "overestimation": 30.730445321422707
+  },
+  "exact_chebyshev": {
+   "range": [
+    -1437.5000000006435,
+    7833.333333333977
+   ],
+   "overestimation": 30.730445321422707
+  }
+ }
+]

@@ -1,0 +1,3 @@
+uso de las piezas: productos k-nomial usados=855399, cuadrados Chebyshev usados=829068 de 840000, corner usados=644471 de 1039588
+EXACT-MULT: productos=520000 con_errores=511034 acoplados=510592 cuatro_vueltas=255296
+TOTAL violaciones seguras = 0
