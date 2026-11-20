@@ -31,6 +31,7 @@
 #include "ibex.h"
 #include "ibex_Optimizer04Config_Affine.h"
 #include "ibex_LinearizerQuad2.h"
+#include "ibex_LinearizerCount.h"
 #include "ibex_KNomial.h"
 #include "ibex_ExactMult.h"
 #include "ibex_AffineTrig.h"
@@ -239,6 +240,10 @@ int main(int argc, char** argv) {
                     s.aa_products, s.aa_used);
     }
 
+    {
+        const ibex::LinCountStats& lc = ibex::lin_count_stats();
+        std::printf("LIN stats: llamadas=%ld filas=%ld infactibles=%ld segundos_linealizacion=%.4f\n", lc.calls, lc.rows, lc.infeasible, lc.seconds);
+    }
     if (is_q2) {
         const ibex::Quad2Stats& q = ibex::quad2_stats();
         std::printf("QUAD2 stats: final=%s evaluaciones=%ld fallidas=%ld restricciones_no_soportadas=%ld filas=%ld\n",

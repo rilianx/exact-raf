@@ -1,11 +1,11 @@
 #!/usr/bin/env bash
 # Reconstruye Ibex + ibex-affine (parches RAA-K 0001-0015 de JCGeraldo + 0016 de este repo) y el CLI
 # ibexopt-raak / ibexsolve-raak con --arith=af2|raa|sh|exact (y ibexopt-raak con --arith=q2|q2kn|q2pc|q2full).
-#   ROOT=/ruta/de/trabajo LP_LIB=clp|soplex bash ibex/build.sh
+#   ROOT=/ruta/de/trabajo [LP_LIB=soplex*|clp] bash ibex/build.sh
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
 ROOT="${ROOT:-$HOME/ibex-local}"
-LP_LIB="${LP_LIB:-clp}"
+LP_LIB="${LP_LIB:-soplex}"   # SoPlex 4.0.2 (incluido en ibex-lib, lp_lib_wrapper/soplex/3rd); clp como alternativa
 JOBS="${JOBS:-4}"
 PREFIX="$ROOT/prefix"
 mkdir -p "$ROOT"

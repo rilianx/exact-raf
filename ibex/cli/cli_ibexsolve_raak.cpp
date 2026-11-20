@@ -23,6 +23,7 @@
 #include "ibex.h"
 #include "ibex_LinearizerAffine2.h"
 #include "ibex_LinearizerQuad2.h"
+#include "ibex_LinearizerCount.h"
 #include "ibex_KNomial.h"
 #include "ibex_ExactMult.h"
 #include "ibex_AffineTrig.h"
@@ -95,6 +96,7 @@ int main(int argc, char** argv) {
 				aff = new LinearizerQuad2(sys, fb);
 			} else
 				aff = (arith == "aa") ? (Linearizer*) new LinearizerAffineT<AF_fAFFullI>(sys) : (Linearizer*) new LinearizerAffine2(sys);
+			aff = new LinearizerCount(*aff);   // [este repo] contador de llamadas y filas (lin_calls, lin_rows)
 		}
 		Ctc* c = NULL;
 		if (sys.nb_ctr == 0) c = new CtcIdentity(sys.nb_var);
@@ -151,7 +153,9 @@ int main(int argc, char** argv) {
 		     << " corner_used=" << ks.corner_used << " sqr_used=" << ks.sqr_used
 		     << " exact_products=" << exact_mult_stats().products << " exact_coupled=" << exact_mult_stats().coupled
 		     << " q2_evals=" << quad2_stats().evals << " q2_failed=" << quad2_stats().failed << " q2_unsupported=" << quad2_stats().unsupported
-		     << " q2_rows=" << quad2_stats().rows << endl;
+		     << " q2_rows=" << quad2_stats().rows
+		     << " lin_calls=" << lin_count_stats().calls << " lin_rows=" << lin_count_stats().rows
+		     << " lin_seconds=" << lin_count_stats().seconds << endl;
 		return 0;
 	} catch (SyntaxError& e) {
 		cout << "RAAK-SOLVE status=SYNTAX_ERROR" << endl; return 2;

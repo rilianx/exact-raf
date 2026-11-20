@@ -7,6 +7,7 @@
 #include "ibex_LinearizerCompo.h"
 #include "ibex_LinearizerAffine2.h"
 #include "ibex_LinearizerQuad2.h"
+#include "ibex_LinearizerCount.h"
 #include "ibex_Exception.h"
 
 #include <sstream>
@@ -38,6 +39,9 @@ Linearizer* Optimizer04Config_Affine::get_linear_relax() {
 		else
 			affine = &rec(new LinearizerAffine2(*ext_sys));
 	}
+
+	// [este repo] contador de llamadas y filas, para todas las aritmeticas (LIN stats al final)
+	if (affine) affine = &rec(new LinearizerCount(*affine));
 
 	if (linearrelaxation == "art")
 		return affine;
