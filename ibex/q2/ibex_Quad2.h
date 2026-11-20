@@ -13,7 +13,7 @@
 // Para la relajacion lineal: la parte lineal en las variables se conserva y el resto
 // r(z) = sum_{simbolos de error} a_e e + z^T Q z se acota con un encierro final:
 //   TT    barato (cada simbolo exacto con su lineal y su diagonal + resto termino a termino)
-//   KN    k-nomial k=6 (ibex_KNomial.h, parches 0012-0015)
+//   KN    k-nomial (k=3 por omision, variable Q2_KN_K; ibex_KNomial.h, parches 0012-0015)
 //   PC    bloques producto, pares + soporte completo (m <= 12)   (prodk.h)
 //   FULL  bloques producto, pares + triples + completo            (prodk.h)
 // y se intersecta con TT.
@@ -30,6 +30,7 @@
 #include "ibex_KNomial.h"
 #include "prodk.h"
 #include <algorithm>
+#include <cstdlib>
 #include <cmath>
 #include <map>
 #include <string>
@@ -51,16 +52,16 @@ inline long long qk(int i, int j) { if (i > j) std::swap(i, j); return ((long lo
 inline int qi(long long k) { return (int) (k >> 32); }
 inline int qj(long long k) { return (int) (k & 0xffffffff); }
 
-template <class T> inline T merge(const T& x, double sx, const T& y, double sy) {
-	T r; r.reserve(x.size() + y.size());
+template <class T> inline void merge_into(T& r, const T& x, double sx, const T& y, double sy) {
+	r.clear(); r.reserve(x.size() + y.size());
 	size_t i = 0, j = 0;
 	while (i < x.size() || j < y.size()) {
 		if (j == y.size() || (i < x.size() && x[i].first < y[j].first)) { r.push_back(std::make_pair(x[i].first, sx * x[i].second)); i++; }
 		else if (i == x.size() || y[j].first < x[i].first) { r.push_back(std::make_pair(y[j].first, sy * y[j].second)); j++; }
 		else { r.push_back(std::make_pair(x[i].first, sx * x[i].second + sy * y[j].second)); i++; j++; }
 	}
-	return r;
 }
+template <class T> inline T merge(const T& x, double sx, const T& y, double sy) { T r; merge_into(r, x, sx, y, sy); return r; }
 
 struct QF { double c; SV lin; SQ Q; bool ok; QF() : c(0), ok(true) {} };
 
@@ -74,34 +75,36 @@ inline void quad_interval(const QF& X, double& lo, double& hi) {
 }
 inline double lin_abs(const QF& X) { double s = 0; for (size_t k = 0; k < X.lin.size(); k++) s += std::fabs(X.lin[k].second); return s; }
 
-// rango (cota) de c + a^T z + z^T Q z: cada simbolo exacto con su lineal y su diagonal, resto termino a termino
+inline void range_one(double a, double q, double& lo, double& hi) {
+	double vmin = std::min(q + a, q - a), vmax = std::max(q + a, q - a);
+	if (q != 0 && std::fabs(a / (2 * q)) < 1) { const double s = -a * a / (4 * q); vmin = std::min(vmin, s); vmax = std::max(vmax, s); }
+	lo += vmin; hi += vmax;
+}
+
+// rango (cota) de c + a^T z + z^T Q z: cada simbolo exacto con su lineal y su diagonal, resto termino a termino.
+// lin esta ordenada por indice y Q por clave (i, j), asi que las entradas diagonales (i, i) aparecen en orden de i:
+// basta un recorrido doble (sin estructuras auxiliares).
 inline void qf_range(const QF& X, double& lo, double& hi, bool with_c = true) {
 	lo = hi = with_c ? X.c : 0.0;
-	std::map<int, double> diag;
 	double off = 0;
+	size_t a = 0;                                   // puntero en lin
 	for (size_t k = 0; k < X.Q.size(); k++) {
-		if (qi(X.Q[k].first) == qj(X.Q[k].first)) diag[qi(X.Q[k].first)] += X.Q[k].second;
-		else off += std::fabs(X.Q[k].second);
+		const int i = qi(X.Q[k].first);
+		if (i != qj(X.Q[k].first)) { off += std::fabs(X.Q[k].second); continue; }
+		while (a < X.lin.size() && X.lin[a].first < i) { range_one(X.lin[a].second, 0.0, lo, hi); a++; }
+		if (a < X.lin.size() && X.lin[a].first == i) { range_one(X.lin[a].second, X.Q[k].second, lo, hi); a++; }
+		else range_one(0.0, X.Q[k].second, lo, hi);
 	}
-	struct One { static void f(double a, double q, double& lo, double& hi) {
-		double vmin = std::min(q + a, q - a), vmax = std::max(q + a, q - a);
-		if (q != 0 && std::fabs(a / (2 * q)) < 1) { const double s = -a * a / (4 * q); vmin = std::min(vmin, s); vmax = std::max(vmax, s); }
-		lo += vmin; hi += vmax; } };
-	for (size_t k = 0; k < X.lin.size(); k++) {
-		std::map<int, double>::iterator it = diag.find(X.lin[k].first);
-		if (it != diag.end()) { One::f(X.lin[k].second, it->second, lo, hi); diag.erase(it); }
-		else One::f(X.lin[k].second, 0.0, lo, hi);
-	}
-	for (std::map<int, double>::iterator it = diag.begin(); it != diag.end(); ++it) One::f(0.0, it->second, lo, hi);
+	for (; a < X.lin.size(); a++) range_one(X.lin[a].second, 0.0, lo, hi);
 	lo -= off; hi += off;
 }
 
-inline QF qf_scale(const QF& X, double s) {
-	QF r = X; r.c = s * X.c;
-	for (size_t k = 0; k < r.lin.size(); k++) r.lin[k].second *= s;
-	for (size_t k = 0; k < r.Q.size(); k++) r.Q[k].second *= s;
-	return r;
+inline void qf_scale_into(QF& r, const QF& X, double s) {
+	r.c = s * X.c;
+	r.lin.resize(X.lin.size()); for (size_t k = 0; k < X.lin.size(); k++) r.lin[k] = std::make_pair(X.lin[k].first, s * X.lin[k].second);
+	r.Q.resize(X.Q.size()); for (size_t k = 0; k < X.Q.size(); k++) r.Q[k] = std::make_pair(X.Q[k].first, s * X.Q[k].second);
 }
+inline QF qf_scale(const QF& X, double s) { QF r; qf_scale_into(r, X, s); return r; }
 
 // ------------------------------------------------------------------ linealizacion de funciones
 struct Lin { double alpha, d1, d2; bool ok; };
@@ -268,51 +271,62 @@ inline Interval eval_unary_interval(const ExprNode* e, const Interval& x) {
 
 // ------------------------------------------------------------------ evaluador
 struct Eval {
-	int nsym;
-	explicit Eval(int nvar) : nsym(nvar) {}
+	int nvar, nsym;
+	// memoria que se reutiliza entre evaluaciones (sin reservas en el bucle una vez estabilizada la capacidad)
+	std::vector<QF> v; std::vector<Interval> d; std::vector<double> M;
+	SQ outer, oc, qtmp;
+	explicit Eval(int nvar) : nvar(nvar), nsym(nvar) {}
 	void add_err(QF& F, double e) { if (e > 0) F.lin.push_back(std::make_pair(nsym++, e)); }
 
-	QF mul(const QF& X, const QF& Y, bool same) {
+	// r = X * Y (r no debe ser X ni Y)
+	void mul_into(QF& r, const QF& X, const QF& Y, bool same) {
 		double qx0, qx1, qy0, qy1;
 		quad_interval(X, qx0, qx1); quad_interval(Y, qy0, qy1);
 		const double mx = 0.5 * (qx0 + qx1), my = 0.5 * (qy0 + qy1), rx = 0.5 * (qx1 - qx0), ry = 0.5 * (qy1 - qy0);
 		const double Cx = X.c + mx, Cy = Y.c + my;
-		QF r;
-		r.lin = merge(X.lin, Cy, Y.lin, Cx);
-		SQ q = merge(X.Q, Cy, Y.Q, Cx);
-		SQ outer; outer.reserve(X.lin.size() * Y.lin.size());
+		merge_into(r.lin, X.lin, Cy, Y.lin, Cx);
+		merge_into(qtmp, X.Q, Cy, Y.Q, Cx);
+		outer.clear();
 		for (size_t i = 0; i < X.lin.size(); i++) for (size_t j = 0; j < Y.lin.size(); j++)
 			outer.push_back(std::make_pair(qk(X.lin[i].first, Y.lin[j].first), X.lin[i].second * Y.lin[j].second));
 		std::sort(outer.begin(), outer.end());
-		SQ oc;
+		oc.clear();
 		for (size_t k = 0; k < outer.size(); k++) {
 			if (!oc.empty() && oc.back().first == outer[k].first) oc.back().second += outer[k].second; else oc.push_back(outer[k]);
 		}
-		r.Q = merge(q, 1.0, oc, 1.0);
+		merge_into(r.Q, qtmp, 1.0, oc, 1.0);
 		const double sa = lin_abs(X), sb = lin_abs(Y);
 		double lo, hi;
 		if (same) { lo = -2 * sa * rx; hi = 2 * sa * rx + rx * rx; }
 		else { const double t = sa * ry + sb * rx + rx * ry; lo = -t; hi = t; }
 		r.c = Cx * Cy - Cx * my - Cy * mx + 0.5 * (lo + hi);
 		add_err(r, 0.5 * (hi - lo));
-		return r;
 	}
+	QF mul(const QF& X, const QF& Y, bool same) { QF r; mul_into(r, X, Y, same); return r; }
 
 	// Evaluacion de la cinta en la caja. Como AffineEval de ibex-affine, en cada nodo se lleva tambien un intervalo
 	// d = (operacion por intervalos sobre los intervalos de los hijos) & (rango de la forma, ensanchado por un margen
-	// QUAD2_MARGIN relativo a la magnitud acumulada del calculo): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
-	// evaluacion 'ev' que usa el linearizador. Devuelve false si la evaluacion no es posible en esta caja (dominio,
-	// valores no finitos, interseccion vacia).
+	// QUAD2_MARGIN relativo a la magnitud acumulada del calculo): ese intervalo es el dominio de las linealizaciones
+	// de funciones y su valor en la raiz es la evaluacion 'ev' que usa el linearizador. Devuelve false si la
+	// evaluacion no es posible en esta caja (dominio, valores no finitos, interseccion vacia).
 	// mag: magnitud acumulada del calculo (suma, sobre todos los nodos del subarbol, del tamano de sus terminos);
 	// acota la escala de los errores de redondeo, tambien cuando hay cancelacion entre operandos grandes.
+	// El resultado queda en result() (sin copia); out recibe una copia si se pide.
+	const QF& result() const { return v[root_]; }
 	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev) { double mag; return eval(T, box, out, ev, mag); }
 	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev, double& mag_out) {
-		std::vector<QF> v(T.nodes.size());
-		std::vector<Interval> d(T.nodes.size());
-		std::vector<double> M(T.nodes.size(), 0.0);
-		for (size_t k = 0; k < T.nodes.size(); k++) {
+		if (!eval(T, box, ev, mag_out)) return false;
+		out = v[root_];
+		return true;
+	}
+	bool eval(const Tape& T, const IntervalVector& box, Interval& ev, double& mag_out) {
+		nsym = nvar;
+		const size_t nn = T.nodes.size();
+		if (v.size() < nn) { v.resize(nn); d.resize(nn); M.resize(nn); }
+		for (size_t k = 0; k < nn; k++) {
 			const Node& N = T.nodes[k];
-			QF r;
+			QF& r = v[k];
+			r.c = 0; r.lin.clear(); r.Q.clear();
 			Interval di;
 			switch (N.op) {
 			case V: {
@@ -324,12 +338,12 @@ struct Eval {
 			case C: r.c = N.c; di = Interval(N.c); break;
 			case CI: r.c = 0.5 * (N.c + N.d); add_err(r, 0.5 * (N.d - N.c)); di = Interval(N.c, N.d); break;
 			case ADD: case SUB: {
-				const double s = N.op == ADD ? 1 : -1;
-				r.c = v[N.a].c + s * v[N.b].c; r.lin = merge(v[N.a].lin, 1.0, v[N.b].lin, s); r.Q = merge(v[N.a].Q, 1.0, v[N.b].Q, s);
+				const double sg = N.op == ADD ? 1 : -1;
+				r.c = v[N.a].c + sg * v[N.b].c; merge_into(r.lin, v[N.a].lin, 1.0, v[N.b].lin, sg); merge_into(r.Q, v[N.a].Q, 1.0, v[N.b].Q, sg);
 				di = N.op == ADD ? d[N.a] + d[N.b] : d[N.a] - d[N.b];
 				break; }
-			case NEG: r = qf_scale(v[N.a], -1.0); di = -d[N.a]; break;
-			case MUL: r = mul(v[N.a], v[N.b], N.a == N.b); di = N.a == N.b ? sqr(d[N.a]) : d[N.a] * d[N.b]; break;
+			case NEG: qf_scale_into(r, v[N.a], -1.0); di = -d[N.a]; break;
+			case MUL: mul_into(r, v[N.a], v[N.b], N.a == N.b); di = N.a == N.b ? sqr(d[N.a]) : d[N.a] * d[N.b]; break;
 			default: {
 				const QF& x = v[N.a];
 				const Interval& dx = d[N.a];
@@ -355,15 +369,15 @@ struct Eval {
 				} else {
 					const Lin L = linearize(N.op, l, h, N.c);
 					if (!L.ok) return false;
-					r = qf_scale(x, L.alpha); r.c += 0.5 * (L.d1 + L.d2);
+					qf_scale_into(r, x, L.alpha); r.c += 0.5 * (L.d1 + L.d2);
 					add_err(r, 0.5 * (L.d2 - L.d1));
 				}
 			} }
 			if (!std::isfinite(r.c)) return false;
 			double fl, fh; qf_range(r, fl, fh);
 			if (!(std::isfinite(fl) && std::isfinite(fh))) return false;
-			// margen relativo al TAMANO DE LOS TERMINOS de la forma (no a su rango): con cancelacion (p. ej.
-			// (x-y)^2 + ... - 25 con valor cerca de 0) el error de redondeo es del orden de los terminos, no del rango
+			// margen relativo a la magnitud acumulada (no al rango): con cancelacion (p. ej. (x-y)^2 + ... - 25 con
+			// valor cerca de 0) el error de redondeo es del orden de los operandos, no del resultado
 			double mag = std::fabs(r.c);
 			for (size_t q = 0; q < r.lin.size(); q++) mag += std::fabs(r.lin[q].second);
 			for (size_t q = 0; q < r.Q.size(); q++) mag += std::fabs(r.Q[q].second);
@@ -376,37 +390,45 @@ struct Eval {
 			const double mg = QUAD2_MARGIN * mag + 1e-300;
 			di &= Interval(fl - mg, fh + mg);
 			if (di.is_empty()) return false;
-			v[k].c = r.c; v[k].lin.swap(r.lin); v[k].Q.swap(r.Q);
 			d[k] = di;
 		}
-		out = v[T.root];
+		root_ = T.root;
 		ev = d[T.root];
 		mag_out = M[T.root];
 		return true;
 	}
+private:
+	int root_ = 0;
 };
 
 // ------------------------------------------------------------------ encierro final del resto
 // homogeneizada de c? no: de r(z) = lin^T z + z^T Q z  (sin constante); devuelve el tamano m+1
 inline int homog(const SV& lin, const SQ& Q, Vec& H) {
-	std::map<int, int> idx;
-	for (size_t k = 0; k < lin.size(); k++) idx[lin[k].first] = 0;
-	for (size_t k = 0; k < Q.size(); k++) { idx[qi(Q[k].first)] = 0; idx[qj(Q[k].first)] = 0; }
-	int m = 0; for (std::map<int, int>::iterator it = idx.begin(); it != idx.end(); ++it) it->second = m++;
-	const int s = m + 1;
+	static thread_local std::vector<int> ids;
+	ids.clear();
+	for (size_t k = 0; k < lin.size(); k++) ids.push_back(lin[k].first);
+	for (size_t k = 0; k < Q.size(); k++) { ids.push_back(qi(Q[k].first)); ids.push_back(qj(Q[k].first)); }
+	std::sort(ids.begin(), ids.end()); ids.erase(std::unique(ids.begin(), ids.end()), ids.end());
+	const int m = (int) ids.size(), s = m + 1;
+	auto ix = [&](int id) { return (int) (std::lower_bound(ids.begin(), ids.end(), id) - ids.begin()); };
 	H.assign(s * s, 0.0);
 	for (size_t k = 0; k < Q.size(); k++) {
-		const int a = idx[qi(Q[k].first)], b = idx[qj(Q[k].first)];
+		const int a = ix(qi(Q[k].first)), b = ix(qj(Q[k].first));
 		if (a == b) H[a * s + a] += Q[k].second; else { H[a * s + b] += 0.5 * Q[k].second; H[b * s + a] += 0.5 * Q[k].second; }
 	}
-	for (size_t k = 0; k < lin.size(); k++) { const int a = idx[lin[k].first]; H[a * s + m] += 0.5 * lin[k].second; H[m * s + a] += 0.5 * lin[k].second; }
+	for (size_t k = 0; k < lin.size(); k++) { const int a = ix(lin[k].first); H[a * s + m] += 0.5 * lin[k].second; H[m * s + a] += 0.5 * lin[k].second; }
 	return s;
 }
 
 // k-nomial: cota [L, U] de z^T H z en [-1,1]^n (como bound_full del driver de medicion, redondeo hacia +inf)
+// k del k-nomial de q2kn: por omision 3 (en las mediciones en la raiz k >= 4 casi no cambia la cota y la busqueda
+// de cliques crece mucho); se puede cambiar con la variable de entorno Q2_KN_K.
+inline int q2_kn_k() { static int k = getenv("Q2_KN_K") ? std::atoi(getenv("Q2_KN_K")) : 3; return k; }
+
 inline void knomial_interval(const Vec& H0, int n, int k, double& L, double& U) {
-	Vec Q = H0, w(n, 2.0);
-	std::vector<KNomialBlock> blocks;
+	static thread_local Vec Q, w;
+	static thread_local std::vector<KNomialBlock> blocks;
+	Q = H0; w.assign(n, 2.0); blocks.clear();
 	knomial_rewrite(Q, w, n, k, blocks);
 	const int old = std::fegetround(); std::fesetround(FE_UPWARD);
 	double u = 0, negl = 0;
@@ -429,13 +451,14 @@ inline void knomial_interval(const Vec& H0, int n, int k, double& L, double& U) 
 
 // cota [L, U] del resto r(z) = sum_{simbolos e >= nvar} a_e z_e + z^T Q z (la parte lineal en las variables queda fuera)
 inline void remainder_bound(const QF& F, int nvar, FinalBound fb, double& L, double& U) {
-	QF R; R.c = 0; R.Q = F.Q;
+	static thread_local QF R; static thread_local Vec H;
+	R.c = 0; R.Q = F.Q; R.lin.clear();
 	for (size_t k = 0; k < F.lin.size(); k++) if (F.lin[k].first >= nvar) R.lin.push_back(F.lin[k]);
 	qf_range(R, L, U, false);
 	if (fb == FB_TT || R.Q.empty()) return;
-	Vec H; const int s = homog(R.lin, R.Q, H);
+	const int s = homog(R.lin, R.Q, H);
 	double l2, u2;
-	if (fb == FB_KN) knomial_interval(H, s, 6, l2, u2);
+	if (fb == FB_KN) knomial_interval(H, s, q2_kn_k(), l2, u2);
 	else {
 		const prodk::Result res = prodk::prodk_interval(H, s, true, fb == FB_FULL ? 40 : 0, 12);
 		l2 = res.L; u2 = res.U;

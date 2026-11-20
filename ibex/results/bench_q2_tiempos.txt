@@ -1,0 +1,42 @@
+antes q2 Pramanik cells=1721 time=1.08314
+antes q2 Directkin cells=1319 time=5.80884
+antes q2 ex6_2_8  cpu time used:2.50594100001s  number of cells:5872 
+antes q2 ex7_3_5bis  cpu time used:0.985630000001s  number of cells:3634 
+antes q2 synq_n08_d50_pos_normal_s1  cpu time used:2.64157700001s  number of cells:1624 
+antes q2 fqf_n20_d030_pos_s1  cpu time used:59.9982410001s  number of cells:64436 
+antes q2kn Pramanik cells=1087 time=3.08664
+antes q2kn Directkin cells=1051 time=6.04256
+antes q2kn ex6_2_8  cpu time used:1.70399300001s  number of cells:5830 
+antes q2kn ex7_3_5bis  cpu time used:1.11464600001s  number of cells:3586 
+antes q2kn synq_n08_d50_pos_normal_s1  cpu time used:1.05327500001s  number of cells:600 
+antes q2kn fqf_n20_d030_pos_s1  cpu time used:59.9974580001s  number of cells:56866 
+antes q2pc Pramanik cells=1215 time=3.58932
+antes q2pc Directkin cells=1157 time=7.14836
+antes q2pc ex6_2_8  cpu time used:1.91942600001s  number of cells:5788 
+antes q2pc ex7_3_5bis  cpu time used:1.36257100001s  number of cells:3562 
+antes q2pc synq_n08_d50_pos_normal_s1  cpu time used:1.81100200001s  number of cells:612 
+antes q2pc fqf_n20_d030_pos_s1  cpu time used:59.9998900001s  number of cells:64096 
+optimizado_k6 q2 Pramanik cells=1721 time=0.624156
+optimizado_k6 q2 Directkin cells=1319 time=5.71598
+optimizado_k6 q2 ex6_2_8  cpu time used:1.31274600001s  number of cells:5872 
+optimizado_k6 q2 ex7_3_5bis  cpu time used:1.02697900001s  number of cells:3634 
+optimizado_k6 q2 synq_n08_d50_pos_normal_s1  cpu time used:2.44937800001s  number of cells:1624 
+optimizado_k6 q2 fqf_n20_d030_pos_s1  cpu time used:59.9978920001s  number of cells:86624 
+optimizado_k6 q2kn Pramanik cells=1087 time=2.61245
+optimizado_k6 q2kn Directkin cells=1051 time=4.96227
+optimizado_k6 q2kn ex6_2_8  cpu time used:1.37984100001s  number of cells:5830 
+optimizado_k6 q2kn ex7_3_5bis  cpu time used:0.968152000001s  number of cells:3586 
+optimizado_k6 q2kn synq_n08_d50_pos_normal_s1  cpu time used:1.06204300001s  number of cells:600 
+optimizado_k6 q2kn fqf_n20_d030_pos_s1  cpu time used:59.9999870001s  number of cells:77118 
+optimizado_k6 q2pc Pramanik cells=1215 time=2.93278
+optimizado_k6 q2pc Directkin cells=1157 time=6.96212
+optimizado_k6 q2pc ex6_2_8  cpu time used:1.75485100001s  number of cells:5788 
+optimizado_k6 q2pc ex7_3_5bis  cpu time used:1.19646700001s  number of cells:3562 
+optimizado_k6 q2pc synq_n08_d50_pos_normal_s1  cpu time used:1.67976200001s  number of cells:612 
+optimizado_k6 q2pc fqf_n20_d030_pos_s1  cpu time used:59.9987790001s  number of cells:73242 
+optimizado_k3 q2kn Pramanik cells=1087 time=0.874222
+optimizado_k3 q2kn Directkin cells=1053 time=4.14042
+optimizado_k3 q2kn ex6_2_8  cpu time used:1.30833900001s  number of cells:5830 
+optimizado_k3 q2kn ex7_3_5bis  cpu time used:0.977960000001s  number of cells:3586 
+optimizado_k3 q2kn synq_n08_d50_pos_normal_s1  cpu time used:1.13609200001s  number of cells:680 
+optimizado_k3 q2kn fqf_n20_d030_pos_s1  cpu time used:59.9998170001s  number of cells:78044 

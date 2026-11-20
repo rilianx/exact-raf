@@ -25,7 +25,7 @@ inline Quad2Stats& quad2_stats() { static Quad2Stats s; return s; }
 
 class LinearizerQuad2 : public Linearizer {
 public:
-	LinearizerQuad2(const System& sys1, quad2::FinalBound fb) : Linearizer(sys1.nb_var), sys(sys1), fb(fb) {
+	LinearizerQuad2(const System& sys1, quad2::FinalBound fb) : Linearizer(sys1.nb_var), sys(sys1), fb(fb), E(sys1.nb_var) {
 		for (int i = 0; i < sys.nb_ctr; i++) {
 			tapes.push_back(quad2::Tape::build(sys.ctrs[i].f));
 			if (!tapes.back().supported) quad2_stats().unsupported++;
@@ -41,11 +41,12 @@ public:
 			if (!tapes[ctr].supported) continue;
 			// evaluacion de grado 2; ev = intervalo natural & intervalos por nodo intersectados con el rango de la forma
 			// (como el ev de AffineEval en LinearizerAffineT)
-			quad2::QF F; quad2::Eval E(n);
 			Interval evq; double mag;
 			quad2_stats().evals++;
-			if (!E.eval(tapes[ctr], box, F, evq, mag)) { quad2_stats().failed++; continue; }
-			const Interval ev = sys.ctrs[ctr].f.eval(box) & evq;
+			if (!E.eval(tapes[ctr], box, evq, mag)) { quad2_stats().failed++; continue; }
+			const quad2::QF& F = E.result();
+			// evq ya es la evaluacion natural por intervalos intersectada nodo a nodo con el rango de la forma
+			const Interval& ev = evq;
 			if (ev.is_empty()) continue;
 			// mismas salidas por infactibilidad que LinearizerAffineT
 			if (op == LEQ && 0.0 < ev.lb()) return -1;
@@ -99,6 +100,7 @@ private:
 	const System& sys;
 	quad2::FinalBound fb;
 	std::vector<quad2::Tape> tapes;
+	quad2::Eval E;            // evaluador con memoria persistente (se reutiliza entre restricciones y cajas)
 };
 
 } // namespace ibex
