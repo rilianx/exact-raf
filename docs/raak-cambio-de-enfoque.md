@@ -2,7 +2,16 @@
 
 Nota para la línea RAA-K (`JCGeraldo/ibex-lib`, rama `raak-experimentos`, carpeta `raak/`). Resume lo que
 aprendimos al implementar en Ibex la multiplicación de Skalna y Hladík (SH) y la multiplicación exacta (E) del paper
-*Exact multiplication of reduced affine forms* (`paper/numa/` de este repo), y propone un cambio de foco.
+*Exact multiplication of reduced affine forms*, y propone un cambio de foco.
+
+> **Dónde está todo lo que se cita.** Los archivos citados (paper, parches de Ibex, resultados y scripts) están en
+> la rama **`main`** de `rilianx/raa-affine-arithmetic`, no en esta rama (`raak`), que conserva la estructura
+> antigua. Los enlaces apuntan a `main`.
+> - Paper: [`paper/numa/exact_raf.tex`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/paper/numa/exact_raf.tex) y su PDF
+>   ([`exact_raf.pdf`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/paper/numa/exact_raf.pdf)).
+> - Parches de Ibex: [`ibex/patches/`](https://github.com/rilianx/raa-affine-arithmetic/tree/main/ibex/patches); con el README de la carpeta
+>   [`ibex/`](https://github.com/rilianx/raa-affine-arithmetic/tree/main/ibex) y [`ibex/build.sh`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/build.sh) se reconstruye todo.
+> - Resultados (CSV): [`ibex/results/`](https://github.com/rilianx/raa-affine-arithmetic/tree/main/ibex/results).
 
 ## En una frase
 
@@ -58,7 +67,7 @@ Todo es **por producto**: Q es la matriz de un solo producto, `Q = ½(abᵀ + ba
 
   RAA es O(n²); SH y E son O(n log n).
 
-Datos: `ibex/results/` de este repo (`opt_reales_t300.csv`, `opt_sinteticas_t300.csv`, `bench_mult*.csv`).
+Datos: [`opt_reales_t300.csv`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/results/opt_reales_t300.csv), [`opt_sinteticas_t300.csv`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/results/opt_sinteticas_t300.csv) y [`bench_mult_0017.csv`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/results/bench_mult_0017.csv), en `main`. El estudio de semillas de k = 6 está en `JCGeraldo/ibex-lib`, rama `raak-experimentos`.
 
 ## 3. Hacia dónde reenfocar: `xᵀQx`, no la multiplicación
 
@@ -113,17 +122,17 @@ En la caja raíz de las 78 instancias synq, medir el ancho del residuo cuadráti
 Si el k-nomial sobre la Q completa no reduce claramente el ancho frente a la suma de SH (digamos menos de 10–20 %),
 el enfoque no vale la pena en el solver y conviene saberlo antes de integrarlo.
 
-## 5. Qué se puede reutilizar de este repo
+## 5. Qué se puede reutilizar (rama `main`)
 
-- `ibex/patches/0016-…` y `0017-…`: modos `AFFINE_SH` y `AFFINE_EXACT` en fAF2.
+- [`ibex/patches/0016-…`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/patches/0016-ibex-affine-multiplicacion-exacta.patch) y [`0017-…`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/patches/0017-ibex-affine-multiplicacion-rapida.patch), sobre `ibex-affine` `c219009c` más el parche consolidado 0001–0015 de RAA-K: modos `AFFINE_SH` y `AFFINE_EXACT` en fAF2.
   - `--arith=sh|exact` en `ibexopt-raak` e `ibexsolve-raak`.
   - `IBEX_RAF_SQR=af2` para usar el cuadrado de fAF2 en esos modos (ablación).
-- `ibex/fast/`: implementación en double con cota a priori del redondeo y predicado angular exacto, verificada con
+- [`ibex/fast/`](https://github.com/rilianx/raa-affine-arithmetic/tree/main/ibex/fast): implementación en double con cota a priori del redondeo y predicado angular exacto, verificada con
   aritmética racional. Es un patrón de rigor reutilizable para el k-nomial.
-- `ibex/tests/affine_containment_check.cpp`: incluye las variantes `sh_k0` y `exact_k0`.
-- `ibex/cli/cli_ibexsolve_raak.cpp`: `--ctc=default-xn+affine`, el contractor por omisión con la relajación afín
+- [`ibex/tests/affine_containment_check.cpp`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/tests/affine_containment_check.cpp): incluye las variantes `sh_k0` y `exact_k0`.
+- [`ibex/cli/cli_ibexsolve_raak.cpp`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/cli/cli_ibexsolve_raak.cpp): `--ctc=default-xn+affine`, el contractor por omisión con la relajación afín
   en lugar de X-Newton.
-- `ibex/analysis/`: scripts de resumen (media geométrica, resueltas, consistencia de f*) y la tabla del solver.
+- [`ibex/analysis/`](https://github.com/rilianx/raa-affine-arithmetic/tree/main/ibex/analysis): scripts de resumen (media geométrica, resueltas, consistencia de f*) y la tabla del solver.
 
 ## 6. Lecciones de los experimentos
 
@@ -142,4 +151,4 @@ el enfoque no vale la pena en el solver y conviene saberlo antes de integrarlo.
     en Directkin (1 161 frente a 1 993) y en Dietmaier (48–49 de 54 soluciones validadas en 120 s, frente a 33);
   - en Trigexp2 la multiplicación no cambia nada.
 
-  Datos: `ibex/results/csp17_*.csv`.
+  Datos: [`csp17_default-xn+affine_t120.csv`](https://github.com/rilianx/raa-affine-arithmetic/blob/main/ibex/results/csp17_default-xn+affine_t120.csv).
