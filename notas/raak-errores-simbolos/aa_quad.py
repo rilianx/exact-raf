@@ -69,9 +69,15 @@ def key(i, j): return (i, j) if i <= j else (j, i)
 
 
 class EvalQ(AS.Evaluator):
-    """Reutiliza la estructura de aa_sym.Evaluator (memo, lincomb, constantes) con formas cuadraticas."""
-    def __init__(self, box, consts):
+    """Reutiliza la estructura de aa_sym.Evaluator (memo, lincomb, constantes) con formas cuadraticas.
+    centered=True: en el producto, cada parte cuadratica q = z^T Q z se escribe q = m + qhat con m el centro de su
+    rango [lo, hi] y qhat en [-r, r]; m pasa a la constante (exacta) y el resto de grado 3 y 4 se acota con qhat:
+        X*Y = Cx Cy - Cx my - Cy mx + (Cx b + Cy a)^T z + z^T (Cx Qy + Cy Qx + sym(a b^T)) z
+              + [ (a^T z) qhat_y + qhat_x (b^T z) + qhat_x qhat_y ],     Cx = cx + mx, Cy = cy + my,
+    y para X*X el resto es 2 (a^T z) qhat_x + qhat_x^2, con qhat_x^2 en [0, r_x^2]."""
+    def __init__(self, box, consts, centered=False):
         super().__init__(box, consts, "M1")
+        self.centered = centered
 
     def new_errQ(self, F, e, tag):
         if e <= 0: return F
@@ -80,22 +86,36 @@ class EvalQ(AS.Evaluator):
         return QF(F.c, lin, F.Q)
 
     def mulQ(self, X, Y):
-        lin = {k: Y.c * X.lin.get(k, 0.0) + X.c * Y.lin.get(k, 0.0) for k in set(X.lin) | set(Y.lin)}
+        same = X is Y
+        qx, qy = X.quad_interval(), Y.quad_interval()
+        if self.centered:
+            mx, my = (qx[0] + qx[1]) / 2, (qy[0] + qy[1]) / 2
+            rx, ry = (qx[1] - qx[0]) / 2, (qy[1] - qy[0]) / 2
+        else:
+            mx = my = 0.0
+        Cx, Cy = X.c + mx, Y.c + my
+        lin = {k: Cy * X.lin.get(k, 0.0) + Cx * Y.lin.get(k, 0.0) for k in set(X.lin) | set(Y.lin)}
         Q = {}
-        for k, v in X.Q.items(): Q[k] = Q.get(k, 0.0) + Y.c * v
-        for k, v in Y.Q.items(): Q[k] = Q.get(k, 0.0) + X.c * v
+        for k, v in X.Q.items(): Q[k] = Q.get(k, 0.0) + Cy * v
+        for k, v in Y.Q.items(): Q[k] = Q.get(k, 0.0) + Cx * v
         for i, a in X.lin.items():                      # (a^T z)(b^T z) completo, en grado 2
             for j, b in Y.lin.items():
                 kk = key(i, j); Q[kk] = Q.get(kk, 0.0) + a * b
-        # resto de grado 3 y 4, con intervalos
-        qx, qy = X.quad_interval(), Y.quad_interval()
         sa, sb = X.lin_abs(), Y.lin_abs()
         iv = lambda a, b: (min(a[0]*b[0], a[0]*b[1], a[1]*b[0], a[1]*b[1]), max(a[0]*b[0], a[0]*b[1], a[1]*b[0], a[1]*b[1]))
-        r = [iv((-sa, sa), qy), iv((-sb, sb), qx), iv(qx, qy)]
+        if self.centered:
+            if same:
+                r = [(-2 * sa * rx, 2 * sa * rx), (0.0, rx * rx)]
+            else:
+                r = [(-sa * ry, sa * ry), (-sb * rx, sb * rx), (-rx * ry, rx * ry)]
+            const = Cx * Cy - Cx * my - Cy * mx
+        else:                                           # version original: rangos completos de q
+            r = [iv((-sa, sa), qy), iv((-sb, sb), qx), iv(qx, qy)]
+            const = X.c * Y.c
         lo, hi = sum(t[0] for t in r), sum(t[1] for t in r)
-        F = QF(X.c * Y.c + (lo + hi) / 2, lin, Q)
+        F = QF(const + (lo + hi) / 2, lin, Q)
         haserr = lambda Z: bool(Z.Q) or any(k.startswith("#") for k in Z.lin)
-        tag = ("sqr" if X is Y else "mul") + ("_comp" if haserr(X) or haserr(Y) else "_lin")
+        tag = ("sqr" if same else "mul") + ("_comp" if haserr(X) or haserr(Y) else "_lin")
         return self.new_errQ(F, (hi - lo) / 2, tag)
 
     def unaryQ(self, name, X):
@@ -155,6 +175,43 @@ class EvalQ(AS.Evaluator):
         else: raise ValueError(ast.dump(n))
         self.memo[k] = r
         return r
+
+
+def homog(F):
+    syms = sorted(set(F.lin) | {i for k in F.Q for i in k})
+    idx = {s: t for t, s in enumerate(syms)}
+    m = len(syms)
+    H = np.zeros((m + 1, m + 1))
+    for (i, j), v in F.Q.items():
+        a, b = idx[i], idx[j]
+        if a == b: H[a, a] += v
+        else: H[a, b] += v / 2; H[b, a] += v / 2
+    for s, v in F.lin.items():
+        H[idx[s], m] += v / 2; H[m, idx[s]] += v / 2
+    return H
+
+
+def final_all(F, driver=None, prodk_max=40, sdp_max=60):
+    """Anchos de los encierros finales de F: 'tt' (barato), 'prodk' (min con bloques producto), 'kn6' (min con el
+    k-nomial k=6 de ibex_KNomial.h, via el driver en C++), 'sdp' (min con Shor). NaN si no se calculo."""
+    lo, hi = F.rng(); wa = hi - lo
+    out = {"tt": wa, "prodk": wa, "kn6": wa, "sdp": wa}
+    if not F.Q: return out
+    H = homog(F); m1 = H.shape[0]
+    if m1 <= prodk_max:
+        L, U, _ = PF.prodk_interval(H); out["prodk"] = min(wa, U - L)
+    if driver is not None:
+        import subprocess
+        line = f"Q {m1} 6 " + " ".join(f"{x:.17g}" for x in H.ravel())
+        res = subprocess.run([driver], input=line + "\n", capture_output=True, text=True, check=True).stdout.split()
+        out["kn6"] = min(wa, float(res[1]) - float(res[0]))
+    if m1 <= sdp_max:
+        try:
+            import medir_q as S
+            out["sdp"] = min(wa, S.sdp_width(H))
+        except Exception:
+            pass
+    return out
 
 
 def final_bounds(F, strong=True, sdp_max=60):
