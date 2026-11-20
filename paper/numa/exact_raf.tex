@@ -33,7 +33,7 @@
 \maketitle
 
 \begin{abstract}
-Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation errors in a single error term. The product of two such forms must be enclosed by a new reduced affine form, and the width of this enclosure determines the quality of range bounds and of the linear relaxations built from the forms in branch-and-bound solvers. Skalna and Hlad\'{\i}k (Numer.\ Algorithms 76, 2017) computed in linear time the exact range of the quadratic part of the product. We show that their multiplication is not exact when both operands carry errors, because the terms that couple the centers of the operands with their error symbols are bounded separately, and we give a multiplication that computes the exact range of the whole nonlinear part of the product in $O(n\log n)$ time, by four walks along the boundary of a planar zonotope. We prove that it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error or a zero center, that it is at most $3/2$ times narrower otherwise, a tight bound, and that the difference of widths is at most $2\min(|x_0|y_r,|y_0|x_r)$. We also identify the multiplication of the affine arithmetic of the Ibex library with AF2 followed by a re-centering of its one-sided error terms. Both multiplications were implemented rigorously, with outward rounding, in the affine arithmetic of Ibex. In IbexOpt, replacing its default multiplication by the exact-range multiplications reduces the number of nodes about four times on problems dominated by products; the new multiplication saves a further 5--10\% exactly on the problems where the theory predicts a gain, and coincides with that of Skalna and Hlad\'{\i}k elsewhere.
+Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation errors in a single error term. The product of two such forms must be enclosed by a new reduced affine form, and the width of this enclosure determines the quality of range bounds and of the linear relaxations built from the forms in branch-and-bound solvers. Skalna and Hlad\'{\i}k (Numer.\ Algorithms 76, 2017) computed in linear time the exact range of the quadratic part of the product. We show that their multiplication is not exact when both operands carry errors, because the terms that couple the centers of the operands with their error symbols are bounded separately, and we give a multiplication that computes the exact range of the whole nonlinear part of the product in $O(n\log n)$ time, by four walks along the boundary of a planar zonotope. We prove that it coincides with that of Skalna and Hlad\'{\i}k when one operand has no error or a zero center, that it is at most $3/2$ times narrower otherwise, a tight bound, and that the difference of widths is at most $2\min(|x_0|y_r,|y_0|x_r)$. We also show that the standard multiplication is AF2 followed by a re-centering of its one-sided error terms, and we give a rigorous floating-point implementation of the exact-range multiplications. In an interval branch-and-bound optimizer, replacing the standard multiplication by the exact-range ones reduces the number of nodes about four times on problems dominated by products; the new multiplication saves a further 5--10\% exactly on the problems where the theory predicts a gain, and coincides with that of Skalna and Hlad\'{\i}k elsewhere.
 
 \medskip\noindent
 \textit{Keywords:} reduced affine arithmetic, multiplication, range enclosure, linear relaxation, zonotope
@@ -55,9 +55,9 @@ In this paper we observe that the multiplication of Skalna and Hlad\'{\i}k is no
 \paragraph{Contributions.}
 \begin{itemize}
 \item An exact multiplication of reduced affine forms, E (Section~\ref{sec:exact}): Theorem~\ref{thm:exact} shows that it gives the narrowest enclosure of the product with the usual linear part, and Algorithm~\ref{alg:exact} computes it in $O(n\log n)$ time.
-\item Its relation with the existing formulae (Section~\ref{sec:hierarchy}): E is contained in the multiplication SH of Skalna and Hlad\'{\i}k, which is contained in the standard and trivial ones; E coincides with SH when one operand has no error (Proposition~\ref{prop:oneerror}) and is at most $3/2$ times narrower otherwise, a tight bound (Proposition~\ref{prop:32}); the difference of widths is at most $2\min(|x_0|y_r,|y_0|x_r)$, and usually equal to it, so that E can only help when both operands carry errors and have nonzero centers (Corollary~\ref{cor:gain}). We also show that the standard multiplication, the one of the affine arithmetic of Ibex, is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}).
-\item A rigorous and efficient implementation of SH and E in the affine arithmetic of Ibex (Section~\ref{sec:ibex}), with an exact angular predicate and an a priori bound of the rounding errors of the boundary walk, which costs 2.3--5.4 times the default multiplication.
-\item Experiments (Section~\ref{sec:experiments}) on range enclosures, with exact ranges computed by a global optimizer, and in the global optimizer IbexOpt, where the exact-range multiplications reduce the search tree about four times on problems dominated by products, and E improves on SH exactly where Corollary~\ref{cor:gain} predicts.
+\item Its relation with the existing formulae (Section~\ref{sec:hierarchy}): E is contained in the multiplication SH of Skalna and Hlad\'{\i}k, which is contained in the standard and trivial ones; E coincides with SH when one operand has no error (Proposition~\ref{prop:oneerror}) and is at most $3/2$ times narrower otherwise, a tight bound (Proposition~\ref{prop:32}); the difference of widths is at most $2\min(|x_0|y_r,|y_0|x_r)$, and usually equal to it, so that E can only help when both operands carry errors and have nonzero centers (Corollary~\ref{cor:gain}). We also show that the standard multiplication is AF2~\cite{messine2002extentions} with its one-sided error terms re-centered after each product (Proposition~\ref{prop:af2}).
+\item A rigorous floating-point implementation of SH and E (Section~\ref{sec:rigor}), with an exact angular predicate and an a priori bound of the rounding errors of the boundary walk.
+\item Experiments (Section~\ref{sec:experiments}) on range enclosures, with exact ranges computed by a global optimizer, and in an interval global optimizer and a nonlinear system solver, where the exact-range multiplications reduce the search tree about four times on problems dominated by products, and E improves on SH exactly where Corollary~\ref{cor:gain} predicts.
 \end{itemize}
 
 \section{Products of reduced affine forms}
@@ -90,7 +90,7 @@ We consider the following formulae, labeled as in~\cite{skalna2017new} when they
 \end{description}
 Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyajima (Eq.~6 of~\cite{skalna2017new}), which groups the two bilinear terms $x_iy_j$ and $x_jy_i$ of each pair before bounding them; it lies between SH and S~\cite[Prop.~3]{skalna2017new} and plays no role in what follows.
 
-\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$ (this is the square of the affine arithmetic of Ibex), and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} shows that the latter is already exact in most cases.
+\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} shows that the latter is already exact in most cases.
 
 \paragraph{The same products in the variables.} In a branch-and-bound solver, the symbols are tied to a box $B=\{v\in\R^n: |v_i-m_i|\le w_i\}$ by $\eps_i=(v_i-m_i)/w_i$, and a reduced affine form is a linear function of the variables plus a residual interval,
 \[
@@ -259,7 +259,7 @@ Write $u=e^Tx$, which ranges over $[-\|x\|_1,\|x\|_1]$. The interval is an enclo
 \end{proof}
 The SH enclosure of a square is not new: with $r=\|x\|_1+x_r$, it is the Chebyshev linearization of $t\mapsto t^2$ over the range $[x_0-r,x_0+r]$ of $\hat x$, $t^2\in 2x_0t-x_0^2+[0,r^2]$, which is the usual way of enclosing univariate functions in AA~\cite{stolfi1997self}. The radius of S for a square exceeds that of SH by $\tfrac12(\|x\|_1+x_r)^2-\tfrac12x^Tx$, which approaches $\tfrac12(\|x\|_1+x_r)^2$, half the width of the exact range of the quadratic part, when the noise coefficients are spread over many symbols. Products and squares are thus two separate places where S loses with respect to the exact ranges, and in a solver both matter (Section~\ref{sec:solver}).
 
-\paragraph{The standard multiplication is AF2 with re-centering.} The affine arithmetic of the Ibex library (model fAF2 of its affine plugin) implements formula S, with the rounding errors accumulated in the error term. The next result relates it to AF2.
+\paragraph{The standard multiplication is AF2 with re-centering.} The next result relates formula S to AF2.
 
 \begin{propo}
 \label{prop:af2}
@@ -282,29 +282,17 @@ Thus S and AF2 have the same width after one product, and they differ only in th
 S can be much wider than SH even without errors: for $\hat x=\eps_1+\eps_2$ and $\hat y=\eps_1-\eps_2$, S (and AF2) give an enclosure of width $6$, while SH and E give $2$, the width of the exact range $[-1,1]$ of $\eps_1^2-\eps_2^2$.
 \end{remark}
 
-\section{Implementation in Ibex}
-\label{sec:ibex}
+\section{Rigorous floating-point implementation}
+\label{sec:rigor}
 
-We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabert2009,ibexaffine} (model fAF2 of its affine plugin), whose multiplication and square are those of formula S, with the rounding errors of each operation accumulated in the error term. Only the enclosure $[c-z_r,c+z_r]$ of $N$ (or $N_2$) changes: the linear part, its rounding errors and the way they are added to the error term are those of fAF2. For squares, both SH and E use the SH bound, that is, the Chebyshev linearization of $t^2$, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}). Note that S is exact for the products and squares of the variables themselves, whose forms have a single noise symbol and no error; the formulae differ only for compound factors.
-
-\paragraph{Rigor.} The computed interval must contain $\rng N$ although the walk is performed in floating point. Two points need care.
+A floating-point implementation of Algorithm~\ref{alg:exact} must return an interval that contains $\rng N$. Two points need care.
 \begin{itemize}
 \item \emph{Angular order.} An incorrect order between two almost parallel generators would produce a path that cuts through the interior of $Z$ and could underestimate the range. The order is decided by the sign of $u_1v_2-v_1u_2$, evaluated in double precision with a forward error filter~\cite{shewchuk1997adaptive}: if $|\mathrm{fl}(u_1v_2)-\mathrm{fl}(v_1u_2)|$ exceeds $4\cdot2^{-52}(|\mathrm{fl}(u_1v_2)|+|\mathrm{fl}(v_1u_2)|)$ and neither product underflows, its sign is the exact one; otherwise the expression is evaluated in quadruple precision, where the two products are exact and the subtraction preserves the sign. Flipping a generator to the half-plane $u>0$ is exact.
 \item \emph{Boundary walk.} The vertices and the values on the edges are computed in double precision, and the resulting interval is widened by an a priori bound of the rounding errors. Let $m$ be the number of generators (including $(x_r,0)$ and $(0,y_r)$ for SH), $U=|c_1|+3\sum_k|u_k|$ and $V=|c_2|+3\sum_k|v_k|$, which bound $|u|$ and $|v|$ at every computed or exact vertex, partial sum and edge point. Each vertex is obtained with at most $3m+2$ additions, so its error is at most $(3m+2)\,\eps_m U$ in $u$ and $(3m+2)\,\eps_m V$ in $v$, with $\eps_m=2^{-52}$, which bounds the error of one operation in any rounding mode~\cite{higham2002accuracy}. On an edge $[p,p+d]$ with $d=\pm2g$ (exact), the value at the stationary point is $P-B^2/(4A)$ with $P=p_up_v$, $B=p_ud_v+p_vd_u$ and $A=d_ud_v$; since the stationary point is in $(0,1)$, $|B|<2|A|$, and $|P|,|A|\le UV$, $|B|\le2UV$, so each evaluated value has a rounding error of $O(\eps_m UV)$, and a wrong decision on whether the stationary point lies in $(0,1)$ changes the value by $O(\eps_m UV)$ as well. Adding the constant $\kappa$ and the term $|y_0|x_r+|x_0|y_r$ of SH, we widen the interval by $(8m+64)\,\eps_m\,(UV+|x_0|y_r+|y_0|x_r)$ and round its endpoints outwards. This widening is of the order of $10^{-13}$ times the width of the enclosure.
 \end{itemize}
-The implementation sorts the generators once per product, walks the four shifted polygons of E in a single pass, and allocates no memory per product. For E, when $\min(|x_0|y_r,|y_0|x_r)=0$, it runs the single walk of SH, which gives the same interval by Corollary~\ref{cor:gain}.
+Our implementation sorts the generators once per product, walks the four shifted polygons of E in a single pass, and allocates no memory per product. For E, when $\min(|x_0|y_r,|y_0|x_r)=0$, it runs the single walk of SH, which gives the same interval by Corollary~\ref{cor:gain}.
 
-\paragraph{Validation.} The implementation was checked against the exact range of $N$ computed with rational arithmetic on 86\,000 random products, including almost parallel generators and coefficients from $10^{-6}$ to $10^6$, without any violation, and with the containment test of the RAA-K experiments of the Ibex affine plugin~\cite{ibexaffine}, which evaluates 180\,000 random functions of nine families at sampled points with interval arithmetic: no enclosure was violated, while the test detects violations when the error term is artificially reduced by 10\%.
-
-\paragraph{Cost.} Table~\ref{tab:cost} gives the time per product of the default multiplication (S) and of SH and E. The exact-range multiplications cost 2.3--5.4 times as much as S; E costs about 10\% more than SH when the operands carry errors, and the same otherwise. In the solver experiments below, this overhead is a small fraction of the time per node.
-
-\begin{table}[t]
-\centering
-\caption{Time per product ($\mu$s) in the affine arithmetic of Ibex, for random forms with $n$ noise symbols, with and without error terms in the operands (C++, \texttt{-O2}, one core).}
-\label{tab:cost}
-\small
-\input{../../results/table_cost.tex}
-\end{table}
+For squares, both SH and E use the SH bound, that is, the Chebyshev linearization of $t^2$, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}). The center and the radius of the enclosure are then added to the reduced affine form with the usual outward rounding of the linear part.
 
 \section{Experiments}
 \label{sec:experiments}
@@ -349,6 +337,23 @@ E is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and a
 
 For affine operands (Cases~1 and 1m), SH and E are exact, while AF2 and S lose 57\%, and 122\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the boxes of Cases~2 and~3 (and of 2m and 3m), by 1.8\% on average and by up to 15.1\% (20.5\% in Case~2m; one-sided Wilcoxon signed-rank test over the 2400 controlled boxes, $p=4\times10^{-198}$). The advantage grows with the size of the box: in the largest boxes, the mean gap of Case~3 drops from 7.6\% with SH to 2.8\% with E. In Case~4, each product has an operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}; S is tighter than AF2 in this chained product, as expected from Proposition~\ref{prop:af2}. On the benchmark constraints, E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%: the residuals of these constraints are dominated by the linearization of the univariate functions, and the factors of their products are sines, whose centers are close to zero when they are linearized over wide intervals, and exponentials or affine expressions without error.
 
+\subsection{Implementation in Ibex}
+\label{sec:ibex}
+
+We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabert2009,ibexaffine} (model fAF2 of its affine plugin), whose multiplication and square are those of formula S, with the rounding errors of each operation accumulated in the error term. Only the enclosure $[c-z_r,c+z_r]$ of $N$ (or $N_2$) changes: the linear part, its rounding errors and the way they are added to the error term are those of fAF2. Note that S is exact for the products and squares of the variables themselves, whose forms have a single noise symbol and no error, so that the formulae differ only for compound factors.
+
+\paragraph{Validation.} The implementation was checked against the exact range of $N$ computed with rational arithmetic on 86\,000 random products, including almost parallel generators and coefficients from $10^{-6}$ to $10^6$, without any violation, and with the containment test of the RAA-K experiments of the Ibex affine plugin~\cite{ibexaffine}, which evaluates 180\,000 random functions of nine families at sampled points with interval arithmetic: no enclosure was violated, while the test detects violations when the error term is artificially reduced by 10\%.
+
+\paragraph{Cost.} Table~\ref{tab:cost} gives the time per product of the multiplication of fAF2 (S) and of SH and E. The exact-range multiplications cost 2.3--5.4 times as much as S; E costs about 10\% more than SH when the operands carry errors, and the same otherwise. In the solver experiments below, this overhead is a small fraction of the time per node.
+
+\begin{table}[t]
+\centering
+\caption{Time per product ($\mu$s) in the affine arithmetic of Ibex, for random forms with $n$ noise symbols, with and without error terms in the operands (C++, \texttt{-O2}, one core).}
+\label{tab:cost}
+\small
+\input{../../results/table_cost.tex}
+\end{table}
+
 \subsection{Global optimization with IbexOpt}
 \label{sec:solver}
 
@@ -358,7 +363,7 @@ For affine operands (Cases~1 and 1m), SH and E are exact, while AF2 and S lose 5
 
 The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from four ranges of shifted products over a planar zonotope, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error and can be narrower, by at most a factor $3/2$, otherwise. Its effect is large on products of squares of forms that already carry errors, such as the Colville and Dixon functions, and small but systematic elsewhere.
 
-We also related the standard multiplication of the Ibex library to AF2, as AF2 with its one-sided terms re-centered after each product, and showed that, contrary to what one might expect, AF2 and the monomial-wise formulae do not coincide on products of affine forms when bilinear terms cancel. Natural continuations are a rigorous implementation of Algorithm~\ref{alg:exact} in Ibex, to measure its effect in branch-and-bound solvers, a linear-time version, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
+We also related the standard multiplication to AF2, as AF2 with its one-sided terms re-centered after each product, and showed that, contrary to what one might expect, AF2 and the monomial-wise formulae do not coincide on products of affine forms when bilinear terms cancel. Natural continuations are a rigorous implementation of Algorithm~\ref{alg:exact} in Ibex, to measure its effect in branch-and-bound solvers, a linear-time version, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
 
 \section*{Statements and declarations}
 \textbf{Funding.} ANID, Chile, FONDECYT Regular 2026, project No.~1260159.
