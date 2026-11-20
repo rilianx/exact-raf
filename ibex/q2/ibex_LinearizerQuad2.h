@@ -38,7 +38,14 @@ public:
 		int cont = 0;
 		for (int ctr = 0; ctr < sys.nb_ctr; ctr++) {
 			const CmpOp op = sys.ctrs[ctr].op;
-			const Interval ev = sys.ctrs[ctr].f.eval(box);
+			if (!tapes[ctr].supported) continue;
+			// evaluacion de grado 2; ev = intervalo natural & intervalos por nodo intersectados con el rango de la forma
+			// (como el ev de AffineEval en LinearizerAffineT)
+			quad2::QF F; quad2::Eval E(n);
+			Interval evq;
+			quad2_stats().evals++;
+			if (!E.eval(tapes[ctr], box, F, evq)) { quad2_stats().failed++; continue; }
+			const Interval ev = sys.ctrs[ctr].f.eval(box) & evq;
 			if (ev.is_empty()) continue;
 			// mismas salidas por infactibilidad que LinearizerAffineT
 			if (op == LEQ && 0.0 < ev.lb()) return -1;
@@ -50,11 +57,6 @@ public:
 			if (op == LEQ && !(0.0 < ev.ub())) continue;
 			if (op == GEQ && !(ev.lb() < 0.0)) continue;
 			if (op == EQ && !(ev.diam() > 2 * lp_solver.tolerance())) continue;
-			if (!tapes[ctr].supported) continue;
-
-			quad2::QF F; quad2::Eval E(n);
-			quad2_stats().evals++;
-			if (!E.eval(tapes[ctr], box, F)) { quad2_stats().failed++; continue; }
 
 			// fila: coeficientes a_j / r_j de las variables; constante c - sum (a_j / r_j) m_j
 			std::vector<double> a(n, 0.0);

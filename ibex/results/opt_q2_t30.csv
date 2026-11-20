@@ -1,536 +1,311 @@
 instancia,conjunto,variante,estado,celdas,f_lb,f_ub,cpu_s,quad2
 chem-1,hard,af2,TIME,22420,-48.2456102253,-47.7015950114,29.9998970001,
 chem-1,hard,sh,TIME,20140,-47.8310834718,-47.7055104159,29.9992770001,
-chem-1,hard,q2,TIME,34090,-81.1599680263,-47.646706827,29.9989560001,final=q2 evaluaciones=352035 fallidas=0 restricciones_no_soportadas=0 filas=391150
-chem-1,hard,q2kn,TIME,32594,-81.6330369461,-47.646706827,29.9998100001,final=q2kn evaluaciones=336411 fallidas=0 restricciones_no_soportadas=0 filas=373790
-chem-1,hard,q2pc,TIME,31858,-82.1287869535,-47.646706827,29.9986150001,final=q2pc evaluaciones=328734 fallidas=0 restricciones_no_soportadas=0 filas=365260
 chem,hard,af2,TIME,22488,-48.244418829,-47.7032074732,29.9969800001,
 chem,hard,sh,TIME,20780,-47.82538582,-47.7055104159,29.9990910001,
-chem,hard,q2,TIME,33768,-81.2379880808,-47.646706827,29.9993250001,final=q2 evaluaciones=348759 fallidas=0 restricciones_no_soportadas=0 filas=387510
-chem,hard,q2kn,TIME,34444,-81.0306947391,-47.646706827,29.9988720001,final=q2kn evaluaciones=355626 fallidas=0 restricciones_no_soportadas=0 filas=395140
-chem,hard,q2pc,TIME,33134,-81.5623410955,-47.646706827,29.9980510001,final=q2pc evaluaciones=341766 fallidas=0 restricciones_no_soportadas=0 filas=379740
 chembis,hard,af2,TIME,24046,-47.8142738285,-47.7060363876,29.9987650001,
 chembis,hard,sh,TIME,22840,-47.7179647315,-47.7064466159,29.9969650001,
-chembis,hard,q2,TIME,26276,-48.7929195567,-47.6985349529,29.9985990001,final=q2 evaluaciones=456741 fallidas=0 restricciones_no_soportadas=0 filas=507490
-chembis,hard,q2kn,TIME,26474,-48.7805377338,-47.6985349529,29.9979860001,final=q2kn evaluaciones=460107 fallidas=0 restricciones_no_soportadas=0 filas=511230
-chembis,hard,q2pc,TIME,25744,-48.4812132771,-47.6985349529,29.9996970001,final=q2pc evaluaciones=447237 fallidas=0 restricciones_no_soportadas=0 filas=496930
 ex6_1_3,hard,af2,SUCCESS,7412,-0.352498840335,-0.352497840335,16.4363600001,
 ex6_1_3,hard,sh,SUCCESS,6226,-0.352498839273,-0.352497839273,12.6804320001,
-ex6_1_3,hard,q2,TIME,13982,-0.352619134277,-0.352495591121,29.9996930001,final=q2 evaluaciones=434890 fallidas=0 restricciones_no_soportadas=0 filas=457779
-ex6_1_3,hard,q2kn,TIME,14016,-0.352513732318,-0.352497897037,29.9966690001,final=q2kn evaluaciones=439468 fallidas=0 restricciones_no_soportadas=0 filas=462598
-ex6_1_3,hard,q2pc,TIME,12796,-0.352638030796,-0.352495601819,29.9980450001,final=q2pc evaluaciones=395287 fallidas=0 restricciones_no_soportadas=0 filas=416092
 ex6_2_10,hard,af2,TIME,62082,-3.08295182334,-3.05194983728,29.9998320001,
 ex6_2_10,hard,sh,TIME,55290,-3.0740094253,-3.05194983728,29.9985810001,
-ex6_2_10,hard,q2,TIME,48404,-4.34313330959,-3.05181166242,29.9996790001,final=q2 evaluaciones=514227 fallidas=0 restricciones_no_soportadas=0 filas=587688
-ex6_2_10,hard,q2kn,TIME,43006,-4.71891066019,-3.05181166242,29.9999230001,final=q2kn evaluaciones=457856 fallidas=0 restricciones_no_soportadas=0 filas=523264
-ex6_2_10,hard,q2pc,TIME,37416,-5.24613509053,-3.05167519178,29.9999870001,final=q2pc evaluaciones=397719 fallidas=0 restricciones_no_soportadas=0 filas=454536
 ex8_5_1bis,hard,af2,SUCCESS,1642,-1.05105359118e-06,-5.10535911879e-08,1.82357300001,
 ex8_5_1bis,hard,sh,SUCCESS,1566,-1.36073523607e-06,-3.60735236071e-07,1.88903800001,
-ex8_5_1bis,hard,q2,SUCCESS,2122,-1.45441634258e-06,-4.54416342582e-07,2.52115900001,final=q2 evaluaciones=49337 fallidas=0 restricciones_no_soportadas=0 filas=53822
-ex8_5_1bis,hard,q2kn,SUCCESS,2044,-1.50049347152e-06,-5.00493471528e-07,2.12798200001,final=q2kn evaluaciones=47643 fallidas=0 restricciones_no_soportadas=0 filas=51974
-ex8_5_1bis,hard,q2pc,SUCCESS,2078,-1.39225796208e-06,-3.92257962084e-07,2.43661600001,final=q2pc evaluaciones=46983 fallidas=0 restricciones_no_soportadas=0 filas=51254
 sambal,hard,af2,TIME,13404,3.94686411648,3.96862335197,29.9987930001,
 sambal,hard,sh,TIME,13424,3.94700072397,3.96862335197,29.9985340001,
-sambal,hard,q2,TIME,12928,3.94498064655,3.96853924558,29.9995350001,final=q2 evaluaciones=531335 fallidas=0 restricciones_no_soportadas=0 filas=562590
-sambal,hard,q2kn,TIME,12452,3.94078299109,3.96868589025,29.9982530001,final=q2kn evaluaciones=511173 fallidas=0 restricciones_no_soportadas=0 filas=541242
-sambal,hard,q2pc,TIME,12602,3.94178245605,3.96853924558,29.9974440001,final=q2pc evaluaciones=517361 fallidas=0 restricciones_no_soportadas=0 filas=547794
 alkyl,medium,af2,SUCCESS,176,-1.76500155293,-1.76499978793,0.241241000001,
 alkyl,medium,sh,SUCCESS,178,-1.76500069476,-1.76499978496,0.253915000001,
-alkyl,medium,q2,SUCCESS,176,-1.76500154003,-1.76499977502,0.237627000001,final=q2 evaluaciones=4695 fallidas=0 restricciones_no_soportadas=0 filas=5008
-alkyl,medium,q2kn,SUCCESS,176,-1.76500154003,-1.76499977502,0.240455000001,final=q2kn evaluaciones=4695 fallidas=0 restricciones_no_soportadas=0 filas=5008
-alkyl,medium,q2pc,SUCCESS,162,-1.76500170463,-1.76499993963,0.243188000001,final=q2pc evaluaciones=4440 fallidas=0 restricciones_no_soportadas=0 filas=4736
 alkylbis,medium,af2,SUCCESS,178,-1.76500154023,-1.76499977523,0.319907000001,
 alkylbis,medium,sh,SUCCESS,174,-1.76500160743,-1.76499984243,0.323252000001,
-alkylbis,medium,q2,SUCCESS,170,-1.76500161075,-1.76499984575,0.265184000001,final=q2 evaluaciones=4605 fallidas=0 restricciones_no_soportadas=0 filas=4912
-alkylbis,medium,q2kn,SUCCESS,170,-1.76500161075,-1.76499984575,0.248091000001,final=q2kn evaluaciones=4605 fallidas=0 restricciones_no_soportadas=0 filas=4912
-alkylbis,medium,q2pc,SUCCESS,164,-1.76500096777,-1.76499920276,0.353338000001,final=q2pc evaluaciones=4380 fallidas=0 restricciones_no_soportadas=0 filas=4672
 bearing,medium,af2,SUCCESS,6404,1.95106598364,1.95106601788,12.1238120001,
 bearing,medium,sh,SUCCESS,15066,1.95106598357,1.9510660575,19.2601510001,
-bearing,medium,q2,SUCCESS,6682,1.95106598659,1.95106616743,12.9496720001,final=q2 evaluaciones=195187 fallidas=0 restricciones_no_soportadas=0 filas=205530
-bearing,medium,q2kn,SUCCESS,6392,1.95106598659,1.95106603922,12.4259860001,final=q2kn evaluaciones=190222 fallidas=0 restricciones_no_soportadas=0 filas=200256
-bearing,medium,q2pc,SUCCESS,6766,1.95106598659,1.95106602105,10.6113980001,final=q2pc evaluaciones=179273 fallidas=0 restricciones_no_soportadas=0 filas=189097
 ex14_2_3,medium,af2,SUCCESS,436,0,1.0630663353e-08,0.520779000001,
 ex14_2_3,medium,sh,SUCCESS,368,0,6.90623342197e-07,0.470862000001,
-ex14_2_3,medium,q2,SUCCESS,564,0,9.31761117557e-09,0.560887000001,final=q2 evaluaciones=11673 fallidas=0 restricciones_no_soportadas=0 filas=12809
-ex14_2_3,medium,q2kn,SUCCESS,490,0,1.16560380897e-07,0.566680000001,final=q2kn evaluaciones=10146 fallidas=0 restricciones_no_soportadas=0 filas=11119
-ex14_2_3,medium,q2pc,SUCCESS,452,0,1.56837265953e-07,1.22837900001,final=q2pc evaluaciones=9681 fallidas=0 restricciones_no_soportadas=0 filas=10600
 ex14_2_7,medium,af2,SUCCESS,5432,0,8.17900015337e-07,6.57636300001,
 ex14_2_7,medium,sh,SUCCESS,3372,0,7.65544264313e-07,3.98389600001,
-ex14_2_7,medium,q2,SUCCESS,25890,0,8.61774708755e-07,26.0576160001,final=q2 evaluaciones=513496 fallidas=0 restricciones_no_soportadas=0 filas=560327
-ex14_2_7,medium,q2kn,SUCCESS,22862,0,9.37453963758e-07,23.8048880001,final=q2kn evaluaciones=450299 fallidas=0 restricciones_no_soportadas=0 filas=491410
-ex14_2_7,medium,q2pc,TIME,24626,0,0.00557712618705,29.9989810001,final=q2pc evaluaciones=486936 fallidas=0 restricciones_no_soportadas=0 filas=531338
 ex2_1_7,medium,af2,SUCCESS,12,-4150.41428406,-4150.41013365,0.060276,
 ex2_1_7,medium,sh,SUCCESS,12,-4150.41428406,-4150.41013365,0.0603230000001,
-ex2_1_7,medium,q2,SUCCESS,12,-4150.41428406,-4150.41013365,0.0761610000001,final=q2 evaluaciones=392 fallidas=0 restricciones_no_soportadas=0 filas=435
-ex2_1_7,medium,q2kn,SUCCESS,12,-4150.41428406,-4150.41013365,0.0795120000001,final=q2kn evaluaciones=392 fallidas=0 restricciones_no_soportadas=0 filas=435
-ex2_1_7,medium,q2pc,SUCCESS,12,-4150.41428406,-4150.41013365,0.0807910000001,final=q2pc evaluaciones=392 fallidas=0 restricciones_no_soportadas=0 filas=435
 ex2_1_8,medium,af2,SUCCESS,4,15638.9843468,15638.9999858,0.0178030000001,
 ex2_1_8,medium,sh,SUCCESS,4,15638.9843468,15638.9999858,0.0177040000001,
-ex2_1_8,medium,q2,SUCCESS,4,15638.9843468,15638.9999858,0.0236500000001,final=q2 evaluaciones=294 fallidas=0 restricciones_no_soportadas=0 filas=308
-ex2_1_8,medium,q2kn,SUCCESS,4,15638.9843468,15638.9999858,0.0188330000001,final=q2kn evaluaciones=294 fallidas=0 restricciones_no_soportadas=0 filas=308
-ex2_1_8,medium,q2pc,SUCCESS,4,15638.9843468,15638.9999858,0.0194610000001,final=q2pc evaluaciones=294 fallidas=0 restricciones_no_soportadas=0 filas=308
 ex2_1_9,medium,af2,SUCCESS,8484,-0.375001006749,-0.37500000675,5.17068200001,
 ex2_1_9,medium,sh,SUCCESS,8452,-0.375001006749,-0.37500000675,4.96340800001,
-ex2_1_9,medium,q2,SUCCESS,8442,-0.375001006749,-0.37500000675,4.83743900001,final=q2 evaluaciones=50112 fallidas=0 restricciones_no_soportadas=0 filas=66816
-ex2_1_9,medium,q2kn,SUCCESS,8442,-0.375001006749,-0.37500000675,4.96520600001,final=q2kn evaluaciones=50112 fallidas=0 restricciones_no_soportadas=0 filas=66816
-ex2_1_9,medium,q2pc,SUCCESS,8398,-0.375001006749,-0.37500000675,6.08325500001,final=q2pc evaluaciones=50004 fallidas=0 restricciones_no_soportadas=0 filas=66672
 ex2_1_9fact,medium,af2,SUCCESS,8456,-0.375001006749,-0.37500000675,4.84708400001,
 ex2_1_9fact,medium,sh,SUCCESS,8462,-0.375001006749,-0.37500000675,5.01122200001,
-ex2_1_9fact,medium,q2,SUCCESS,8496,-0.375001006749,-0.37500000675,3.75433600001,final=q2 evaluaciones=50553 fallidas=0 restricciones_no_soportadas=0 filas=67404
-ex2_1_9fact,medium,q2kn,SUCCESS,8496,-0.375001006749,-0.37500000675,4.58194500001,final=q2kn evaluaciones=50553 fallidas=0 restricciones_no_soportadas=0 filas=67404
-ex2_1_9fact,medium,q2pc,SUCCESS,8402,-0.375001006749,-0.37500000675,4.89396900001,final=q2pc evaluaciones=50193 fallidas=0 restricciones_no_soportadas=0 filas=66924
 ex5_2_2_case3,medium,af2,SUCCESS,22,-750.000750199,-750.000000198,0.0194510000001,
 ex5_2_2_case3,medium,sh,SUCCESS,24,-750.000750377,-750.000000377,0.0299240000001,
-ex5_2_2_case3,medium,q2,SUCCESS,24,-750.000750377,-750.000000377,0.0382600000001,final=q2 evaluaciones=594 fallidas=0 restricciones_no_soportadas=0 filas=648
-ex5_2_2_case3,medium,q2kn,SUCCESS,24,-750.000750377,-750.000000377,0.0303110000001,final=q2kn evaluaciones=594 fallidas=0 restricciones_no_soportadas=0 filas=648
-ex5_2_2_case3,medium,q2pc,SUCCESS,24,-750.000750377,-750.000000377,0.0309720000001,final=q2pc evaluaciones=594 fallidas=0 restricciones_no_soportadas=0 filas=648
 ex5_3_2,medium,af2,SUCCESS,138,1.86415758808,1.86415945224,0.873585000001,
 ex5_3_2,medium,sh,SUCCESS,274,1.8641575879,1.86415945206,1.54226800001,
-ex5_3_2,medium,q2,SUCCESS,146,1.86415758799,1.86415945215,0.917806000001,final=q2 evaluaciones=7918 fallidas=0 restricciones_no_soportadas=0 filas=8173
-ex5_3_2,medium,q2kn,SUCCESS,146,1.86415758799,1.86415945215,0.902002000001,final=q2kn evaluaciones=7918 fallidas=0 restricciones_no_soportadas=0 filas=8173
-ex5_3_2,medium,q2pc,SUCCESS,146,1.86415758799,1.86415945215,0.898702000001,final=q2pc evaluaciones=7918 fallidas=0 restricciones_no_soportadas=0 filas=8173
 ex6_1_3bis,medium,af2,SUCCESS,3146,-0.351889763505,-0.351888763505,1.35752600001,
 ex6_1_3bis,medium,sh,SUCCESS,2438,-0.351889763505,-0.351888763505,1.00131700001,
-ex6_1_3bis,medium,q2,SUCCESS,5420,-0.351889763505,-0.351888763505,2.25849000001,final=q2 evaluaciones=57288 fallidas=0 restricciones_no_soportadas=0 filas=65472
-ex6_1_3bis,medium,q2kn,SUCCESS,5396,-0.351889763505,-0.351888763505,2.42919200001,final=q2kn evaluaciones=57071 fallidas=0 restricciones_no_soportadas=0 filas=65224
-ex6_1_3bis,medium,q2pc,SUCCESS,5260,-0.351889763505,-0.351888763505,2.68111100001,final=q2pc evaluaciones=55762 fallidas=0 restricciones_no_soportadas=0 filas=63728
 ex6_1_4,medium,af2,SUCCESS,282,-0.294542149153,-0.294541149153,0.166123000001,
 ex6_1_4,medium,sh,SUCCESS,242,-0.294541908517,-0.294540908517,0.152147000001,
-ex6_1_4,medium,q2,SUCCESS,324,-0.294542192861,-0.294541192861,0.190787000001,final=q2 evaluaciones=4320 fallidas=0 restricciones_no_soportadas=0 filas=4800
-ex6_1_4,medium,q2kn,SUCCESS,324,-0.294542192861,-0.294541192861,0.193693000001,final=q2kn evaluaciones=4320 fallidas=0 restricciones_no_soportadas=0 filas=4800
-ex6_1_4,medium,q2pc,SUCCESS,332,-0.294542197762,-0.294541197762,0.228373000001,final=q2pc evaluaciones=4230 fallidas=0 restricciones_no_soportadas=0 filas=4700
 ex6_2_11,medium,af2,SUCCESS,11962,-3.66380211373e-06,-2.66380211373e-06,3.03249500001,
 ex6_2_11,medium,sh,SUCCESS,10400,-3.66722057155e-06,-2.66722057155e-06,2.10770700001,
-ex6_2_11,medium,q2,SUCCESS,16630,-3.66811030501e-06,-2.66811030501e-06,3.68534900001,final=q2 evaluaciones=74451 fallidas=0 restricciones_no_soportadas=0 filas=99268
-ex6_2_11,medium,q2kn,SUCCESS,16644,-3.6716675804e-06,-2.6716675804e-06,4.77290800001,final=q2kn evaluaciones=74457 fallidas=0 restricciones_no_soportadas=0 filas=99276
-ex6_2_11,medium,q2pc,SUCCESS,16560,-3.67228091396e-06,-2.67228091396e-06,5.28031500001,final=q2pc evaluaciones=74049 fallidas=0 restricciones_no_soportadas=0 filas=98732
 ex6_2_12,medium,af2,SUCCESS,3968,0.289193751962,0.289194751962,1.03040800001,
 ex6_2_12,medium,sh,SUCCESS,3672,0.289193751962,0.289194751962,1.01449600001,
-ex6_2_12,medium,q2,SUCCESS,6350,0.289193751962,0.289194751962,1.61747400001,final=q2 evaluaciones=46365 fallidas=0 restricciones_no_soportadas=0 filas=55638
-ex6_2_12,medium,q2kn,SUCCESS,6350,0.289193751962,0.289194751962,2.12264500001,final=q2kn evaluaciones=46365 fallidas=0 restricciones_no_soportadas=0 filas=55638
-ex6_2_12,medium,q2pc,SUCCESS,6290,0.289193751962,0.289194751962,2.32800200001,final=q2pc evaluaciones=45955 fallidas=0 restricciones_no_soportadas=0 filas=55146
 ex6_2_14,medium,af2,SUCCESS,534,-0.695358583589,-0.695357583589,0.189462000001,
 ex6_2_14,medium,sh,SUCCESS,522,-0.695358583589,-0.695357583589,0.212948000001,
-ex6_2_14,medium,q2,SUCCESS,1220,-0.695358939777,-0.695357939777,0.305312000001,final=q2 evaluaciones=6580 fallidas=0 restricciones_no_soportadas=0 filas=7896
-ex6_2_14,medium,q2kn,SUCCESS,1216,-0.695358939777,-0.695357939777,0.440972000001,final=q2kn evaluaciones=6580 fallidas=0 restricciones_no_soportadas=0 filas=7896
-ex6_2_14,medium,q2pc,SUCCESS,1210,-0.695358939777,-0.695357939777,0.373420000001,final=q2pc evaluaciones=6540 fallidas=0 restricciones_no_soportadas=0 filas=7848
 ex6_2_6,medium,af2,TIME,184898,-1.55453463505e-05,-2.60252707284e-06,29.9998090001,
 ex6_2_6,medium,sh,TIME,147136,-1.48931232856e-05,-2.60252707418e-06,29.9996530001,
-ex6_2_6,medium,q2,TIME,134420,-1.96574341977e-05,-2.60252707284e-06,29.9998790001,final=q2 evaluaciones=462261 fallidas=0 restricciones_no_soportadas=0 filas=616348
-ex6_2_6,medium,q2kn,TIME,131206,-1.96574302907e-05,-2.60252707284e-06,29.9997280001,final=q2kn evaluaciones=452466 fallidas=0 restricciones_no_soportadas=0 filas=603288
-ex6_2_6,medium,q2pc,TIME,112400,-1.95410274511e-05,-2.60252707418e-06,29.9994380001,final=q2pc evaluaciones=395196 fallidas=0 restricciones_no_soportadas=0 filas=526928
 ex6_2_8,medium,af2,SUCCESS,17886,-0.0270073486644,-0.0270063486644,5.54598400001,
 ex6_2_8,medium,sh,SUCCESS,15696,-0.0270073486644,-0.0270063486644,4.35997800001,
-ex6_2_8,medium,q2,SUCCESS,21072,-0.0270073486644,-0.0270063486644,5.65215500001,final=q2 evaluaciones=98763 fallidas=0 restricciones_no_soportadas=0 filas=131684
-ex6_2_8,medium,q2kn,SUCCESS,21050,-0.0270073486644,-0.0270063486644,5.79489800001,final=q2kn evaluaciones=98703 fallidas=0 restricciones_no_soportadas=0 filas=131604
-ex6_2_8,medium,q2pc,SUCCESS,21052,-0.0270073486644,-0.0270063486644,6.20545200001,final=q2pc evaluaciones=98718 fallidas=0 restricciones_no_soportadas=0 filas=131624
 ex6_2_9,medium,af2,SUCCESS,10006,-0.0340671806958,-0.0340661806958,2.69856700001,
 ex6_2_9,medium,sh,SUCCESS,9422,-0.0340671806958,-0.0340661806958,2.74426600001,
-ex6_2_9,medium,q2,SUCCESS,14992,-0.0340671806958,-0.0340661806958,5.40454500001,final=q2 evaluaciones=111563 fallidas=0 restricciones_no_soportadas=0 filas=133876
-ex6_2_9,medium,q2kn,SUCCESS,14992,-0.0340671806958,-0.0340661806958,5.67392900001,final=q2kn evaluaciones=111563 fallidas=0 restricciones_no_soportadas=0 filas=133876
-ex6_2_9,medium,q2pc,SUCCESS,14958,-0.0340671806958,-0.0340661806958,6.59611600001,final=q2pc evaluaciones=111085 fallidas=0 restricciones_no_soportadas=0 filas=133302
 ex7_3_4,medium,af2,SUCCESS,474,6.274628066,6.27463434063,0.819081000001,
 ex7_3_4,medium,sh,SUCCESS,476,6.27462806599,6.27463434061,0.794865000001,
-ex7_3_4,medium,q2,SUCCESS,396,6.27462806606,6.27463434069,0.737167000001,final=q2 evaluaciones=13314 fallidas=0 restricciones_no_soportadas=0 filas=13965
-ex7_3_4,medium,q2kn,SUCCESS,402,6.27463032142,6.27463659605,0.806142000001,final=q2kn evaluaciones=13688 fallidas=0 restricciones_no_soportadas=0 filas=14361
-ex7_3_4,medium,q2pc,SUCCESS,440,6.27463433492,6.27463496817,1.03741700001,final=q2pc evaluaciones=14839 fallidas=0 restricciones_no_soportadas=0 filas=15575
 ex7_3_4bis,medium,af2,SUCCESS,1084,6.27235996891,6.27236624127,0.598014000001,
 ex7_3_4bis,medium,sh,SUCCESS,1090,6.27235896457,6.27236523693,0.504105000001,
-ex7_3_4bis,medium,q2,SUCCESS,632,6.27235660129,6.27236287365,0.276911000001,final=q2 evaluaciones=9704 fallidas=0 restricciones_no_soportadas=0 filas=10623
-ex7_3_4bis,medium,q2kn,SUCCESS,634,6.27235432635,6.2723605987,0.289764000001,final=q2kn evaluaciones=9735 fallidas=0 restricciones_no_soportadas=0 filas=10657
-ex7_3_4bis,medium,q2pc,SUCCESS,544,6.27235432697,6.27236059933,0.699156000001,final=q2pc evaluaciones=9022 fallidas=0 restricciones_no_soportadas=0 filas=9879
 ex7_3_5bis,medium,af2,SUCCESS,5688,1.20676895732,1.20677016409,1.25859900001,
 ex7_3_5bis,medium,sh,SUCCESS,5698,1.20676895205,1.20677015882,1.30676600001,
-ex7_3_5bis,medium,q2,SUCCESS,3612,1.20676865927,1.20676986604,0.778257000001,final=q2 evaluaciones=23851 fallidas=0 restricciones_no_soportadas=0 filas=27277
-ex7_3_5bis,medium,q2kn,SUCCESS,3586,1.20676866264,1.20676986941,0.789379000001,final=q2kn evaluaciones=23776 fallidas=0 restricciones_no_soportadas=0 filas=27190
-ex7_3_5bis,medium,q2pc,SUCCESS,3562,1.20676865926,1.20676986603,1.01337100001,final=q2pc evaluaciones=23632 fallidas=0 restricciones_no_soportadas=0 filas=27022
 ex8_4_4bis,medium,af2,TIME,74706,0.212211051636,0.212461053696,29.9998680001,
 ex8_4_4bis,medium,sh,SUCCESS,10096,0.212458942998,0.212459942998,3.20982000001,
-ex8_4_4bis,medium,q2,TIME,68128,0.212048410158,0.212463915658,29.9995190001,final=q2 evaluaciones=151511 fallidas=0 restricciones_no_soportadas=0 filas=303022
-ex8_4_4bis,medium,q2kn,SUCCESS,17444,0.212459012739,0.212460012739,12.9431020001,final=q2kn evaluaciones=44297 fallidas=0 restricciones_no_soportadas=0 filas=88594
-ex8_4_4bis,medium,q2pc,TIME,19402,0.212369796412,0.212460547016,29.9969000001,final=q2pc evaluaciones=47927 fallidas=0 restricciones_no_soportadas=0 filas=95854
 ex8_5_2_1,medium,af2,SUCCESS,4466,-8.99436682493e-07,1.00563317507e-07,3.17982000001,
 ex8_5_2_1,medium,sh,SUCCESS,4388,-9.98397563538e-07,1.60243646131e-09,2.78871200001,
-ex8_5_2_1,medium,q2,SUCCESS,5950,-1.15928088942e-06,-1.59280889422e-07,3.63115500001,final=q2 evaluaciones=97501 fallidas=4 restricciones_no_soportadas=0 filas=108326
-ex8_5_2_1,medium,q2kn,SUCCESS,5566,-1.12617560435e-06,-1.26175604353e-07,4.00528000001,final=q2kn evaluaciones=90560 fallidas=2 restricciones_no_soportadas=0 filas=100618
-ex8_5_2_1,medium,q2pc,SUCCESS,5532,-1.02683275945e-06,-2.68327594588e-08,4.47993800001,final=q2pc evaluaciones=90286 fallidas=7 restricciones_no_soportadas=0 filas=100303
 haverly,medium,af2,SUCCESS,126,-400.000400484,-400.000000484,0.175681000001,
 haverly,medium,sh,SUCCESS,124,-400.000400376,-400.000000375,0.179744000001,
-haverly,medium,q2,SUCCESS,130,-400.000400549,-400.000000549,0.186553000001,final=q2 evaluaciones=3685 fallidas=0 restricciones_no_soportadas=0 filas=3909
-haverly,medium,q2kn,SUCCESS,130,-400.000400549,-400.000000549,0.188389000001,final=q2kn evaluaciones=3685 fallidas=0 restricciones_no_soportadas=0 filas=3909
-haverly,medium,q2pc,SUCCESS,130,-400.000400549,-400.000000549,0.190094000001,final=q2pc evaluaciones=3685 fallidas=0 restricciones_no_soportadas=0 filas=3909
 himmel16,medium,af2,TIME,12020,-1.01696782278,inf,29.9968670001,
 himmel16,medium,sh,TIME,12368,-0.86602546379,-0.853285028622,29.9996880001,
-himmel16,medium,q2,TIME,12792,-0.985030647253,inf,29.9984590001,final=q2 evaluaciones=362173 fallidas=0 restricciones_no_soportadas=0 filas=381208
-himmel16,medium,q2kn,TIME,12562,-0.95740749396,-0.840374384366,29.9941550001,final=q2kn evaluaciones=402573 fallidas=0 restricciones_no_soportadas=0 filas=423865
-himmel16,medium,q2pc,TIME,11846,-1.03280002742,inf,29.9958240001,final=q2pc evaluaciones=396184 fallidas=0 restricciones_no_soportadas=0 filas=416343
 launch,medium,af2,SUCCESS,516,2257.79755598,2257.79759055,3.34366500001,
 launch,medium,sh,SUCCESS,646,2257.79539322,2257.79765101,4.69998300001,
-launch,medium,q2,SUCCESS,382,2257.79531797,2257.79757577,3.58115100001,final=q2 evaluaciones=29282 fallidas=0 restricciones_no_soportadas=0 filas=29896
-launch,medium,q2kn,SUCCESS,382,2257.79531797,2257.79757577,4.02684300001,final=q2kn evaluaciones=29282 fallidas=0 restricciones_no_soportadas=0 filas=29896
-launch,medium,q2pc,SUCCESS,382,2257.79531797,2257.79757577,4.12142200001,final=q2pc evaluaciones=29282 fallidas=0 restricciones_no_soportadas=0 filas=29896
 like-1,medium,af2,ERROR,314,-inf,inf,0.167057000001,
 like-1,medium,sh,ERROR,314,-inf,inf,0.171842000001,
-like-1,medium,q2,ERROR,314,-inf,inf,0.184869000001,final=q2 evaluaciones=320 fallidas=0 restricciones_no_soportadas=0 filas=384
-like-1,medium,q2kn,ERROR,314,-inf,inf,0.298768000001,final=q2kn evaluaciones=320 fallidas=0 restricciones_no_soportadas=0 filas=384
-like-1,medium,q2pc,ERROR,314,-inf,inf,0.400862000001,final=q2pc evaluaciones=320 fallidas=0 restricciones_no_soportadas=0 filas=384
 like,medium,af2,ERROR,418,-inf,inf,0.203717000001,
 like,medium,sh,ERROR,418,-inf,inf,0.205174000001,
-like,medium,q2,ERROR,418,-inf,inf,0.230610000001,final=q2 evaluaciones=435 fallidas=0 restricciones_no_soportadas=0 filas=522
-like,medium,q2kn,ERROR,418,-inf,inf,0.347512000001,final=q2kn evaluaciones=435 fallidas=0 restricciones_no_soportadas=0 filas=522
-like,medium,q2pc,ERROR,418,-inf,inf,0.425846000001,final=q2pc evaluaciones=435 fallidas=0 restricciones_no_soportadas=0 filas=522
 schwefel5-abs,medium,af2,SUCCESS,1246,6.28079332021e-05,6.38079332021e-05,0.444533000001,
 schwefel5-abs,medium,sh,SUCCESS,1340,6.32921413601e-05,6.42921413601e-05,0.315435000001,
-schwefel5-abs,medium,q2,SUCCESS,1392,6.31703877591e-05,6.41703877591e-05,0.306081000001,final=q2 evaluaciones=3459 fallidas=0 restricciones_no_soportadas=0 filas=6918
-schwefel5-abs,medium,q2kn,SUCCESS,1392,6.31703877591e-05,6.41703877591e-05,0.357016000001,final=q2kn evaluaciones=3459 fallidas=0 restricciones_no_soportadas=0 filas=6918
-schwefel5-abs,medium,q2pc,SUCCESS,1422,6.31056240057e-05,6.41056240057e-05,0.362874000001,final=q2pc evaluaciones=3460 fallidas=0 restricciones_no_soportadas=0 filas=6920
 schwefel5,medium,af2,SUCCESS,1280,6.32243230687e-05,6.42243230687e-05,0.351847000001,
 schwefel5,medium,sh,SUCCESS,1516,6.31248279863e-05,6.41248279863e-05,0.379119000001,
-schwefel5,medium,q2,SUCCESS,1786,6.30384591862e-05,6.40384591862e-05,0.405766000001,final=q2 evaluaciones=4496 fallidas=0 restricciones_no_soportadas=0 filas=8992
-schwefel5,medium,q2kn,SUCCESS,1786,6.30384591862e-05,6.40384591862e-05,0.437332000001,final=q2kn evaluaciones=4496 fallidas=0 restricciones_no_soportadas=0 filas=8992
-schwefel5,medium,q2pc,SUCCESS,1540,6.28181368232e-05,6.38181368232e-05,0.459549000001,final=q2pc evaluaciones=3718 fallidas=0 restricciones_no_soportadas=0 filas=7436
 3pk-borne,reales,af2,TIME,23806,-165355.587171,8091.9415905,29.9992290001,
 3pk-borne,reales,sh,TIME,20864,-153648.302491,8203.7526069,29.9991200001,
-3pk-borne,reales,q2,TIME,26842,-162184.948179,7813.66196076,29.9991000001,final=q2 evaluaciones=23899 fallidas=0 restricciones_no_soportadas=0 filas=47798
-3pk-borne,reales,q2kn,TIME,16686,-175239.523968,5454.96515085,29.9967810001,final=q2kn evaluaciones=15051 fallidas=0 restricciones_no_soportadas=0 filas=30102
-3pk-borne,reales,q2pc,TIME,21340,-174690.679335,7813.66196076,29.9975240001,final=q2pc evaluaciones=19019 fallidas=0 restricciones_no_soportadas=0 filas=38038
 mistake,reales,af2,TIME,29708,-1.19381288698,-0.999940382207,29.9994970001,
 mistake,reales,sh,TIME,23186,-1.04815798633,-0.99999962438,29.9990650001,
-mistake,reales,q2,TIME,27338,-1.25446274756,-0.999964654374,29.9993110001,final=q2 evaluaciones=552946 fallidas=0 restricciones_no_soportadas=0 filas=611294
-mistake,reales,q2kn,TIME,24878,-1.04510090607,-0.999999255224,29.9987070001,final=q2kn evaluaciones=416707 fallidas=0 restricciones_no_soportadas=0 filas=475041
-mistake,reales,q2pc,TIME,22386,-1.05029631145,-0.999999074561,29.9998220001,final=q2pc evaluaciones=390933 fallidas=0 restricciones_no_soportadas=0 filas=444508
 s365mod,reales,af2,TIME,73710,0.25,inf,29.9990150001,
 s365mod,reales,sh,TIME,73184,0.25,inf,29.9991830001,
-s365mod,reales,q2,TIME,81330,0.25,inf,29.9992690001,final=q2 evaluaciones=346309 fallidas=73376 restricciones_no_soportadas=0 filas=341234
-s365mod,reales,q2kn,TIME,77446,0.25,inf,29.9999860001,final=q2kn evaluaciones=342231 fallidas=68030 restricciones_no_soportadas=0 filas=341585
-s365mod,reales,q2pc,TIME,48104,0.25,inf,29.9992840001,final=q2pc evaluaciones=206039 fallidas=42162 restricciones_no_soportadas=0 filas=204286
 synq_n03_d20_pos_normal_s1,sinteticas,af2,SUCCESS,488,-1.1228062957,-1.1228051729,0.0619930000001,
 synq_n03_d20_pos_normal_s1,sinteticas,sh,SUCCESS,232,-1.12280620603,-1.12280508323,0.0329620000001,
-synq_n03_d20_pos_normal_s1,sinteticas,q2,SUCCESS,24,-1.122805636,-1.1228045132,0.00886900000001,final=q2 evaluaciones=76 fallidas=0 restricciones_no_soportadas=0 filas=148
-synq_n03_d20_pos_normal_s1,sinteticas,q2kn,SUCCESS,22,-1.12280604343,-1.12280492063,0.00441800000001,final=q2kn evaluaciones=71 fallidas=0 restricciones_no_soportadas=0 filas=138
-synq_n03_d20_pos_normal_s1,sinteticas,q2pc,SUCCESS,22,-1.12280604299,-1.12280492019,0.00463700000001,final=q2pc evaluaciones=71 fallidas=0 restricciones_no_soportadas=0 filas=138
 synq_n03_d20_pos_normal_s2,sinteticas,af2,SUCCESS,20,-2.23333723333,-2.23333499999,0.00476400000001,
 synq_n03_d20_pos_normal_s2,sinteticas,sh,SUCCESS,10,-2.23333723333,-2.23333499999,0.00266400000001,
-synq_n03_d20_pos_normal_s2,sinteticas,q2,SUCCESS,10,-2.23333723333,-2.23333499999,0.00279200000001,final=q2 evaluaciones=41 fallidas=0 restricciones_no_soportadas=0 filas=71
-synq_n03_d20_pos_normal_s2,sinteticas,q2kn,SUCCESS,10,-2.23333723333,-2.23333499999,0.00242100000001,final=q2kn evaluaciones=35 fallidas=0 restricciones_no_soportadas=0 filas=61
-synq_n03_d20_pos_normal_s2,sinteticas,q2pc,SUCCESS,6,-2.23333723333,-2.23333499999,0.00206500000001,final=q2pc evaluaciones=24 fallidas=0 restricciones_no_soportadas=0 filas=40
 synq_n03_d20_pos_normal_s3,sinteticas,af2,SUCCESS,674,0.00360648043523,0.00360748043523,0.179064000001,
 synq_n03_d20_pos_normal_s3,sinteticas,sh,SUCCESS,250,0.00360650035322,0.00360750035322,0.0577990000001,
-synq_n03_d20_pos_normal_s3,sinteticas,q2,SUCCESS,66,0.00360654331045,0.00360754331045,0.0172270000001,final=q2 evaluaciones=396 fallidas=0 restricciones_no_soportadas=0 filas=594
-synq_n03_d20_pos_normal_s3,sinteticas,q2kn,SUCCESS,58,0.00360671699575,0.00360771699575,0.0151980000001,final=q2kn evaluaciones=318 fallidas=0 restricciones_no_soportadas=0 filas=477
-synq_n03_d20_pos_normal_s3,sinteticas,q2pc,SUCCESS,60,0.00360697722079,0.00360797722079,0.0164630000001,final=q2pc evaluaciones=330 fallidas=0 restricciones_no_soportadas=0 filas=495
 synq_n03_d20_posneg_normal_s1,sinteticas,af2,SUCCESS,8,-3.32522932522,-3.32522599999,0.00224,
 synq_n03_d20_posneg_normal_s1,sinteticas,sh,SUCCESS,6,-3.32522932522,-3.32522599999,0.00169400000001,
-synq_n03_d20_posneg_normal_s1,sinteticas,q2,SUCCESS,2,-3.32522932522,-3.32522599999,0.000872,final=q2 evaluaciones=13 fallidas=0 restricciones_no_soportadas=0 filas=21
-synq_n03_d20_posneg_normal_s1,sinteticas,q2kn,SUCCESS,2,-3.32522932522,-3.32522599999,0.000932000000001,final=q2kn evaluaciones=13 fallidas=0 restricciones_no_soportadas=0 filas=21
-synq_n03_d20_posneg_normal_s1,sinteticas,q2pc,SUCCESS,2,-3.32522932522,-3.32522599999,0.00091,final=q2pc evaluaciones=13 fallidas=0 restricciones_no_soportadas=0 filas=21
 synq_n03_d20_posneg_normal_s2,sinteticas,af2,SUCCESS,22,-1.42513027684,-1.42512885171,0.00439800000001,
 synq_n03_d20_posneg_normal_s2,sinteticas,sh,SUCCESS,12,-1.42513107259,-1.42512964745,0.00300800000001,
-synq_n03_d20_posneg_normal_s2,sinteticas,q2,SUCCESS,16,-1.42513166555,-1.42513024042,0.00332400000001,final=q2 evaluaciones=33 fallidas=0 restricciones_no_soportadas=0 filas=62
-synq_n03_d20_posneg_normal_s2,sinteticas,q2kn,SUCCESS,14,-1.42513117526,-1.42512975013,0.00469900000001,final=q2kn evaluaciones=34 fallidas=0 restricciones_no_soportadas=0 filas=65
-synq_n03_d20_posneg_normal_s2,sinteticas,q2pc,SUCCESS,12,-1.42513135447,-1.42512992934,0.00291200000001,final=q2pc evaluaciones=30 fallidas=0 restricciones_no_soportadas=0 filas=57
 synq_n03_d20_posneg_normal_s3,sinteticas,af2,SUCCESS,16,-3.74954840669,-3.74954465715,0.00373400000001,
 synq_n03_d20_posneg_normal_s3,sinteticas,sh,SUCCESS,16,-3.74954822686,-3.74954447732,0.00363800000001,
-synq_n03_d20_posneg_normal_s3,sinteticas,q2,SUCCESS,14,-3.74954839621,-3.74954464666,0.00406400000001,final=q2 evaluaciones=38 fallidas=0 restricciones_no_soportadas=0 filas=69
-synq_n03_d20_posneg_normal_s3,sinteticas,q2kn,SUCCESS,14,-3.74954839621,-3.74954464666,0.00257600000001,final=q2kn evaluaciones=38 fallidas=0 restricciones_no_soportadas=0 filas=69
-synq_n03_d20_posneg_normal_s3,sinteticas,q2pc,SUCCESS,14,-3.7495483415,-3.74954459195,0.002738,final=q2pc evaluaciones=37 fallidas=0 restricciones_no_soportadas=0 filas=67
 synq_n03_d50_pos_normal_s1,sinteticas,af2,SUCCESS,6,-1.27017130023,-1.27017003006,0.00169400000001,
 synq_n03_d50_pos_normal_s1,sinteticas,sh,SUCCESS,2,-1.27017130023,-1.27017003006,0.000723000000001,
-synq_n03_d50_pos_normal_s1,sinteticas,q2,SUCCESS,2,-1.27017130023,-1.27017003006,0.000752000000001,final=q2 evaluaciones=16 fallidas=0 restricciones_no_soportadas=0 filas=24
-synq_n03_d50_pos_normal_s1,sinteticas,q2kn,SUCCESS,2,-1.27017130023,-1.27017003006,0.000760000000001,final=q2kn evaluaciones=14 fallidas=0 restricciones_no_soportadas=0 filas=21
-synq_n03_d50_pos_normal_s1,sinteticas,q2pc,SUCCESS,2,-1.27017130023,-1.27017003006,0.000922000000001,final=q2pc evaluaciones=12 fallidas=0 restricciones_no_soportadas=0 filas=18
 synq_n03_d50_pos_normal_s2,sinteticas,af2,SUCCESS,1328,-0.376092795829,-0.376091795829,0.332745000001,
 synq_n03_d50_pos_normal_s2,sinteticas,sh,SUCCESS,308,-0.376092839913,-0.376091839913,0.0932430000001,
-synq_n03_d50_pos_normal_s2,sinteticas,q2,SUCCESS,224,-0.376092430799,-0.376091430799,0.0372460000001,final=q2 evaluaciones=691 fallidas=0 restricciones_no_soportadas=0 filas=1332
-synq_n03_d50_pos_normal_s2,sinteticas,q2kn,SUCCESS,98,-0.376092293189,-0.376091293189,0.0187940000001,final=q2kn evaluaciones=330 fallidas=0 restricciones_no_soportadas=0 filas=622
-synq_n03_d50_pos_normal_s2,sinteticas,q2pc,SUCCESS,110,-0.376092379451,-0.376091379451,0.0232870000001,final=q2pc evaluaciones=375 fallidas=0 restricciones_no_soportadas=0 filas=716
 synq_n03_d50_pos_normal_s3,sinteticas,af2,SUCCESS,28,-1.35339335339,-1.35339199999,0.00584600000001,
 synq_n03_d50_pos_normal_s3,sinteticas,sh,SUCCESS,18,-1.35339335339,-1.35339199999,0.00414700000001,
-synq_n03_d50_pos_normal_s3,sinteticas,q2,SUCCESS,22,-1.35339335339,-1.35339199999,0.00467900000001,final=q2 evaluaciones=74 fallidas=0 restricciones_no_soportadas=0 filas=123
-synq_n03_d50_pos_normal_s3,sinteticas,q2kn,SUCCESS,10,-1.35339335339,-1.35339199999,0.00219400000001,final=q2kn evaluaciones=32 fallidas=0 restricciones_no_soportadas=0 filas=50
-synq_n03_d50_pos_normal_s3,sinteticas,q2pc,SUCCESS,14,-1.35339335339,-1.35339199999,0.00330300000001,final=q2pc evaluaciones=43 fallidas=0 restricciones_no_soportadas=0 filas=69
 synq_n03_d50_posneg_normal_s1,sinteticas,af2,SUCCESS,22,-2.09647633261,-2.09647423613,0.00412000000001,
 synq_n03_d50_posneg_normal_s1,sinteticas,sh,SUCCESS,18,-2.09647760212,-2.09647550565,0.00385100000001,
-synq_n03_d50_posneg_normal_s1,sinteticas,q2,SUCCESS,14,-2.09647741334,-2.09647546143,0.00238700000001,final=q2 evaluaciones=30 fallidas=0 restricciones_no_soportadas=0 filas=56
-synq_n03_d50_posneg_normal_s1,sinteticas,q2kn,SUCCESS,14,-2.09647741334,-2.09647546143,0.00238600000001,final=q2kn evaluaciones=30 fallidas=0 restricciones_no_soportadas=0 filas=56
-synq_n03_d50_posneg_normal_s1,sinteticas,q2pc,SUCCESS,14,-2.09647706868,-2.09647549182,0.00260800000001,final=q2pc evaluaciones=30 fallidas=0 restricciones_no_soportadas=0 filas=56
 synq_n03_d50_posneg_normal_s2,sinteticas,af2,SUCCESS,4,-1.67365567365,-1.67365399999,0.00154200000001,
 synq_n03_d50_posneg_normal_s2,sinteticas,sh,SUCCESS,4,-1.67365567365,-1.67365399999,0.00115400000001,
-synq_n03_d50_posneg_normal_s2,sinteticas,q2,SUCCESS,4,-1.67365567365,-1.67365399999,0.00119000000001,final=q2 evaluaciones=15 fallidas=0 restricciones_no_soportadas=0 filas=25
-synq_n03_d50_posneg_normal_s2,sinteticas,q2kn,SUCCESS,4,-1.67365567365,-1.67365399999,0.00136700000001,final=q2kn evaluaciones=13 fallidas=0 restricciones_no_soportadas=0 filas=21
-synq_n03_d50_posneg_normal_s2,sinteticas,q2pc,SUCCESS,4,-1.67365567365,-1.67365399999,0.00142700000001,final=q2pc evaluaciones=13 fallidas=0 restricciones_no_soportadas=0 filas=21
 synq_n03_d50_posneg_normal_s3,sinteticas,af2,SUCCESS,28,-2.96176471463,-2.96176175287,0.00563900000001,
 synq_n03_d50_posneg_normal_s3,sinteticas,sh,SUCCESS,16,-2.96176471463,-2.96176175287,0.003653,
-synq_n03_d50_posneg_normal_s3,sinteticas,q2,SUCCESS,4,-2.96176471463,-2.96176175287,0.00121000000001,final=q2 evaluaciones=22 fallidas=0 restricciones_no_soportadas=0 filas=34
-synq_n03_d50_posneg_normal_s3,sinteticas,q2kn,SUCCESS,4,-2.96176471463,-2.96176175287,0.002117,final=q2kn evaluaciones=22 fallidas=0 restricciones_no_soportadas=0 filas=34
-synq_n03_d50_posneg_normal_s3,sinteticas,q2pc,SUCCESS,4,-2.96176471463,-2.96176175287,0.000972000000001,final=q2pc evaluaciones=19 fallidas=0 restricciones_no_soportadas=0 filas=29
 synq_n03_d90_pos_normal_s1,sinteticas,af2,SUCCESS,84,-0.734804599063,-0.734803599063,0.0142960000001,
 synq_n03_d90_pos_normal_s1,sinteticas,sh,SUCCESS,24,-0.734804599063,-0.734803599063,0.00568200000001,
-synq_n03_d90_pos_normal_s1,sinteticas,q2,SUCCESS,8,-0.734804599063,-0.734803599063,0.00196600000001,final=q2 evaluaciones=46 fallidas=0 restricciones_no_soportadas=0 filas=69
-synq_n03_d90_pos_normal_s1,sinteticas,q2kn,SUCCESS,2,-0.734804599063,-0.734803599063,0.000673000000001,final=q2kn evaluaciones=20 fallidas=0 restricciones_no_soportadas=0 filas=30
-synq_n03_d90_pos_normal_s1,sinteticas,q2pc,SUCCESS,2,-0.734804599063,-0.734803599063,0.000677000000001,final=q2pc evaluaciones=18 fallidas=0 restricciones_no_soportadas=0 filas=27
 synq_n03_d90_pos_normal_s2,sinteticas,af2,SUCCESS,522,-1.24762257057,-1.24762132295,0.0636970000001,
 synq_n03_d90_pos_normal_s2,sinteticas,sh,SUCCESS,120,-1.24762257057,-1.24762132295,0.0189880000001,
-synq_n03_d90_pos_normal_s2,sinteticas,q2,SUCCESS,28,-1.24762257057,-1.24762132295,0.0113920000001,final=q2 evaluaciones=137 fallidas=0 restricciones_no_soportadas=0 filas=211
-synq_n03_d90_pos_normal_s2,sinteticas,q2kn,SUCCESS,18,-1.24762257057,-1.24762132295,0.00406200000001,final=q2kn evaluaciones=98 fallidas=0 restricciones_no_soportadas=0 filas=147
-synq_n03_d90_pos_normal_s2,sinteticas,q2pc,SUCCESS,16,-1.24762257057,-1.24762132295,0.00694100000001,final=q2pc evaluaciones=92 fallidas=0 restricciones_no_soportadas=0 filas=138
 synq_n03_d90_pos_normal_s3,sinteticas,af2,SUCCESS,376,0.364666677016,0.364667677016,0.0801380000001,
 synq_n03_d90_pos_normal_s3,sinteticas,sh,SUCCESS,158,0.364666969503,0.364667969503,0.0375550000001,
-synq_n03_d90_pos_normal_s3,sinteticas,q2,SUCCESS,172,0.364666807023,0.364667807023,0.0396170000001,final=q2 evaluaciones=923 fallidas=0 restricciones_no_soportadas=0 filas=1386
-synq_n03_d90_pos_normal_s3,sinteticas,q2kn,SUCCESS,36,0.364667130938,0.364668130938,0.00923000000001,final=q2kn evaluaciones=196 fallidas=0 restricciones_no_soportadas=0 filas=294
-synq_n03_d90_pos_normal_s3,sinteticas,q2pc,SUCCESS,34,0.364667108055,0.364668108055,0.0175620000001,final=q2pc evaluaciones=200 fallidas=0 restricciones_no_soportadas=0 filas=300
 synq_n03_d90_posneg_normal_s1,sinteticas,af2,SUCCESS,68,-2.23735523735,-2.23735299999,0.0106830000001,
 synq_n03_d90_posneg_normal_s1,sinteticas,sh,SUCCESS,42,-2.23735523735,-2.23735299999,0.0121820000001,
-synq_n03_d90_posneg_normal_s1,sinteticas,q2,SUCCESS,4,-2.23735523735,-2.23735299999,0.00119500000001,final=q2 evaluaciones=21 fallidas=0 restricciones_no_soportadas=0 filas=34
-synq_n03_d90_posneg_normal_s1,sinteticas,q2kn,SUCCESS,4,-2.23735523735,-2.23735299999,0.00183000000001,final=q2kn evaluaciones=21 fallidas=0 restricciones_no_soportadas=0 filas=34
-synq_n03_d90_posneg_normal_s1,sinteticas,q2pc,SUCCESS,4,-2.23735523735,-2.23735299999,0.00109000000001,final=q2pc evaluaciones=17 fallidas=0 restricciones_no_soportadas=0 filas=28
 synq_n03_d90_posneg_normal_s2,sinteticas,af2,SUCCESS,42,-3.66964966964,-3.66964599999,0.0117740000001,
 synq_n03_d90_posneg_normal_s2,sinteticas,sh,SUCCESS,30,-3.66964966964,-3.66964599999,0.00556300000001,
-synq_n03_d90_posneg_normal_s2,sinteticas,q2,SUCCESS,8,-3.66964966964,-3.66964599999,0.00176400000001,final=q2 evaluaciones=28 fallidas=0 restricciones_no_soportadas=0 filas=46
-synq_n03_d90_posneg_normal_s2,sinteticas,q2kn,SUCCESS,4,-3.66964966964,-3.66964599999,0.001083,final=q2kn evaluaciones=16 fallidas=0 restricciones_no_soportadas=0 filas=25
-synq_n03_d90_posneg_normal_s2,sinteticas,q2pc,SUCCESS,2,-3.66964966964,-3.66964599999,0.00118800000001,final=q2pc evaluaciones=12 fallidas=0 restricciones_no_soportadas=0 filas=18
 synq_n03_d90_posneg_normal_s3,sinteticas,af2,SUCCESS,12,-4.2976082976,-4.29760399999,0.00240800000001,
 synq_n03_d90_posneg_normal_s3,sinteticas,sh,SUCCESS,10,-4.2976082976,-4.29760399999,0.00211500000001,
-synq_n03_d90_posneg_normal_s3,sinteticas,q2,SUCCESS,4,-4.2976082976,-4.29760399999,0.001029,final=q2 evaluaciones=14 fallidas=0 restricciones_no_soportadas=0 filas=24
-synq_n03_d90_posneg_normal_s3,sinteticas,q2kn,SUCCESS,4,-4.2976082976,-4.29760399999,0.000953000000001,final=q2kn evaluaciones=11 fallidas=0 restricciones_no_soportadas=0 filas=19
-synq_n03_d90_posneg_normal_s3,sinteticas,q2pc,SUCCESS,4,-4.2976082976,-4.29760399999,0.000987000000001,final=q2pc evaluaciones=11 fallidas=0 restricciones_no_soportadas=0 filas=19
 synq_n05_d20_pos_normal_s1,sinteticas,af2,SUCCESS,694,-3.07467795376,-3.07467487908,0.258693000001,
 synq_n05_d20_pos_normal_s1,sinteticas,sh,SUCCESS,128,-3.07467687378,-3.0746737991,0.0555790000001,
-synq_n05_d20_pos_normal_s1,sinteticas,q2,SUCCESS,34,-3.07467804258,-3.0746749679,0.0177520000001,final=q2 evaluaciones=229 fallidas=0 restricciones_no_soportadas=0 filas=307
-synq_n05_d20_pos_normal_s1,sinteticas,q2kn,SUCCESS,24,-3.07467604653,-3.07467297186,0.0189820000001,final=q2kn evaluaciones=154 fallidas=0 restricciones_no_soportadas=0 filas=206
-synq_n05_d20_pos_normal_s1,sinteticas,q2pc,SUCCESS,24,-3.07467672442,-3.07467396442,0.0213450000001,final=q2pc evaluaciones=158 fallidas=0 restricciones_no_soportadas=0 filas=211
 synq_n05_d20_pos_normal_s2,sinteticas,af2,SUCCESS,59244,-1.23810298833,-1.23810175023,22.8145120001,
 synq_n05_d20_pos_normal_s2,sinteticas,sh,SUCCESS,14326,-1.23810299245,-1.23810175435,6.17312500001,
-synq_n05_d20_pos_normal_s2,sinteticas,q2,SUCCESS,92,-1.23810274852,-1.23810151042,0.0708910000001,final=q2 evaluaciones=668 fallidas=0 restricciones_no_soportadas=0 filas=936
-synq_n05_d20_pos_normal_s2,sinteticas,q2kn,SUCCESS,58,-1.23810283047,-1.23810159237,0.0278270000001,final=q2kn evaluaciones=389 fallidas=0 restricciones_no_soportadas=0 filas=548
-synq_n05_d20_pos_normal_s2,sinteticas,q2pc,SUCCESS,54,-1.23810214172,-1.23810171218,0.0435540000001,final=q2pc evaluaciones=357 fallidas=0 restricciones_no_soportadas=0 filas=506
 synq_n05_d20_pos_normal_s3,sinteticas,af2,SUCCESS,664,-1.16178874573,-1.16178758394,0.191667000001,
 synq_n05_d20_pos_normal_s3,sinteticas,sh,SUCCESS,106,-1.16178885983,-1.16178769805,0.0414060000001,
-synq_n05_d20_pos_normal_s3,sinteticas,q2,SUCCESS,82,-1.16178829345,-1.16178816884,0.0569170000001,final=q2 evaluaciones=423 fallidas=0 restricciones_no_soportadas=0 filas=622
-synq_n05_d20_pos_normal_s3,sinteticas,q2kn,SUCCESS,48,-1.16178842476,-1.16178816953,0.0363330000001,final=q2kn evaluaciones=257 fallidas=0 restricciones_no_soportadas=0 filas=375
-synq_n05_d20_pos_normal_s3,sinteticas,q2pc,SUCCESS,54,-1.16178890754,-1.16178816519,0.0458330000001,final=q2pc evaluaciones=296 fallidas=0 restricciones_no_soportadas=0 filas=436
 synq_n05_d20_posneg_normal_s1,sinteticas,af2,SUCCESS,4996,-4.15535920669,-4.15535505133,1.65489300001,
 synq_n05_d20_posneg_normal_s1,sinteticas,sh,SUCCESS,858,-4.15535841258,-4.15535425722,0.248605000001,
-synq_n05_d20_posneg_normal_s1,sinteticas,q2,SUCCESS,32,-4.15535938334,-4.15535522798,0.0124000000001,final=q2 evaluaciones=159 fallidas=0 restricciones_no_soportadas=0 filas=228
-synq_n05_d20_posneg_normal_s1,sinteticas,q2kn,SUCCESS,32,-4.15535889435,-4.15535496781,0.0198050000001,final=q2kn evaluaciones=158 fallidas=0 restricciones_no_soportadas=0 filas=232
-synq_n05_d20_posneg_normal_s1,sinteticas,q2pc,SUCCESS,32,-4.15535778132,-4.15535362597,0.0199320000001,final=q2pc evaluaciones=157 fallidas=0 restricciones_no_soportadas=0 filas=225
 synq_n05_d20_posneg_normal_s2,sinteticas,af2,SUCCESS,60,-5.19238865436,-5.19238346197,0.0339890000001,
 synq_n05_d20_posneg_normal_s2,sinteticas,sh,SUCCESS,20,-5.19238865436,-5.19238346197,0.0112250000001,
-synq_n05_d20_posneg_normal_s2,sinteticas,q2,SUCCESS,12,-5.19238865436,-5.19238346197,0.00422900000001,final=q2 evaluaciones=57 fallidas=0 restricciones_no_soportadas=0 filas=78
-synq_n05_d20_posneg_normal_s2,sinteticas,q2kn,SUCCESS,14,-5.19238865436,-5.19238346197,0.00885600000001,final=q2kn evaluaciones=78 fallidas=0 restricciones_no_soportadas=0 filas=106
-synq_n05_d20_posneg_normal_s2,sinteticas,q2pc,SUCCESS,12,-5.19238865436,-5.19238346197,0.007899,final=q2pc evaluaciones=66 fallidas=0 restricciones_no_soportadas=0 filas=89
 synq_n05_d20_posneg_normal_s3,sinteticas,af2,SUCCESS,11130,-2.96587523922,-2.96587227334,3.32881800001,
 synq_n05_d20_posneg_normal_s3,sinteticas,sh,SUCCESS,3730,-2.96587407486,-2.96587110899,0.879242000001,
-synq_n05_d20_posneg_normal_s3,sinteticas,q2,SUCCESS,22,-2.96587429229,-2.96587132641,0.00957800000001,final=q2 evaluaciones=110 fallidas=0 restricciones_no_soportadas=0 filas=174
-synq_n05_d20_posneg_normal_s3,sinteticas,q2kn,SUCCESS,14,-2.96587427426,-2.96587130838,0.00788300000001,final=q2kn evaluaciones=75 fallidas=0 restricciones_no_soportadas=0 filas=120
-synq_n05_d20_posneg_normal_s3,sinteticas,q2pc,SUCCESS,16,-2.96587471896,-2.96587175308,0.00884100000001,final=q2pc evaluaciones=77 fallidas=0 restricciones_no_soportadas=0 filas=125
 synq_n05_d50_pos_normal_s1,sinteticas,af2,SUCCESS,626,-5.09594609594,-5.09594099999,0.153554000001,
 synq_n05_d50_pos_normal_s1,sinteticas,sh,SUCCESS,72,-5.09594609594,-5.09594099999,0.0378110000001,
-synq_n05_d50_pos_normal_s1,sinteticas,q2,SUCCESS,10,-5.09594609594,-5.09594099999,0.00645100000001,final=q2 evaluaciones=53 fallidas=0 restricciones_no_soportadas=0 filas=78
-synq_n05_d50_pos_normal_s1,sinteticas,q2kn,SUCCESS,6,-5.09594609594,-5.09594099999,0.00294100000001,final=q2kn evaluaciones=30 fallidas=0 restricciones_no_soportadas=0 filas=43
-synq_n05_d50_pos_normal_s1,sinteticas,q2pc,SUCCESS,6,-5.09594609594,-5.09594099999,0.00329900000001,final=q2pc evaluaciones=29 fallidas=0 restricciones_no_soportadas=0 filas=42
 synq_n05_d50_pos_normal_s2,sinteticas,af2,SUCCESS,7068,-3.43632742833,-3.43632399201,1.91491700001,
 synq_n05_d50_pos_normal_s2,sinteticas,sh,SUCCESS,1002,-3.43632786214,-3.43632442581,0.254720000001,
-synq_n05_d50_pos_normal_s2,sinteticas,q2,SUCCESS,52,-3.43632770606,-3.43632426973,0.0219210000001,final=q2 evaluaciones=241 fallidas=0 restricciones_no_soportadas=0 filas=365
-synq_n05_d50_pos_normal_s2,sinteticas,q2kn,SUCCESS,28,-3.43632716733,-3.436323731,0.0110730000001,final=q2kn evaluaciones=119 fallidas=0 restricciones_no_soportadas=0 filas=180
-synq_n05_d50_pos_normal_s2,sinteticas,q2pc,SUCCESS,22,-3.43632751366,-3.43632407734,0.0117510000001,final=q2pc evaluaciones=105 fallidas=0 restricciones_no_soportadas=0 filas=158
 synq_n05_d50_pos_normal_s3,sinteticas,af2,SUCCESS,1598,-1.28198388372,-1.28198260173,0.727742000001,
 synq_n05_d50_pos_normal_s3,sinteticas,sh,SUCCESS,424,-1.28198370282,-1.28198242084,0.169790000001,
-synq_n05_d50_pos_normal_s3,sinteticas,q2,SUCCESS,104,-1.28198299959,-1.28198171761,0.0420490000001,final=q2 evaluaciones=655 fallidas=0 restricciones_no_soportadas=0 filas=921
-synq_n05_d50_pos_normal_s3,sinteticas,q2kn,SUCCESS,60,-1.28198390054,-1.28198261855,0.0450470000001,final=q2kn evaluaciones=353 fallidas=0 restricciones_no_soportadas=0 filas=504
-synq_n05_d50_pos_normal_s3,sinteticas,q2pc,SUCCESS,84,-1.28198321843,-1.28198193644,0.0415770000001,final=q2pc evaluaciones=452 fallidas=0 restricciones_no_soportadas=0 filas=652
 synq_n05_d50_pos_strong_s1,sinteticas,af2,SUCCESS,9704,-4.10414100436,-4.10413690022,3.38873800001,
 synq_n05_d50_pos_strong_s1,sinteticas,sh,SUCCESS,920,-4.10414101528,-4.10413691113,0.300261000001,
-synq_n05_d50_pos_strong_s1,sinteticas,q2,SUCCESS,34,-4.10413754381,-4.10413711973,0.0197970000001,final=q2 evaluaciones=166 fallidas=0 restricciones_no_soportadas=0 filas=247
-synq_n05_d50_pos_strong_s1,sinteticas,q2kn,SUCCESS,18,-4.10414034114,-4.104136237,0.00754900000001,final=q2kn evaluaciones=77 fallidas=0 restricciones_no_soportadas=0 filas=122
-synq_n05_d50_pos_strong_s1,sinteticas,q2pc,SUCCESS,18,-4.10414027469,-4.10413617055,0.0132420000001,final=q2pc evaluaciones=65 fallidas=0 restricciones_no_soportadas=0 filas=106
 synq_n05_d50_pos_strong_s2,sinteticas,af2,SUCCESS,16216,-1.52180448915,-1.52180296735,6.20576800001,
 synq_n05_d50_pos_strong_s2,sinteticas,sh,SUCCESS,1888,-1.52180405736,-1.52180253555,0.614412000001,
-synq_n05_d50_pos_strong_s2,sinteticas,q2,SUCCESS,612,-1.52180446731,-1.5218029455,0.210617000001,final=q2 evaluaciones=3357 fallidas=0 restricciones_no_soportadas=0 filas=5002
-synq_n05_d50_pos_strong_s2,sinteticas,q2kn,SUCCESS,276,-1.5218036454,-1.5218021236,0.180873000001,final=q2kn evaluaciones=1550 fallidas=0 restricciones_no_soportadas=0 filas=2317
-synq_n05_d50_pos_strong_s2,sinteticas,q2pc,SUCCESS,306,-1.52180329172,-1.52180176992,0.239076000001,final=q2pc evaluaciones=1706 fallidas=0 restricciones_no_soportadas=0 filas=2554
 synq_n05_d50_pos_strong_s3,sinteticas,af2,TIME,85286,-1.09574524839,-0.970565938313,29.9998750001,
 synq_n05_d50_pos_strong_s3,sinteticas,sh,SUCCESS,47966,-0.971203491717,-0.971202491717,18.2490590001,
-synq_n05_d50_pos_strong_s3,sinteticas,q2,SUCCESS,10596,-0.971203491717,-0.971202491717,3.89835300001,final=q2 evaluaciones=28248 fallidas=0 restricciones_no_soportadas=0 filas=54798
-synq_n05_d50_pos_strong_s3,sinteticas,q2kn,SUCCESS,1642,-0.971203408878,-0.971202408878,0.482475000001,final=q2kn evaluaciones=5004 fallidas=0 restricciones_no_soportadas=0 filas=9711
-synq_n05_d50_pos_strong_s3,sinteticas,q2pc,SUCCESS,2902,-0.971203323656,-0.971202323656,1.05371200001,final=q2pc evaluaciones=8587 fallidas=0 restricciones_no_soportadas=0 filas=16490
 synq_n05_d50_pos_weak_s1,sinteticas,af2,SUCCESS,426,-3.80327180327,-3.80326799999,0.161484000001,
 synq_n05_d50_pos_weak_s1,sinteticas,sh,SUCCESS,98,-3.80327180327,-3.80326799999,0.0327540000001,
-synq_n05_d50_pos_weak_s1,sinteticas,q2,SUCCESS,54,-3.80327180327,-3.80326799999,0.0199370000001,final=q2 evaluaciones=303 fallidas=0 restricciones_no_soportadas=0 filas=416
-synq_n05_d50_pos_weak_s1,sinteticas,q2kn,SUCCESS,32,-3.80327180327,-3.80326799999,0.0146160000001,final=q2kn evaluaciones=221 fallidas=0 restricciones_no_soportadas=0 filas=302
-synq_n05_d50_pos_weak_s1,sinteticas,q2pc,SUCCESS,30,-3.80327180327,-3.80326799999,0.0160380000001,final=q2pc evaluaciones=192 fallidas=0 restricciones_no_soportadas=0 filas=263
 synq_n05_d50_pos_weak_s2,sinteticas,af2,SUCCESS,2430,-2.49779665054,-2.49779415274,0.766572000001,
 synq_n05_d50_pos_weak_s2,sinteticas,sh,SUCCESS,556,-2.49779539852,-2.49779290072,0.306424000001,
-synq_n05_d50_pos_weak_s2,sinteticas,q2,SUCCESS,22,-2.49779621346,-2.49779371566,0.00851900000001,final=q2 evaluaciones=131 fallidas=0 restricciones_no_soportadas=0 filas=182
-synq_n05_d50_pos_weak_s2,sinteticas,q2kn,SUCCESS,26,-2.49779642416,-2.49779392637,0.0180220000001,final=q2kn evaluaciones=140 fallidas=0 restricciones_no_soportadas=0 filas=196
-synq_n05_d50_pos_weak_s2,sinteticas,q2pc,SUCCESS,20,-2.49779539102,-2.49779418245,0.0169630000001,final=q2pc evaluaciones=109 fallidas=0 restricciones_no_soportadas=0 filas=152
 synq_n05_d50_pos_weak_s3,sinteticas,af2,SUCCESS,336,-4.02772937439,-4.02772534666,0.146665000001,
 synq_n05_d50_pos_weak_s3,sinteticas,sh,SUCCESS,76,-4.02772730796,-4.02772328023,0.0264580000001,
-synq_n05_d50_pos_weak_s3,sinteticas,q2,SUCCESS,54,-4.02772654387,-4.02772251614,0.0265700000001,final=q2 evaluaciones=176 fallidas=0 restricciones_no_soportadas=0 filas=316
-synq_n05_d50_pos_weak_s3,sinteticas,q2kn,SUCCESS,32,-4.02772846026,-4.02772443253,0.0124220000001,final=q2kn evaluaciones=114 fallidas=0 restricciones_no_soportadas=0 filas=202
-synq_n05_d50_pos_weak_s3,sinteticas,q2pc,SUCCESS,40,-4.02772910292,-4.02772507519,0.0167540000001,final=q2pc evaluaciones=131 fallidas=0 restricciones_no_soportadas=0 filas=234
 synq_n05_d50_posneg_normal_s1,sinteticas,af2,SUCCESS,166,-9.4552958268,-9.4552863715,0.0938900000001,
 synq_n05_d50_posneg_normal_s1,sinteticas,sh,SUCCESS,58,-9.4552958268,-9.4552863715,0.0357950000001,
-synq_n05_d50_posneg_normal_s1,sinteticas,q2,SUCCESS,8,-9.4552958268,-9.4552863715,0.00461600000001,final=q2 evaluaciones=49 fallidas=0 restricciones_no_soportadas=0 filas=66
-synq_n05_d50_posneg_normal_s1,sinteticas,q2kn,SUCCESS,12,-9.4552958268,-9.4552863715,0.00663300000001,final=q2kn evaluaciones=61 fallidas=0 restricciones_no_soportadas=0 filas=82
-synq_n05_d50_posneg_normal_s1,sinteticas,q2pc,SUCCESS,8,-9.4552958268,-9.4552863715,0.00378100000001,final=q2pc evaluaciones=45 fallidas=0 restricciones_no_soportadas=0 filas=62
 synq_n05_d50_posneg_normal_s2,sinteticas,af2,SUCCESS,2102,-6.89905189905,-6.89904499999,0.493595000001,
 synq_n05_d50_posneg_normal_s2,sinteticas,sh,SUCCESS,528,-6.89905189905,-6.89904499999,0.133387000001,
-synq_n05_d50_posneg_normal_s2,sinteticas,q2,SUCCESS,26,-6.89905189905,-6.89904499999,0.0172770000001,final=q2 evaluaciones=154 fallidas=0 restricciones_no_soportadas=0 filas=218
-synq_n05_d50_posneg_normal_s2,sinteticas,q2kn,SUCCESS,26,-6.89905189905,-6.89904499999,0.0127230000001,final=q2kn evaluaciones=124 fallidas=0 restricciones_no_soportadas=0 filas=178
-synq_n05_d50_posneg_normal_s2,sinteticas,q2pc,SUCCESS,24,-6.89905189905,-6.89904499999,0.0116670000001,final=q2pc evaluaciones=123 fallidas=0 restricciones_no_soportadas=0 filas=175
 synq_n05_d50_posneg_normal_s3,sinteticas,af2,SUCCESS,790,-3.3004145934,-3.30041129299,0.225172000001,
 synq_n05_d50_posneg_normal_s3,sinteticas,sh,SUCCESS,174,-3.30041402523,-3.30041072481,0.0652710000001,
-synq_n05_d50_posneg_normal_s3,sinteticas,q2,SUCCESS,24,-3.30041313731,-3.30040983689,0.0202140000001,final=q2 evaluaciones=158 fallidas=0 restricciones_no_soportadas=0 filas=224
-synq_n05_d50_posneg_normal_s3,sinteticas,q2kn,SUCCESS,20,-3.30041204969,-3.30040874927,0.0169830000001,final=q2kn evaluaciones=121 fallidas=0 restricciones_no_soportadas=0 filas=174
-synq_n05_d50_posneg_normal_s3,sinteticas,q2pc,SUCCESS,18,-3.30041237867,-3.30040907826,0.0111930000001,final=q2pc evaluaciones=122 fallidas=0 restricciones_no_soportadas=0 filas=175
 synq_n05_d90_pos_normal_s1,sinteticas,af2,SUCCESS,5836,-1.51653674812,-1.51653523159,1.63511500001,
 synq_n05_d90_pos_normal_s1,sinteticas,sh,SUCCESS,758,-1.51653666585,-1.51653514931,0.246381000001,
-synq_n05_d90_pos_normal_s1,sinteticas,q2,SUCCESS,394,-1.51653659603,-1.51653507949,0.131881000001,final=q2 evaluaciones=2279 fallidas=0 restricciones_no_soportadas=0 filas=3237
-synq_n05_d90_pos_normal_s1,sinteticas,q2kn,SUCCESS,90,-1.51653631088,-1.51653479434,0.0640430000001,final=q2kn evaluaciones=563 fallidas=0 restricciones_no_soportadas=0 filas=800
-synq_n05_d90_pos_normal_s1,sinteticas,q2pc,SUCCESS,98,-1.51653648041,-1.51653506105,0.0711210000001,final=q2pc evaluaciones=609 fallidas=0 restricciones_no_soportadas=0 filas=886
 synq_n05_d90_pos_normal_s2,sinteticas,af2,SUCCESS,1774,-2.93538093538,-2.93537799999,0.478666000001,
 synq_n05_d90_pos_normal_s2,sinteticas,sh,SUCCESS,310,-2.93538093538,-2.93537799999,0.114758000001,
-synq_n05_d90_pos_normal_s2,sinteticas,q2,SUCCESS,22,-2.93538093538,-2.93537799999,0.00964800000001,final=q2 evaluaciones=132 fallidas=0 restricciones_no_soportadas=0 filas=184
-synq_n05_d90_pos_normal_s2,sinteticas,q2kn,SUCCESS,14,-2.93538093538,-2.93537799999,0.00810700000001,final=q2kn evaluaciones=68 fallidas=0 restricciones_no_soportadas=0 filas=94
-synq_n05_d90_pos_normal_s2,sinteticas,q2pc,SUCCESS,16,-2.93538093538,-2.93537799999,0.00799300000001,final=q2pc evaluaciones=68 fallidas=0 restricciones_no_soportadas=0 filas=96
 synq_n05_d90_pos_normal_s3,sinteticas,af2,SUCCESS,450,-9.05397005397,-9.05396099999,0.147445000001,
 synq_n05_d90_pos_normal_s3,sinteticas,sh,SUCCESS,106,-9.05397005397,-9.05396099999,0.0517240000001,
-synq_n05_d90_pos_normal_s3,sinteticas,q2,SUCCESS,18,-9.05397005397,-9.05396099999,0.00997500000001,final=q2 evaluaciones=92 fallidas=0 restricciones_no_soportadas=0 filas=126
-synq_n05_d90_pos_normal_s3,sinteticas,q2kn,SUCCESS,16,-9.05397005397,-9.05396099999,0.00917500000001,final=q2kn evaluaciones=69 fallidas=0 restricciones_no_soportadas=0 filas=96
-synq_n05_d90_pos_normal_s3,sinteticas,q2pc,SUCCESS,16,-9.05397005397,-9.05396099999,0.0107390000001,final=q2pc evaluaciones=72 fallidas=0 restricciones_no_soportadas=0 filas=100
 synq_n05_d90_posneg_normal_s1,sinteticas,af2,SUCCESS,74,-7.7618990673,-7.7618913054,0.0421660000001,
 synq_n05_d90_posneg_normal_s1,sinteticas,sh,SUCCESS,34,-7.76189909364,-7.76189158219,0.0215950000001,
-synq_n05_d90_posneg_normal_s1,sinteticas,q2,SUCCESS,26,-7.76189930222,-7.76189154032,0.0109980000001,final=q2 evaluaciones=125 fallidas=0 restricciones_no_soportadas=0 filas=192
-synq_n05_d90_posneg_normal_s1,sinteticas,q2kn,SUCCESS,22,-7.76189463064,-7.76188686874,0.00990000000001,final=q2kn evaluaciones=114 fallidas=0 restricciones_no_soportadas=0 filas=172
-synq_n05_d90_posneg_normal_s1,sinteticas,q2pc,SUCCESS,14,-7.76189962862,-7.76189186672,0.00796500000001,final=q2pc evaluaciones=66 fallidas=0 restricciones_no_soportadas=0 filas=100
 synq_n05_d90_posneg_normal_s2,sinteticas,af2,SUCCESS,1150,-4.86422386422,-4.86421899999,0.464434000001,
 synq_n05_d90_posneg_normal_s2,sinteticas,sh,SUCCESS,270,-4.86422386422,-4.86421899999,0.0935150000001,
-synq_n05_d90_posneg_normal_s2,sinteticas,q2,SUCCESS,66,-4.86422386422,-4.86421899999,0.0443650000001,final=q2 evaluaciones=392 fallidas=0 restricciones_no_soportadas=0 filas=543
-synq_n05_d90_posneg_normal_s2,sinteticas,q2kn,SUCCESS,56,-4.86422386422,-4.86421899999,0.0374940000001,final=q2kn evaluaciones=296 fallidas=0 restricciones_no_soportadas=0 filas=410
-synq_n05_d90_posneg_normal_s2,sinteticas,q2pc,SUCCESS,54,-4.86422386422,-4.86421899999,0.0432930000001,final=q2pc evaluaciones=297 fallidas=0 restricciones_no_soportadas=0 filas=411
 synq_n05_d90_posneg_normal_s3,sinteticas,af2,SUCCESS,1724,-9.22498822498,-9.22497899999,0.427473000001,
 synq_n05_d90_posneg_normal_s3,sinteticas,sh,SUCCESS,344,-9.22498822498,-9.22497899999,0.127645000001,
-synq_n05_d90_posneg_normal_s3,sinteticas,q2,SUCCESS,30,-9.22498822498,-9.22497899999,0.0112880000001,final=q2 evaluaciones=155 fallidas=0 restricciones_no_soportadas=0 filas=212
-synq_n05_d90_posneg_normal_s3,sinteticas,q2kn,SUCCESS,28,-9.22498822498,-9.22497899999,0.0108130000001,final=q2kn evaluaciones=139 fallidas=0 restricciones_no_soportadas=0 filas=191
-synq_n05_d90_posneg_normal_s3,sinteticas,q2pc,SUCCESS,22,-9.22498822498,-9.22497899999,0.00974500000001,final=q2pc evaluaciones=95 fallidas=0 restricciones_no_soportadas=0 filas=131
 synq_n08_d20_pos_normal_s1,sinteticas,af2,TIME,37456,-15.0305479375,-5.25015543749,29.9980100001,
 synq_n08_d20_pos_normal_s1,sinteticas,sh,SUCCESS,16712,-5.25085783958,-5.25085258872,14.7931540001,
-synq_n08_d20_pos_normal_s1,sinteticas,q2,SUCCESS,190,-5.25085448133,-5.25084923047,0.197305000001,final=q2 evaluaciones=1568 fallidas=0 restricciones_no_soportadas=0 filas=2032
-synq_n08_d20_pos_normal_s1,sinteticas,q2kn,SUCCESS,60,-5.25085610833,-5.25085085748,0.0838590000001,final=q2kn evaluaciones=377 fallidas=0 restricciones_no_soportadas=0 filas=554
-synq_n08_d20_pos_normal_s1,sinteticas,q2pc,SUCCESS,58,-5.2508569497,-5.25085169884,0.116196000001,final=q2pc evaluaciones=399 fallidas=0 restricciones_no_soportadas=0 filas=560
 synq_n08_d20_pos_normal_s2,sinteticas,af2,TIME,35110,-16.0159525721,-3.9773924608,29.9989150001,
 synq_n08_d20_pos_normal_s2,sinteticas,sh,TIME,30650,-5.99062418231,-4.15761991934,29.9986550001,
-synq_n08_d20_pos_normal_s2,sinteticas,q2,SUCCESS,1402,-4.1579522212,-4.15794806325,1.23256000001,final=q2 evaluaciones=12454 fallidas=0 restricciones_no_soportadas=0 filas=15289
-synq_n08_d20_pos_normal_s2,sinteticas,q2kn,SUCCESS,702,-4.1579497483,-4.15794559035,0.692327000001,final=q2kn evaluaciones=5831 fallidas=0 restricciones_no_soportadas=0 filas=7196
-synq_n08_d20_pos_normal_s2,sinteticas,q2pc,SUCCESS,528,-4.1579507511,-4.15794659315,1.02436300001,final=q2pc evaluaciones=4462 fallidas=0 restricciones_no_soportadas=0 filas=5505
 synq_n08_d20_pos_normal_s3,sinteticas,af2,TIME,42610,-20.5929579441,-2.38158813434,29.9992560001,
 synq_n08_d20_pos_normal_s3,sinteticas,sh,TIME,30910,-10.9822634073,-2.59214947335,29.9984740001,
-synq_n08_d20_pos_normal_s3,sinteticas,q2,SUCCESS,6622,-2.60572602221,-2.60572341649,5.92017500001,final=q2 evaluaciones=47717 fallidas=0 restricciones_no_soportadas=0 filas=63515
-synq_n08_d20_pos_normal_s3,sinteticas,q2kn,SUCCESS,3690,-2.60572544028,-2.60572283455,3.93997100001,final=q2kn evaluaciones=26508 fallidas=0 restricciones_no_soportadas=0 filas=35611
-synq_n08_d20_pos_normal_s3,sinteticas,q2pc,SUCCESS,2714,-2.6057261248,-2.60572351907,4.34553600001,final=q2pc evaluaciones=20407 fallidas=0 restricciones_no_soportadas=0 filas=27259
 synq_n08_d20_posneg_normal_s1,sinteticas,af2,TIME,36702,-23.4089432748,-8.60294091308,29.9993120001,
 synq_n08_d20_posneg_normal_s1,sinteticas,sh,SUCCESS,31634,-8.60295135549,-8.60294275254,27.4413980001,
-synq_n08_d20_posneg_normal_s1,sinteticas,q2,SUCCESS,228,-8.6029500528,-8.60294144985,0.258132000001,final=q2 evaluaciones=2020 fallidas=0 restricciones_no_soportadas=0 filas=2524
-synq_n08_d20_posneg_normal_s1,sinteticas,q2kn,SUCCESS,242,-8.60295135191,-8.60294274896,0.239427000001,final=q2kn evaluaciones=1851 fallidas=0 restricciones_no_soportadas=0 filas=2325
-synq_n08_d20_posneg_normal_s1,sinteticas,q2pc,SUCCESS,200,-8.60294505697,-8.6029434657,0.305130000001,final=q2pc evaluaciones=1506 fallidas=0 restricciones_no_soportadas=0 filas=1882
 synq_n08_d20_posneg_normal_s2,sinteticas,af2,TIME,34552,-16.7579181693,-6.03027105186,29.9996170001,
 synq_n08_d20_posneg_normal_s2,sinteticas,sh,TIME,31902,-8.84981834178,-6.66081337029,29.9991200001,
-synq_n08_d20_posneg_normal_s2,sinteticas,q2,SUCCESS,238,-6.66081999954,-6.66081333872,0.232001000001,final=q2 evaluaciones=1962 fallidas=0 restricciones_no_soportadas=0 filas=2396
-synq_n08_d20_posneg_normal_s2,sinteticas,q2kn,SUCCESS,226,-6.6608200308,-6.66081336998,0.238071000001,final=q2kn evaluaciones=2016 fallidas=0 restricciones_no_soportadas=0 filas=2463
-synq_n08_d20_posneg_normal_s2,sinteticas,q2pc,SUCCESS,198,-6.66082003124,-6.66081337042,0.410772000001,final=q2pc evaluaciones=1827 fallidas=0 restricciones_no_soportadas=0 filas=2228
 synq_n08_d20_posneg_normal_s3,sinteticas,af2,TIME,33188,-14.405950884,-5.32904187459,29.9986040001,
 synq_n08_d20_posneg_normal_s3,sinteticas,sh,TIME,27438,-7.71707798453,-5.46355878576,29.9992020001,
-synq_n08_d20_posneg_normal_s3,sinteticas,q2,SUCCESS,462,-5.49554897056,-5.49554347501,0.530682000001,final=q2 evaluaciones=4797 fallidas=0 restricciones_no_soportadas=0 filas=5867
-synq_n08_d20_posneg_normal_s3,sinteticas,q2kn,SUCCESS,272,-5.49554889536,-5.49554339981,0.353208000001,final=q2kn evaluaciones=2996 fallidas=0 restricciones_no_soportadas=0 filas=3683
-synq_n08_d20_posneg_normal_s3,sinteticas,q2pc,SUCCESS,224,-5.49554778105,-5.49554228551,0.443791000001,final=q2pc evaluaciones=2228 fallidas=0 restricciones_no_soportadas=0 filas=2748
 synq_n08_d50_pos_normal_s1,sinteticas,af2,TIME,32776,-15.9279018007,-2.90551411297,29.9990750001,
 synq_n08_d50_pos_normal_s1,sinteticas,sh,SUCCESS,27058,-3.39700617739,-3.39700278038,29.2734150001,
-synq_n08_d50_pos_normal_s1,sinteticas,q2,SUCCESS,1624,-3.39700636017,-3.39700296316,2.03746000001,final=q2 evaluaciones=15371 fallidas=0 restricciones_no_soportadas=0 filas=18826
-synq_n08_d50_pos_normal_s1,sinteticas,q2kn,SUCCESS,588,-3.39700363098,-3.39700023398,0.781759000001,final=q2kn evaluaciones=5566 fallidas=0 restricciones_no_soportadas=0 filas=6795
-synq_n08_d50_pos_normal_s1,sinteticas,q2pc,SUCCESS,606,-3.39700637044,-3.39700297343,1.38599100001,final=q2pc evaluaciones=5791 fallidas=0 restricciones_no_soportadas=0 filas=7054
 synq_n08_d50_pos_normal_s2,sinteticas,af2,TIME,42854,-20.7510149375,-3.50575603124,29.9984190001,
 synq_n08_d50_pos_normal_s2,sinteticas,sh,TIME,32654,-12.5192911772,-3.50575603124,29.9992710001,
-synq_n08_d50_pos_normal_s2,sinteticas,q2,SUCCESS,1896,-3.50973011128,-3.50972660155,1.65840400001,final=q2 evaluaciones=16888 fallidas=0 restricciones_no_soportadas=0 filas=20970
-synq_n08_d50_pos_normal_s2,sinteticas,q2kn,SUCCESS,474,-3.50972875101,-3.50972524129,0.441070000001,final=q2kn evaluaciones=3844 fallidas=0 restricciones_no_soportadas=0 filas=4872
-synq_n08_d50_pos_normal_s2,sinteticas,q2pc,SUCCESS,580,-3.50973059057,-3.50972708083,0.957629000001,final=q2pc evaluaciones=4846 fallidas=0 restricciones_no_soportadas=0 filas=6083
 synq_n08_d50_pos_normal_s3,sinteticas,af2,TIME,43706,-35.7378852444,-3.85895175461,29.9997870001,
 synq_n08_d50_pos_normal_s3,sinteticas,sh,TIME,33430,-20.6161087209,-4.51310597936,29.9984960001,
-synq_n08_d50_pos_normal_s3,sinteticas,q2,SUCCESS,2972,-4.54381237809,-4.54380783427,3.24399800001,final=q2 evaluaciones=29725 fallidas=0 restricciones_no_soportadas=0 filas=36798
-synq_n08_d50_pos_normal_s3,sinteticas,q2kn,SUCCESS,1060,-4.54381184765,-4.54380730383,1.21033500001,final=q2kn evaluaciones=10691 fallidas=0 restricciones_no_soportadas=0 filas=13452
-synq_n08_d50_pos_normal_s3,sinteticas,q2pc,SUCCESS,1306,-4.54381102824,-4.54380648443,2.39240200001,final=q2pc evaluaciones=13375 fallidas=0 restricciones_no_soportadas=0 filas=16640
 synq_n08_d50_posneg_normal_s1,sinteticas,af2,SUCCESS,15194,-11.2669818815,-11.2669706145,12.0039910001,
 synq_n08_d50_posneg_normal_s1,sinteticas,sh,SUCCESS,698,-11.2669854959,-11.2669742289,0.660995000001,
-synq_n08_d50_posneg_normal_s1,sinteticas,q2,SUCCESS,64,-11.2669862614,-11.2669749944,0.0669990000001,final=q2 evaluaciones=490 fallidas=0 restricciones_no_soportadas=0 filas=609
-synq_n08_d50_posneg_normal_s1,sinteticas,q2kn,SUCCESS,62,-11.2669830471,-11.2669717801,0.0626370000001,final=q2kn evaluaciones=439 fallidas=0 restricciones_no_soportadas=0 filas=552
-synq_n08_d50_posneg_normal_s1,sinteticas,q2pc,SUCCESS,48,-11.2669849012,-11.2669736343,0.0774350000001,final=q2pc evaluaciones=373 fallidas=0 restricciones_no_soportadas=0 filas=466
 synq_n08_d50_posneg_normal_s2,sinteticas,af2,TIME,35074,-10.8331061636,-5.51563380145,29.9995260001,
 synq_n08_d50_posneg_normal_s2,sinteticas,sh,SUCCESS,5562,-5.51563931709,-5.51563380145,4.23441300001,
-synq_n08_d50_posneg_normal_s2,sinteticas,q2,SUCCESS,732,-5.51563999247,-5.51563447683,0.663891000001,final=q2 evaluaciones=6617 fallidas=0 restricciones_no_soportadas=0 filas=8070
-synq_n08_d50_posneg_normal_s2,sinteticas,q2kn,SUCCESS,512,-5.51563985455,-5.51563433891,0.521652000001,final=q2kn evaluaciones=4552 fallidas=0 restricciones_no_soportadas=0 filas=5550
-synq_n08_d50_posneg_normal_s2,sinteticas,q2pc,SUCCESS,298,-5.51563733151,-5.51563181587,0.470225000001,final=q2pc evaluaciones=2814 fallidas=0 restricciones_no_soportadas=0 filas=3425
 synq_n08_d50_posneg_normal_s3,sinteticas,af2,TIME,36030,-27.3838524375,-10.4698659999,29.9987510001,
 synq_n08_d50_posneg_normal_s3,sinteticas,sh,TIME,30912,-18.4408611103,-10.4698659999,29.9989430001,
-synq_n08_d50_posneg_normal_s3,sinteticas,q2,SUCCESS,210,-10.4698764698,-10.4698659999,0.202201000001,final=q2 evaluaciones=2052 fallidas=0 restricciones_no_soportadas=0 filas=2476
-synq_n08_d50_posneg_normal_s3,sinteticas,q2kn,SUCCESS,210,-10.4698764698,-10.4698659999,0.221464000001,final=q2kn evaluaciones=2070 fallidas=0 restricciones_no_soportadas=0 filas=2498
-synq_n08_d50_posneg_normal_s3,sinteticas,q2pc,SUCCESS,156,-10.4698764698,-10.4698659999,0.232776000001,final=q2pc evaluaciones=1529 fallidas=0 restricciones_no_soportadas=0 filas=1846
 synq_n08_d90_pos_normal_s1,sinteticas,af2,TIME,34896,-23.6242303038,-6.18065648334,29.9991870001,
 synq_n08_d90_pos_normal_s1,sinteticas,sh,SUCCESS,18744,-7.47804208039,-7.47803460235,17.1096870001,
-synq_n08_d90_pos_normal_s1,sinteticas,q2,SUCCESS,2716,-7.4780411123,-7.47803363426,2.02817800001,final=q2 evaluaciones=22768 fallidas=0 restricciones_no_soportadas=0 filas=28184
-synq_n08_d90_pos_normal_s1,sinteticas,q2kn,SUCCESS,1454,-7.47803838262,-7.47803090458,1.57504100001,final=q2kn evaluaciones=11996 fallidas=0 restricciones_no_soportadas=0 filas=14921
-synq_n08_d90_pos_normal_s1,sinteticas,q2pc,SUCCESS,1424,-7.47803526479,-7.47802778676,2.98143700001,final=q2pc evaluaciones=11685 fallidas=0 restricciones_no_soportadas=0 filas=14515
 synq_n08_d90_pos_normal_s2,sinteticas,af2,TIME,38526,-29.9693762784,-7.18525781249,29.9988740001,
 synq_n08_d90_pos_normal_s2,sinteticas,sh,TIME,31620,-13.4536856661,-7.18531260137,29.9989940001,
-synq_n08_d90_pos_normal_s2,sinteticas,q2,SUCCESS,1854,-7.18531950024,-7.18531231492,1.42742000001,final=q2 evaluaciones=17558 fallidas=0 restricciones_no_soportadas=0 filas=21391
-synq_n08_d90_pos_normal_s2,sinteticas,q2kn,SUCCESS,814,-7.18531895378,-7.18531176846,0.757516000001,final=q2kn evaluaciones=7107 fallidas=0 restricciones_no_soportadas=0 filas=8706
-synq_n08_d90_pos_normal_s2,sinteticas,q2pc,SUCCESS,1094,-7.18531501433,-7.18530782902,2.22513200001,final=q2pc evaluaciones=9398 fallidas=0 restricciones_no_soportadas=0 filas=11526
 synq_n08_d90_pos_normal_s3,sinteticas,af2,TIME,35010,-19.7529432731,-6.75691499999,29.9988640001,
 synq_n08_d90_pos_normal_s3,sinteticas,sh,SUCCESS,24450,-7.54062000506,-7.54061246444,22.7290920001,
-synq_n08_d90_pos_normal_s3,sinteticas,q2,SUCCESS,1208,-7.54062028686,-7.54061274624,1.18234600001,final=q2 evaluaciones=10944 fallidas=0 restricciones_no_soportadas=0 filas=13385
-synq_n08_d90_pos_normal_s3,sinteticas,q2kn,SUCCESS,564,-7.54061858371,-7.54061104309,0.635956000001,final=q2kn evaluaciones=4790 fallidas=0 restricciones_no_soportadas=0 filas=5899
-synq_n08_d90_pos_normal_s3,sinteticas,q2pc,SUCCESS,596,-7.54061549728,-7.54061128966,1.65399600001,final=q2pc evaluaciones=5240 fallidas=0 restricciones_no_soportadas=0 filas=6432
 synq_n08_d90_posneg_normal_s1,sinteticas,af2,TIME,34464,-21.0943656875,-14.4123270171,29.9984130001,
 synq_n08_d90_posneg_normal_s1,sinteticas,sh,SUCCESS,2302,-15.4546430964,-15.4546276418,2.13540000001,
-synq_n08_d90_posneg_normal_s1,sinteticas,q2,SUCCESS,344,-15.4546426334,-15.4546271787,0.344459000001,final=q2 evaluaciones=3010 fallidas=0 restricciones_no_soportadas=0 filas=3642
-synq_n08_d90_posneg_normal_s1,sinteticas,q2kn,SUCCESS,334,-15.4546431511,-15.4546276965,0.324644000001,final=q2kn evaluaciones=2548 fallidas=0 restricciones_no_soportadas=0 filas=3122
-synq_n08_d90_posneg_normal_s1,sinteticas,q2pc,SUCCESS,246,-15.4546430676,-15.454627613,0.517815000001,final=q2pc evaluaciones=2063 fallidas=0 restricciones_no_soportadas=0 filas=2508
 synq_n08_d90_posneg_normal_s2,sinteticas,af2,TIME,35002,-35.4236658125,-18.6072559999,29.9983250001,
 synq_n08_d90_posneg_normal_s2,sinteticas,sh,SUCCESS,12374,-19.6711751486,-19.6711554774,10.8769070001,
-synq_n08_d90_posneg_normal_s2,sinteticas,q2,SUCCESS,100,-19.6711745187,-19.6711548476,0.105133000001,final=q2 evaluaciones=790 fallidas=0 restricciones_no_soportadas=0 filas=971
-synq_n08_d90_posneg_normal_s2,sinteticas,q2kn,SUCCESS,136,-19.6711755839,-19.6711559128,0.147582000001,final=q2kn evaluaciones=1023 fallidas=0 restricciones_no_soportadas=0 filas=1290
-synq_n08_d90_posneg_normal_s2,sinteticas,q2pc,SUCCESS,100,-19.6711755846,-19.6711559134,0.210824000001,final=q2pc evaluaciones=780 fallidas=0 restricciones_no_soportadas=0 filas=985
 synq_n08_d90_posneg_normal_s3,sinteticas,af2,TIME,39906,-39.2034769807,-10.6100038264,29.9991370001,
 synq_n08_d90_posneg_normal_s3,sinteticas,sh,TIME,27508,-21.7160894493,-11.1404135997,29.9987880001,
-synq_n08_d90_posneg_normal_s3,sinteticas,q2,SUCCESS,1018,-11.5007512438,-11.500739743,1.06279200001,final=q2 evaluaciones=9513 fallidas=0 restricciones_no_soportadas=0 filas=11618
-synq_n08_d90_posneg_normal_s3,sinteticas,q2kn,SUCCESS,850,-11.5007523401,-11.5007408393,0.968922000001,final=q2kn evaluaciones=7716 fallidas=0 restricciones_no_soportadas=0 filas=9439
-synq_n08_d90_posneg_normal_s3,sinteticas,q2pc,SUCCESS,742,-11.5007490664,-11.5007375657,1.40506700001,final=q2pc evaluaciones=6572 fallidas=0 restricciones_no_soportadas=0 filas=8028
 synq_n10_d20_pos_normal_s1,sinteticas,af2,TIME,27540,-26.049810787,-6.38052248279,29.9997930001,
 synq_n10_d20_pos_normal_s1,sinteticas,sh,TIME,21376,-13.9910902408,-7.23516127379,29.9988620001,
-synq_n10_d20_pos_normal_s1,sinteticas,q2,SUCCESS,810,-7.26860322172,-7.26859595312,1.07611500001,final=q2 evaluaciones=8304 fallidas=0 restricciones_no_soportadas=0 filas=10094
-synq_n10_d20_pos_normal_s1,sinteticas,q2kn,SUCCESS,468,-7.2685999556,-7.268592687,0.743290000001,final=q2kn evaluaciones=4257 fallidas=0 restricciones_no_soportadas=0 filas=5314
-synq_n10_d20_pos_normal_s1,sinteticas,q2pc,SUCCESS,450,-7.26860115298,-7.26859388438,1.32281500001,final=q2pc evaluaciones=4007 fallidas=0 restricciones_no_soportadas=0 filas=4997
 synq_n10_d20_pos_normal_s2,sinteticas,af2,TIME,23028,-20.1526637847,-1.76851364066,29.9987560001,
 synq_n10_d20_pos_normal_s2,sinteticas,sh,TIME,18886,-7.84088771056,-2.11587971731,29.9974580001,
-synq_n10_d20_pos_normal_s2,sinteticas,q2,SUCCESS,7044,-2.24416457768,-2.24416233351,8.85042400001,final=q2 evaluaciones=82323 fallidas=0 restricciones_no_soportadas=0 filas=96766
-synq_n10_d20_pos_normal_s2,sinteticas,q2kn,SUCCESS,1626,-2.24416370228,-2.24416145812,2.41341000001,final=q2kn evaluaciones=17936 fallidas=0 restricciones_no_soportadas=0 filas=21342
-synq_n10_d20_pos_normal_s2,sinteticas,q2pc,SUCCESS,902,-2.24416492165,-2.24416267749,2.89199900001,final=q2pc evaluaciones=9756 fallidas=0 restricciones_no_soportadas=0 filas=11723
 synq_n10_d20_pos_normal_s3,sinteticas,af2,TIME,26358,-55.5633820748,-7.01841859619,29.9995540001,
 synq_n10_d20_pos_normal_s3,sinteticas,sh,TIME,25076,-31.3951089974,-7.37914229343,29.9991620001,
-synq_n10_d20_pos_normal_s3,sinteticas,q2,SUCCESS,4402,-7.38486368015,-7.38485629529,5.21860200001,final=q2 evaluaciones=41772 fallidas=0 restricciones_no_soportadas=0 filas=52271
-synq_n10_d20_pos_normal_s3,sinteticas,q2kn,SUCCESS,1672,-7.38486405292,-7.38485666806,2.36158500001,final=q2kn evaluaciones=13903 fallidas=0 restricciones_no_soportadas=0 filas=18121
-synq_n10_d20_pos_normal_s3,sinteticas,q2pc,SUCCESS,1618,-7.3848629705,-7.38485558563,4.06504700001,final=q2pc evaluaciones=14702 fallidas=0 restricciones_no_soportadas=0 filas=18866
 synq_n10_d20_posneg_normal_s1,sinteticas,af2,TIME,28008,-53.50380025,-9.40528377049,29.9994610001,
 synq_n10_d20_posneg_normal_s1,sinteticas,sh,TIME,25866,-38.9602235936,-9.71926480576,29.9989340001,
-synq_n10_d20_posneg_normal_s1,sinteticas,q2,SUCCESS,384,-9.76262163843,-9.76261187581,0.536710000001,final=q2 evaluaciones=4028 fallidas=0 restricciones_no_soportadas=0 filas=4863
-synq_n10_d20_posneg_normal_s1,sinteticas,q2kn,SUCCESS,278,-9.76262972323,-9.7626199606,0.427229000001,final=q2kn evaluaciones=2749 fallidas=0 restricciones_no_soportadas=0 filas=3350
-synq_n10_d20_posneg_normal_s1,sinteticas,q2pc,SUCCESS,244,-9.76262414394,-9.76261438132,0.739211000001,final=q2pc evaluaciones=2345 fallidas=0 restricciones_no_soportadas=0 filas=2866
 synq_n10_d20_posneg_normal_s2,sinteticas,af2,TIME,23418,-33.6422867457,-10.526639287,29.9967920001,
 synq_n10_d20_posneg_normal_s2,sinteticas,sh,TIME,19172,-22.7404370251,-11.0663260437,29.9985070001,
-synq_n10_d20_posneg_normal_s2,sinteticas,q2,SUCCESS,504,-11.0663371101,-11.0663260437,0.692335000001,final=q2 evaluaciones=4708 fallidas=0 restricciones_no_soportadas=0 filas=5574
-synq_n10_d20_posneg_normal_s2,sinteticas,q2kn,SUCCESS,460,-11.0663371101,-11.0663260437,0.703934000001,final=q2kn evaluaciones=4391 fallidas=0 restricciones_no_soportadas=0 filas=5170
-synq_n10_d20_posneg_normal_s2,sinteticas,q2pc,SUCCESS,418,-11.0663371101,-11.0663260437,1.37688800001,final=q2pc evaluaciones=4035 fallidas=0 restricciones_no_soportadas=0 filas=4759
 synq_n10_d20_posneg_normal_s3,sinteticas,af2,TIME,27530,-52.6059505,-8.83386448033,29.9997060001,
 synq_n10_d20_posneg_normal_s3,sinteticas,sh,TIME,22886,-31.7192421457,-10.1154693889,29.9994810001,
-synq_n10_d20_posneg_normal_s3,sinteticas,q2,SUCCESS,506,-10.1363770169,-10.1363668805,0.690682000001,final=q2 evaluaciones=5644 fallidas=0 restricciones_no_soportadas=0 filas=6664
-synq_n10_d20_posneg_normal_s3,sinteticas,q2kn,SUCCESS,414,-10.1363770123,-10.136366876,0.559332000001,final=q2kn evaluaciones=3958 fallidas=0 restricciones_no_soportadas=0 filas=4731
-synq_n10_d20_posneg_normal_s3,sinteticas,q2pc,SUCCESS,312,-10.1363768902,-10.1363667538,1.18700800001,final=q2pc evaluaciones=3050 fallidas=0 restricciones_no_soportadas=0 filas=3614
+synq_n10_d50_pos_normal_s1,sinteticas,af2,TIME,29590,-58.1355105625,-12.0542276317,29.9988300001,
+synq_n10_d50_pos_normal_s1,sinteticas,sh,TIME,25082,-35.5863454707,-13.110086492,29.9973880001,
+synq_n10_d50_pos_normal_s2,sinteticas,af2,TIME,28768,-117.023628812,-11.4675147205,29.9994180001,
+synq_n10_d50_pos_normal_s2,sinteticas,sh,TIME,27628,-59.3987556497,-11.7647830915,29.9982050001,
+synq_n10_d50_pos_normal_s3,sinteticas,af2,TIME,26992,-36.285686625,-7.57977434618,29.9985860001,
+synq_n10_d50_pos_normal_s3,sinteticas,sh,TIME,24008,-19.7643382245,-8.28735676444,29.9976030001,
+synq_n10_d50_posneg_normal_s1,sinteticas,af2,TIME,28638,-42.2080873818,-17.6251143526,29.9998330001,
+synq_n10_d50_posneg_normal_s1,sinteticas,sh,TIME,21872,-35.1804811507,-18.1828793637,29.9976940001,
+synq_n10_d50_posneg_normal_s2,sinteticas,af2,TIME,24860,-60.2808716273,-7.49986561814,29.9989800001,
+synq_n10_d50_posneg_normal_s2,sinteticas,sh,TIME,21734,-41.3708045818,-8.04975891037,29.9991090001,
+synq_n10_d50_posneg_normal_s3,sinteticas,af2,TIME,29002,-37.0437063682,-16.36974669,29.9984800001,
+synq_n10_d50_posneg_normal_s3,sinteticas,sh,TIME,21520,-28.0734829115,-18.2713231621,29.9978870001,
+synq_n10_d90_pos_normal_s1,sinteticas,af2,TIME,26400,-64.419739875,-6.39617189617,29.9993330001,
+synq_n10_d90_pos_normal_s1,sinteticas,sh,TIME,22354,-31.4367699124,-9.33950028949,29.9981690001,
+synq_n10_d90_pos_normal_s2,sinteticas,af2,TIME,26950,-74.6183671246,-9.6495406802,29.9988790001,
+synq_n10_d90_pos_normal_s2,sinteticas,sh,TIME,21860,-37.2566390027,-14.2769107404,29.9992440001,
+synq_n10_d90_pos_normal_s3,sinteticas,af2,TIME,26486,-102.764773187,-11.5890442731,29.9979240001,
+synq_n10_d90_pos_normal_s3,sinteticas,sh,TIME,23422,-53.5526676795,-12.8565580737,29.9993000001,
+synq_n10_d90_posneg_normal_s1,sinteticas,af2,TIME,27024,-82.4216490625,-13.5962304954,29.9978450001,
+synq_n10_d90_posneg_normal_s1,sinteticas,sh,TIME,22536,-45.3241046549,-15.6351095995,29.9997710001,
+synq_n10_d90_posneg_normal_s2,sinteticas,af2,TIME,26262,-47.6994238523,-16.177679481,29.9969620001,
+synq_n10_d90_posneg_normal_s2,sinteticas,sh,TIME,21148,-31.8142125794,-17.3078921607,29.9979590001,
+synq_n10_d90_posneg_normal_s3,sinteticas,af2,TIME,24950,-62.1873435625,-29.3188879999,29.9987690001,
+synq_n10_d90_posneg_normal_s3,sinteticas,sh,TIME,23814,-35.8944342326,-29.3188879999,29.9984710001,
+fqf_n10_d010_cero_s1,instancias_fqf,af2,SUCCESS,6,-7.928007928,-7.92799999999,0.003398,
+fqf_n10_d010_cero_s1,instancias_fqf,sh,SUCCESS,6,-7.928007928,-7.92799999999,0.00341800000001,
+fqf_n10_d010_cero_s2,instancias_fqf,af2,SUCCESS,4,-14.131014131,-14.1309999999,0.001311,
+fqf_n10_d010_cero_s2,instancias_fqf,sh,SUCCESS,4,-14.131014131,-14.1309999999,0.000956000000001,
+fqf_n10_d010_cero_s3,instancias_fqf,af2,SUCCESS,4,-7.168007168,-7.16799999999,0.000506000000001,
+fqf_n10_d010_cero_s3,instancias_fqf,sh,SUCCESS,4,-7.168007168,-7.16799999999,0.00047,
+fqf_n10_d010_mixta_s1,instancias_fqf,af2,SUCCESS,32,-11.5075752211,-11.5075637135,0.0154250000001,
+fqf_n10_d010_mixta_s1,instancias_fqf,sh,SUCCESS,32,-11.5075752211,-11.5075637135,0.0140380000001,
+fqf_n10_d010_mixta_s2,instancias_fqf,af2,SUCCESS,52,-8.63264388388,-8.63263525123,0.0241480000001,
+fqf_n10_d010_mixta_s2,instancias_fqf,sh,SUCCESS,52,-8.63264388388,-8.63263525123,0.0289980000001,
+fqf_n10_d010_mixta_s3,instancias_fqf,af2,SUCCESS,24,-8.25644510893,-8.25643685248,0.00881900000001,
+fqf_n10_d010_mixta_s3,instancias_fqf,sh,SUCCESS,24,-8.25644510893,-8.25643685248,0.00902000000001,
+fqf_n10_d010_pos_s1,instancias_fqf,af2,SUCCESS,582,-3.44769554264,-3.44769209494,0.139110000001,
+fqf_n10_d010_pos_s1,instancias_fqf,sh,SUCCESS,582,-3.44769554264,-3.44769209494,0.143760000001,
+fqf_n10_d010_pos_s2,instancias_fqf,af2,SUCCESS,144,-4.73578628146,-4.73578154567,0.0592300000001,
+fqf_n10_d010_pos_s2,instancias_fqf,sh,SUCCESS,138,-4.73578628146,-4.73578154567,0.0353920000001,
+fqf_n10_d010_pos_s3,instancias_fqf,af2,SUCCESS,202,-4.55241840857,-4.55241385615,0.0812970000001,
+fqf_n10_d010_pos_s3,instancias_fqf,sh,SUCCESS,202,-4.55241840857,-4.55241385615,0.0803110000001,
+fqf_n10_d030_cero_s1,instancias_fqf,af2,SUCCESS,42,-12.375012375,-12.3749999999,0.0119530000001,
+fqf_n10_d030_cero_s1,instancias_fqf,sh,SUCCESS,42,-12.375012375,-12.3749999999,0.012017,
+fqf_n10_d030_cero_s2,instancias_fqf,af2,SUCCESS,56,-14.801014801,-14.8009999999,0.0148640000001,
+fqf_n10_d030_cero_s2,instancias_fqf,sh,SUCCESS,56,-14.801014801,-14.8009999999,0.0150320000001,
+fqf_n10_d030_cero_s3,instancias_fqf,af2,SUCCESS,20,-16.016016016,-16.0159999999,0.00564700000001,
+fqf_n10_d030_cero_s3,instancias_fqf,sh,SUCCESS,20,-16.016016016,-16.0159999999,0.00579500000001,
+fqf_n10_d030_mixta_s1,instancias_fqf,af2,SUCCESS,200,-14.1109516809,-14.1109375699,0.0675770000001,
+fqf_n10_d030_mixta_s1,instancias_fqf,sh,SUCCESS,200,-14.1109516809,-14.1109375699,0.0679720000001,
+fqf_n10_d030_mixta_s2,instancias_fqf,af2,SUCCESS,90,-26.3637254564,-26.3636990927,0.0403210000001,
+fqf_n10_d030_mixta_s2,instancias_fqf,sh,SUCCESS,90,-26.3637254564,-26.3636990927,0.0390920000001,
+fqf_n10_d030_mixta_s3,instancias_fqf,af2,SUCCESS,1660,-14.3524310755,-14.352416723,0.627124000001,
+fqf_n10_d030_mixta_s3,instancias_fqf,sh,SUCCESS,1660,-14.3524310755,-14.352416723,0.624309000001,
+fqf_n10_d030_pos_s1,instancias_fqf,af2,SUCCESS,36896,-3.12253039812,-3.12252727558,17.6824840001,
+fqf_n10_d030_pos_s1,instancias_fqf,sh,SUCCESS,36896,-3.12253039812,-3.12252727558,19.9812260001,
+fqf_n10_d030_pos_s2,instancias_fqf,af2,SUCCESS,7640,-4.19226422058,-4.19226002832,1.81344100001,
+fqf_n10_d030_pos_s2,instancias_fqf,sh,SUCCESS,7640,-4.19226422058,-4.19226002832,2.08560800001,
+fqf_n10_d030_pos_s3,instancias_fqf,af2,SUCCESS,7282,-4.72853382156,-4.72852909302,2.77316700001,
+fqf_n10_d030_pos_s3,instancias_fqf,sh,SUCCESS,7282,-4.72853382156,-4.72852909302,2.45671400001,
+fqf_n10_d100_cero_s1,instancias_fqf,af2,SUCCESS,330,-27.383027383,-27.3829999999,0.201216000001,
+fqf_n10_d100_cero_s1,instancias_fqf,sh,SUCCESS,330,-27.383027383,-27.3829999999,0.210405000001,
+fqf_n10_d100_cero_s2,instancias_fqf,af2,SUCCESS,730,-27.802027802,-27.8019999999,0.313134000001,
+fqf_n10_d100_cero_s2,instancias_fqf,sh,SUCCESS,730,-27.802027802,-27.8019999999,0.359142000001,
+fqf_n10_d100_cero_s3,instancias_fqf,af2,SUCCESS,432,-26.755026755,-26.7549999999,0.156803000001,
+fqf_n10_d100_cero_s3,instancias_fqf,sh,SUCCESS,432,-26.755026755,-26.7549999999,0.160658000001,
+fqf_n10_d100_mixta_s1,instancias_fqf,af2,SUCCESS,2070,-25.8560568807,-25.8560310247,0.808997000001,
+fqf_n10_d100_mixta_s1,instancias_fqf,sh,SUCCESS,2070,-25.8560568807,-25.8560310247,0.831520000001,
+fqf_n10_d100_mixta_s2,instancias_fqf,af2,SUCCESS,6018,-27.1523929967,-27.1523658443,2.56041100001,
+fqf_n10_d100_mixta_s2,instancias_fqf,sh,SUCCESS,6018,-27.1523929967,-27.1523658443,2.27108900001,
+fqf_n10_d100_mixta_s3,instancias_fqf,af2,SUCCESS,4592,-32.8674982649,-32.8674653974,2.05634300001,
+fqf_n10_d100_mixta_s3,instancias_fqf,sh,SUCCESS,4592,-32.8674982649,-32.8674653974,2.16417500001,
+fqf_n10_d100_pos_s1,instancias_fqf,af2,TIME,66424,-9.2364375,-4.55025877988,29.9999640001,
+fqf_n10_d100_pos_s1,instancias_fqf,sh,TIME,73216,-8.776,-4.55025877988,29.9994570001,
+fqf_n10_d100_pos_s2,instancias_fqf,af2,TIME,65238,-11.269125,-0.561819997641,29.9996040001,
+fqf_n10_d100_pos_s2,instancias_fqf,sh,TIME,66268,-11.17575,-0.561819997641,29.9992840001,
+fqf_n10_d100_pos_s3,instancias_fqf,af2,TIME,69180,-11.9084487602,-1.15347521447,29.9999960001,
+fqf_n10_d100_pos_s3,instancias_fqf,sh,TIME,70616,-11.9084487602,-1.15347521448,29.9989510001,
+fqf_n20_d010_cero_s1,instancias_fqf,af2,SUCCESS,154,-21.286021286,-21.2859999999,0.142350000001,
+fqf_n20_d010_cero_s1,instancias_fqf,sh,SUCCESS,154,-21.286021286,-21.2859999999,0.139201000001,
+fqf_n20_d010_cero_s2,instancias_fqf,af2,SUCCESS,202,-19.351019351,-19.3509999999,0.119299000001,
+fqf_n20_d010_cero_s2,instancias_fqf,sh,SUCCESS,202,-19.351019351,-19.3509999999,0.112622000001,
+fqf_n20_d010_cero_s3,instancias_fqf,af2,SUCCESS,420,-22.128022128,-22.1279999999,0.212657000001,
+fqf_n20_d010_cero_s3,instancias_fqf,sh,SUCCESS,420,-22.128022128,-22.1279999999,0.153113000001,
+fqf_n20_d010_mixta_s1,instancias_fqf,af2,SUCCESS,758,-22.8391910866,-22.8391682474,0.667824000001,
+fqf_n20_d010_mixta_s1,instancias_fqf,sh,SUCCESS,758,-22.8391910866,-22.8391682474,0.702847000001,
+fqf_n20_d010_mixta_s2,instancias_fqf,af2,SUCCESS,1800,-17.5808272387,-17.5808096579,8.05014400001,
+fqf_n20_d010_mixta_s2,instancias_fqf,sh,SUCCESS,1800,-17.5808272387,-17.5808096579,8.11595900001,
+fqf_n20_d010_mixta_s3,instancias_fqf,af2,SUCCESS,304,-33.595033595,-33.5949999999,0.252772000001,
+fqf_n20_d010_mixta_s3,instancias_fqf,sh,SUCCESS,304,-33.595033595,-33.5949999999,0.248541000001,
+fqf_n20_d010_pos_s1,instancias_fqf,af2,TIME,65724,-11.1315649265,-8.52949999999,29.9988060001,
+fqf_n20_d010_pos_s1,instancias_fqf,sh,TIME,58050,-11.1315649265,-8.52949999999,29.9994830001,
+fqf_n20_d010_pos_s2,instancias_fqf,af2,TIME,54030,-8.67169740172,-7.0639087764,29.9875550001,
+fqf_n20_d010_pos_s2,instancias_fqf,sh,TIME,54062,-8.67169740172,-7.07322485749,29.9990890001,
+fqf_n20_d010_pos_s3,instancias_fqf,af2,TIME,51486,-19.5805702759,-12.5724999999,29.9993560001,
+fqf_n20_d010_pos_s3,instancias_fqf,sh,TIME,50226,-19.5805702759,-12.5724999999,29.9992470001,

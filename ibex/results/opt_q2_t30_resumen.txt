@@ -1,0 +1,32 @@
+coherencia de f*: 0 casos con cota inferior por encima de la mejor cota superior
+
+## ibex medium+hard y coconut: 41 instancias; resueltas por todas (cpu af2 >= 0,05 s): 24
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 28 | 1.000 | 1.000 | 1252 |
+| sh | 29 | 1.039 | 0.998 | 1304 |
+| q2 | 27 | 1.121 | 1.059 | 1324 |
+| q2kn | 28 | 1.107 | 1.135 | 1221 |
+| q2pc | 26 | 1.090 | 1.313 | 1040 |
+
+## synq: 78 instancias; resueltas por todas (cpu af2 >= 0,05 s): 27
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 42 | 1.000 | 1.000 | 3258 |
+| sh | 51 | 0.203 | 0.227 | 2915 |
+| q2 | 78 | 0.028 | 0.042 | 2176 |
+| q2kn | 78 | 0.019 | 0.030 | 2045 |
+| q2pc | 77 | 0.018 | 0.033 | 1777 |
+
+## fqf: 54 instancias; resueltas por todas (cpu af2 >= 0,05 s): 0
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 0 | nan | nan | nan |
+| sh | 0 | nan | nan | nan |
+| q2 | 0 | nan | nan | nan |
+| q2kn | 0 | nan | nan | nan |
+| q2pc | 0 | nan | nan | nan |
+

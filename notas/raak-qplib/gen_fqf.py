@@ -48,7 +48,8 @@ def write_bch(path, Q, c):
             if Q[i, j]: terms.append(f"{2 * Q[i, j]:+.3f}*x{i + 1}*x{j + 1}")
     terms += [f"{c[i]:+.3f}*x{i + 1}" for i in range(n) if c[i]]
     var = "\n".join(f"x{i + 1} in [-1, 1];" for i in range(n))
-    Path(path).write_text(f"variables\n{var}\n\nminimize\n" + " ".join(terms) + ";\n\nend\n")
+    obj = " ".join(terms).lstrip("+")          # Minibex no acepta un '+' unario al comienzo
+    Path(path).write_text(f"variables\n{var}\n\nminimize\n" + obj + ";\n\nconstraints\n\nend\n")   # ibexopt exige la seccion
 
 
 def load(path):

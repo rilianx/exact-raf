@@ -4,9 +4,11 @@
 //   F = c + a^T z + z^T Q z,   z = (eps de las variables, simbolos de error nuevos) en [-1,1]
 //
 // Producto: se conserva todo el grado 2; cada parte cuadratica q se separa como q = m + qhat (m = centro de su
-// rango) y el resto de grado 3-4 se acota con qhat y pasa a un simbolo de error nuevo. Funciones: min-range
-// (exp, log, sqrt, 1/x) o secante con residuo analitico (sin, cos, abs, x^k); las demas operaciones de Ibex se
-// evaluan por intervalos sobre el rango del argumento (constante + error).
+// rango) y el resto de grado 3-4 se acota con qhat y pasa a un simbolo de error nuevo. Funciones: Chebyshev
+// (pendiente de la secante y residuo analitico en los puntos criticos) para exp, log, sqrt, 1/x, sin, cos, abs,
+// x^k, como el modo por omision de ibex-affine; las demas operaciones de Ibex se evaluan por intervalos.
+// Como en AffineEval, en cada nodo se lleva un intervalo (operacion por intervalos & rango de la forma) que es el
+// dominio de las linealizaciones y la evaluacion 'ev' del linearizador.
 //
 // Para la relajacion lineal: la parte lineal en las variables se conserva y el resto
 // r(z) = sum_{simbolos de error} a_e e + z^T Q z se acota con un encierro final:
@@ -124,12 +126,19 @@ inline double fval(int op, double x, double k) {
 
 inline Lin linearize(int op, double lo, double hi, double k) {
 	Lin bad; bad.ok = false; bad.alpha = bad.d1 = bad.d2 = 0;
-	if (op == EXP) { const double a = std::exp(lo); return make_lin(a, std::exp(lo) - a * lo, std::exp(hi) - a * hi); }
+	// exp, log, sqrt: Chebyshev (pendiente de la secante, residuo en los extremos y en el punto critico), como el
+	// modo por omision de ibex-affine (AF_Lin_Chebyshev)
+	if (op == EXP) {
+		const double a = (std::exp(hi) - std::exp(lo)) / (hi - lo);
+		return crit_lin(EXP, 0, lo, hi, a, std::vector<double>(1, a > 0 ? std::log(a) : lo));
+	}
 	if (op == LOG || op == SQRT) {
 		if (hi <= 0) return bad;
 		lo = std::max(lo, 1e-300);
-		if (op == LOG) { const double a = 1 / hi; return make_lin(a, std::log(lo) - a * lo, std::log(hi) - a * hi); }
-		const double a = 0.5 / std::sqrt(hi); return make_lin(a, std::sqrt(lo) - a * lo, std::sqrt(hi) - a * hi);
+		const double a = (fval(op, hi, 0) - fval(op, lo, 0)) / (hi - lo);
+		if (!(a > 0) || !std::isfinite(a)) return bad;
+		const double u = op == LOG ? 1 / a : 1 / (4 * a * a);       // f'(u) = a
+		return crit_lin(op, 0, lo, hi, a, std::vector<double>(1, u));
 	}
 	if (op == REC) {
 		if (lo <= 0 && hi >= 0) return bad;
@@ -286,34 +295,53 @@ struct Eval {
 		return r;
 	}
 
-	// devuelve false si la evaluacion no es posible en esta caja (dominio, valores no finitos)
-	bool eval(const Tape& T, const IntervalVector& box, QF& out) {
+	// Evaluacion de la cinta en la caja. Como AffineEval de ibex-affine, en cada nodo se lleva tambien un intervalo
+	// d = (operacion por intervalos sobre los intervalos de los hijos) & (rango de la forma, ensanchado por un margen
+	// relativo de 1e-12): ese intervalo es el dominio de las linealizaciones de funciones y su valor en la raiz es la
+	// evaluacion 'ev' que usa el linearizador. Devuelve false si la evaluacion no es posible en esta caja (dominio,
+	// valores no finitos, interseccion vacia).
+	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev) {
 		std::vector<QF> v(T.nodes.size());
+		std::vector<Interval> d(T.nodes.size());
 		for (size_t k = 0; k < T.nodes.size(); k++) {
 			const Node& N = T.nodes[k];
 			QF r;
+			Interval di;
 			switch (N.op) {
 			case V: {
 				r.c = box[N.a].mid(); const double rd = box[N.a].rad();
 				if (!(std::isfinite(r.c) && std::isfinite(rd))) return false;
 				if (rd > 0) r.lin.push_back(std::make_pair(N.a, rd));
+				di = box[N.a];
 				break; }
-			case C: r.c = N.c; break;
-			case CI: r.c = 0.5 * (N.c + N.d); add_err(r, 0.5 * (N.d - N.c)); break;
+			case C: r.c = N.c; di = Interval(N.c); break;
+			case CI: r.c = 0.5 * (N.c + N.d); add_err(r, 0.5 * (N.d - N.c)); di = Interval(N.c, N.d); break;
 			case ADD: case SUB: {
 				const double s = N.op == ADD ? 1 : -1;
 				r.c = v[N.a].c + s * v[N.b].c; r.lin = merge(v[N.a].lin, 1.0, v[N.b].lin, s); r.Q = merge(v[N.a].Q, 1.0, v[N.b].Q, s);
+				di = N.op == ADD ? d[N.a] + d[N.b] : d[N.a] - d[N.b];
 				break; }
-			case NEG: r = qf_scale(v[N.a], -1.0); break;
-			case MUL: r = mul(v[N.a], v[N.b], N.a == N.b); break;
+			case NEG: r = qf_scale(v[N.a], -1.0); di = -d[N.a]; break;
+			case MUL: r = mul(v[N.a], v[N.b], N.a == N.b); di = N.a == N.b ? sqr(d[N.a]) : d[N.a] * d[N.b]; break;
 			default: {
 				const QF& x = v[N.a];
-				double l, h; qf_range(x, l, h);
+				const Interval& dx = d[N.a];
+				const double l = dx.lb(), h = dx.ub();
 				if (!(std::isfinite(l) && std::isfinite(h))) return false;
+				switch (N.op) {
+				case REC: di = 1.0 / dx; break;
+				case POW: di = pow(dx, (int) N.c); break;
+				case EXP: di = exp(dx); break;
+				case LOG: di = log(dx); break;
+				case SQRT: di = sqrt(dx); break;
+				case SIN: di = sin(dx); break;
+				case COS: di = cos(dx); break;
+				case ABS: di = abs(dx); break;
+				default: di = eval_unary_interval(N.e, dx);
+				}
+				if (di.is_empty() || di.is_unbounded()) return false;
 				if (N.op == IFUN) {
-					const Interval y = eval_unary_interval(N.e, Interval(l, h));
-					if (y.is_empty() || y.is_unbounded()) return false;
-					r.c = y.mid(); add_err(r, y.rad());
+					r.c = di.mid(); add_err(r, di.rad());
 				} else if (h - l <= 1e-15 * std::max(1.0, std::fabs(l))) {
 					if ((N.op == REC && x.c == 0) || ((N.op == LOG || N.op == SQRT) && x.c <= 0)) return false;
 					r.c = fval(N.op, 0.5 * (l + h), N.c);
@@ -325,9 +353,16 @@ struct Eval {
 				}
 			} }
 			if (!std::isfinite(r.c)) return false;
+			double fl, fh; qf_range(r, fl, fh);
+			if (!(std::isfinite(fl) && std::isfinite(fh))) return false;
+			const double mg = 1e-12 * (std::fabs(fl) + std::fabs(fh)) + 1e-300;
+			di &= Interval(fl - mg, fh + mg);
+			if (di.is_empty()) return false;
 			v[k].c = r.c; v[k].lin.swap(r.lin); v[k].Q.swap(r.Q);
+			d[k] = di;
 		}
 		out = v[T.root];
+		ev = d[T.root];
 		return true;
 	}
 };
