@@ -1,0 +1,252 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index da2f30a..b98c4f9 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -12,6 +12,7 @@ list (APPEND SRC 	${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_Affine2_fAF2.cpp
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_AffineVector.h
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_Affine.h
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_KNomial.h
++	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_ExactMult.h
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_AffineTrig.h
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/arithmetic/ibex_AffineMain_trig_impl.h
+ 	                ${CMAKE_CURRENT_SOURCE_DIR}/function/ibex_AffineEval.h
+diff --git a/src/arithmetic/ibex_Affine2_fAF2.cpp b/src/arithmetic/ibex_Affine2_fAF2.cpp
+index 7e30984..02594a0 100644
+--- a/src/arithmetic/ibex_Affine2_fAF2.cpp
++++ b/src/arithmetic/ibex_Affine2_fAF2.cpp
+@@ -14,6 +14,7 @@
+ #include "ibex_AffineMain.h"
+ #include "ibex_AffineVar.h"
+ #include "ibex_KNomial.h"
++#include "ibex_ExactMult.h"
+ 
+ #include <cassert>
+ #include <cmath>
+@@ -549,7 +550,10 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::operator*=(const AffineMain<AF_fAF2>&
+ 			// [raak local] con AFFINE_RAA los coeficientes se copian siempre: el corner test (0005)
+ 			// actua sobre los cruces con los errores aunque x e y no compartan simbolos.
+ 			const bool raa = (affine_mode() == AFFINE_RAA);
+-			if (kcand || raa) {
++			// [raak local, parche 0016] AFFINE_SH / AFFINE_EXACT: el encierro de toda la parte no lineal
++			// se calcula con raf_mult_enclosure (ibex_ExactMult.h); necesita los coeficientes originales.
++			const bool rafmult = (affine_mode() == AFFINE_SH) || (affine_mode() == AFFINE_EXACT);
++			if (kcand || raa || rafmult) {
+ 				qx.assign(_n_noise, 0.0);
+ 				qy.assign(_n_noise, 0.0);
+ 				for (int i = 1; i <= _n_noise; i++) {
+@@ -686,7 +690,19 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::operator*=(const AffineMain<AF_fAF2>&
+ 							((1- 2*AF_EM) * (-0.5) * Sxy)
+ 					);
+ 			}
+-			if (use_raak) {
++			// [raak local, parche 0016] N = x0 ey eta + y0 ex xi + (a^T e + ex xi)(b^T e + ey eta) se encierra en
++			// Nenc (riguroso). Se suma un centro cualquiera nmid a _val[0] (twoSum, error a ttt) y el radio
++			// nrad = max(Nenc.ub - nmid, nmid - Nenc.lb), redondeado hacia arriba, reemplaza a todo el error
++			// no lineal de fAF2 (incluidos |y0| ex y |x0| ey).
++			double nrad = 0.0;
++			if (rafmult) {
++				const Interval Nenc = raf_mult_enclosure(qx, qy, xVal0, ex, y._elt._val[0], ey,
++				                                         affine_mode() == AFFINE_EXACT);
++				const double nmid = Nenc.mid();
++				nrad = (Nenc - nmid).mag();
++				eee = 0.0;
++				ppp = nmid;
++			} else if (use_raak) {
+ 				eee = 0.0;
+ 				ppp = qshift;
+ 			} else
+@@ -709,6 +725,13 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::operator*=(const AffineMain<AF_fAF2>&
+ 			ttt = (1+2*AF_EM)*(ttt+std::fabs(eee));
+ 
+ 
++			if (rafmult)
++				_elt._err = (1+ 2*AF_EM) * (
++						nrad +
++						(AF_EE * (ttt))  +
++						(AF_EE * sss)
++				);
++			else
+ 			_elt._err = (1+ 2*AF_EM) * (
+ 					((1+ 2*AF_EM) *std::fabs(y._elt._val[0]) * _elt._err)  +
+ 					((1+ 2*AF_EM) *std::fabs(xVal0) * y._elt._err)  +
+@@ -818,7 +841,7 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 		// Con AFFINE_AF2 el cuadrado es siempre el de fAF2, aunque haya reescritura k-nomial.
+ 		bool use_raak_sq = false;
+ 		double sq_half = 0.0, tq = 0.0;
+-		if (affine_mode() == AFFINE_RAA) {
++		if (affine_mode() != AFFINE_AF2) {   // [parche 0016] tambien AFFINE_SH y AFFINE_EXACT
+ 			KNomialStats& kst = knomial_stats();
+ 			kst.sqr_products++;
+ 			double eS = 0.0, sq = 0.0;
+diff --git a/src/arithmetic/ibex_ExactMult.h b/src/arithmetic/ibex_ExactMult.h
+new file mode 100644
+index 0000000..cbf456e
+--- /dev/null
++++ b/src/arithmetic/ibex_ExactMult.h
+@@ -0,0 +1,151 @@
++/* ============================================================================
++ * I B E X - Exact multiplication of reduced affine forms (fAF2)
++ * ============================================================================
++ * [raak local, parche 0016]
++ *
++ * Producto de dos formas afines reducidas (modelo AF_fAF2)
++ *     x = x0 + sum_i a_i e_i + ex xi,     y = y0 + sum_i b_i e_i + ey eta,
++ *     x y = x0 y0 + sum_i (x0 b_i + y0 a_i) e_i + N(e, xi, eta),
++ *     N = x0 ey eta + y0 ex xi + (a^T e + ex xi)(b^T e + ey eta).
++ * Este archivo calcula un intervalo que encierra el rango de N sobre [-1,1]^(n+2):
++ *
++ *   raf_mult_enclosure(..., exact = false): Skalna y Hladik (Numer. Algor. 76, 2017, Ec. 10):
++ *       rango exacto de R = (a^T e + ex xi)(b^T e + ey eta)  +  [-1,1] (|y0| ex + |x0| ey).
++ *   raf_mult_enclosure(..., exact = true): rango exacto de N (paper "Exact multiplication of
++ *       reduced affine forms", Algoritmo 1): N es afin en xi y en eta, asi que sus extremos estan
++ *       con (xi, eta) en {-1,1}^2; para cada esquina, N es un producto desplazado
++ *       (u + ex s)(v + ey t) de (u, v) = (a^T e, b^T e) en el zonotopo plano de generadores
++ *       (a_i, b_i), cuyos extremos estan en el borde (el unico punto critico es una silla).
++ *
++ * Rigor:
++ *   - Los generadores se orientan al semiplano {u > 0} U {u = 0, v > 0} (cambio de signo exacto)
++ *     y se ordenan por angulo con un predicado exacto: u1 v2 - v1 u2 se evalua en __float128,
++ *     donde el producto de dos double es exacto (106 bits <= 113) y la resta, correctamente
++ *     redondeada, conserva el signo. Un orden erroneo podria hacer que el recorrido entrara al
++ *     interior del zonotopo y subestimara el rango.
++ *   - Los vertices del poligono y los valores en las aristas se calculan con ibex::Interval
++ *     (redondeo hacia afuera). En cada arista [p, q], phi(p + tau d) = P + B tau + A tau^2 con
++ *     P = pu pv, B = pu dv + pv du, A = du dv; se incluyen phi(p), phi(q) y, si A no contiene 0 y
++ *     tau* = -B/(2A) corta (0,1), el valor estacionario P - B^2/(4A); si A contiene 0, la
++ *     extension de Horner P + tau (B + A tau) con tau = [0,1].
++ *   - El intervalo devuelto contiene el rango exacto de N; el llamador suma su centro y radio
++ *     con las mismas reglas de redondeo de fAF2.
++ * ---------------------------------------------------------------------------- */
++#ifndef __IBEX_EXACT_MULT_H__
++#define __IBEX_EXACT_MULT_H__
++
++#include "ibex_Interval.h"
++#include <algorithm>
++#include <cmath>
++#include <vector>
++
++namespace ibex {
++
++/** Contadores de los modos AFFINE_SH y AFFINE_EXACT (por hilo). */
++struct ExactMultStats {
++	long products = 0;        // productos de formas activas con AFFINE_SH o AFFINE_EXACT
++	long with_errors = 0;     // ... con ex > 0 y ey > 0
++	long coupled = 0;         // ... con min(|x0| ey, |y0| ex) > 0: los unicos en que E puede ganar a SH
++	long exact_walks = 0;     // productos en que AFFINE_EXACT hizo las cuatro vueltas
++};
++
++inline ExactMultStats& exact_mult_stats() {
++	static thread_local ExactMultStats s;
++	return s;
++}
++
++namespace exact_mult_detail {
++
++struct Gen { double u, v; };
++
++/** true si g1 precede a g2 en orden angular (ambos en el semiplano u > 0 o u = 0, v > 0). */
++inline bool angle_less(const Gen& g1, const Gen& g2) {
++	const __float128 c = (__float128) g1.u * (__float128) g2.v - (__float128) g1.v * (__float128) g2.u;
++	return c > 0;
++}
++
++/** Generadores no nulos, orientados y ordenados por angulo (orden exacto). */
++inline std::vector<Gen> sorted_generators(const std::vector<Gen>& in) {
++	std::vector<Gen> g;
++	g.reserve(in.size());
++	for (const Gen& x : in) {
++		if (x.u == 0.0 && x.v == 0.0) continue;
++		if (x.u < 0.0 || (x.u == 0.0 && x.v < 0.0)) g.push_back(Gen{-x.u, -x.v});
++		else g.push_back(x);
++	}
++	std::stable_sort(g.begin(), g.end(), angle_less);
++	return g;
++}
++
++/** Encierro riguroso del rango de (u + c0)(v + c1) sobre el zonotopo de los generadores g (ya ordenados). */
++inline Interval shifted_product_range(const std::vector<Gen>& g, const Interval& c0, const Interval& c1) {
++	if (g.empty()) return c0 * c1;
++	Interval pu = c0, pv = c1;
++	for (const Gen& x : g) { pu -= x.u; pv -= x.v; }
++	Interval res = pu * pv;
++	for (int sgn = 0; sgn < 2; sgn++) {
++		const double f = (sgn == 0) ? 2.0 : -2.0;
++		for (const Gen& x : g) {
++			const double du = f * x.u, dv = f * x.v;           // exactos (multiplicacion por potencia de 2)
++			const Interval qu = pu + du, qv = pv + dv;
++			res |= qu * qv;
++			const Interval A = Interval(du) * dv;
++			const Interval B = pu * dv + pv * du;
++			if (!A.contains(0.0)) {
++				const Interval tau = -B / (2.0 * A);
++				if (tau.ub() > 0.0 && tau.lb() < 1.0)
++					res |= pu * pv - sqr(B) / (4.0 * A);
++			} else {
++				const Interval t01(0.0, 1.0);
++				res |= pu * pv + t01 * (B + A * t01);
++			}
++			pu = qu;
++			pv = qv;
++		}
++	}
++	return res;
++}
++
++} // namespace exact_mult_detail
++
++/**
++ * Encierro del rango de N (ver arriba). a, b: coeficientes de ruido de x e y (mismo largo);
++ * x0, y0: centros; ex, ey: errores (>= 0). exact = false: Skalna-Hladik; true: rango exacto de N.
++ */
++inline Interval raf_mult_enclosure(const std::vector<double>& a, const std::vector<double>& b,
++                                   double x0, double ex, double y0, double ey, bool exact) {
++	using namespace exact_mult_detail;
++	const size_t n = std::min(a.size(), b.size());
++	std::vector<Gen> gens;
++	gens.reserve(n + 2);
++	for (size_t i = 0; i < n; i++) gens.push_back(Gen{a[i], b[i]});
++
++	ExactMultStats& st = exact_mult_stats();
++	st.products++;
++	if (ex > 0.0 && ey > 0.0) st.with_errors++;
++	const bool coupled = (std::fabs(x0) * ey > 0.0) && (std::fabs(y0) * ex > 0.0);
++	if (coupled) st.coupled++;
++
++	if (!exact || !coupled) {
++		// Skalna-Hladik; con exact y min(|x0| ey, |y0| ex) = 0 coincide con E (Corolario 11).
++		gens.push_back(Gen{ex, 0.0});
++		gens.push_back(Gen{0.0, ey});
++		const Interval R = shifted_product_range(sorted_generators(gens), Interval(0.0), Interval(0.0));
++		const Interval lin = Interval(std::fabs(y0)) * ex + Interval(std::fabs(x0)) * ey;
++		return R + Interval(-lin.ub(), lin.ub());
++	}
++
++	st.exact_walks++;
++	const std::vector<Gen> g = sorted_generators(gens);   // una sola vez para las cuatro esquinas
++	Interval res = Interval::empty_set();
++	for (int s = -1; s <= 1; s += 2)
++		for (int t = -1; t <= 1; t += 2) {
++			const Interval kappa = Interval(x0) * (ey * t) + Interval(y0) * (ex * s);
++			res |= kappa + shifted_product_range(g, Interval(ex * s), Interval(ey * t));
++		}
++	return res;
++}
++
++} // namespace ibex
++
++#endif // __IBEX_EXACT_MULT_H__
+diff --git a/src/arithmetic/ibex_KNomial.h b/src/arithmetic/ibex_KNomial.h
+index cbd6bd9..214a24b 100644
+--- a/src/arithmetic/ibex_KNomial.h
++++ b/src/arithmetic/ibex_KNomial.h
+@@ -62,7 +62,9 @@ inline int& knomial_max_k() {
+ 	return k;
+ }
+ 
+-enum AffineMode { AFFINE_AF2 = 0, AFFINE_RAA = 1 };
++// [raak local, parche 0016] AFFINE_SH: multiplicacion de Skalna-Hladik (Ec. 10); AFFINE_EXACT: rango
++// exacto de la parte no lineal (ibex_ExactMult.h). Ambos usan el cuadrado exacto de AFFINE_RAA en Asqr.
++enum AffineMode { AFFINE_AF2 = 0, AFFINE_RAA = 1, AFFINE_SH = 2, AFFINE_EXACT = 3 };
+ 
+ inline AffineMode& affine_mode() {
+ 	static thread_local AffineMode m = AFFINE_AF2;

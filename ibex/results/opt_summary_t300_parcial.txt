@@ -1,0 +1,20 @@
+== opt-reales/rows: 10 instancias completas
+   resueltas por todas: 6
+   variante   resueltas  celdas/af2  cpu/af2  (gm, resueltas por todas)
+   art_af2_k0        6       1.000     1.000
+   art_raa_k0        6       1.000     0.963
+   art_sh_k0         6       0.916     0.907
+   art_exact_k0      6       0.916     0.888
+   exact/sh celdas gm=1.000  menos=0 igual=6 mas=0
+   no resueltas por ninguna: 4; gap (ub-lb) gm vs af2: af2=nan raa=nan sh=nan exact=nan
+   inconsistencias f*: 0
+== opt-sinteticas/rows: 68 instancias completas
+   resueltas por todas: 45
+   variante   resueltas  celdas/af2  cpu/af2  (gm, resueltas por todas)
+   art_af2_k0       45       1.000     1.000
+   art_raa_k0       49       0.669     0.739
+   art_sh_k0        57       0.259     0.304
+   art_exact_k0     57       0.259     0.315
+   exact/sh celdas gm=0.999  menos=4 igual=37 mas=4
+   no resueltas por ninguna: 11; gap (ub-lb) gm vs af2: af2=1.000 raa=0.859 sh=0.396 exact=0.401
+   inconsistencias f*: 0

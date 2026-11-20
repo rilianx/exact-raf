@@ -1,7 +1,7 @@
 """Test expressions of the paper.
 
 Each expression is written once, in Ibex syntax (^ for powers, x_1, x_2, x_3 for
-the variables), and evaluated in Python with RAA forms, AF2 forms or numbers.
+the variables), and evaluated in Python with ZCAA forms, AF2 forms or numbers.
 
   - Cases 1-4: controlled products (Table 1 of the paper).
   - Constraints with products of nonlinear factors taken from the benchmark of
@@ -9,7 +9,7 @@ the variables), and evaluated in Python with RAA forms, AF2 forms or numbers.
 """
 import re
 
-from raa import sin, cos, exp, log, sqrt, sinh, power
+from zcaa import sin, cos, exp, log, sqrt, sinh, power
 
 _NAMESPACE = {"sin": sin, "cos": cos, "exp": exp, "log": log, "sqrt": sqrt,
               "sinh": sinh, "power": power}
@@ -45,6 +45,20 @@ CASES = [
                  description="product of three linear expressions"),
 ]
 
+# ---- controlled cases with coefficients of mixed signs --------------------------
+# Same structure as Cases 1-4, with some coefficients negated, so that the bilinear
+# monomials of a product can cancel (a_i b_j + a_j b_i smaller than |a_i b_j| + |a_j b_i|).
+MIXED = [
+    TestFunction("Case 1m", "(x_1-2*x_2+3*x_3)*(4*x_1+5*x_2-6*x_3)",
+                 description="Case 1 with mixed signs"),
+    TestFunction("Case 2m", "(x_1-2*x_2^2+3*x_3)*(4*x_1+5*x_2-6*x_3^2)",
+                 description="Case 2 with mixed signs"),
+    TestFunction("Case 3m", "(x_1 - 2*x_2*x_3)*(3*x_2 + 4*x_1*x_3)",
+                 description="Case 3 with mixed signs"),
+    TestFunction("Case 4m", "(x_1-2*x_2)*(3*x_2+4*x_3)*(5*x_3-6*x_1)",
+                 description="Case 4 with mixed signs"),
+]
+
 # ---- constraints from the benchmark of nonlinear systems -------------------------
 _PRAMANIK_CONST = {
     "f0": "1.7461756494150842271", "f1": "2.0364691127919609051",
@@ -76,4 +90,4 @@ INSTANCES = [
 
 SIZES = {"small": (0.01, 0.1), "medium": (0.1, 1.0), "large": (1.0, 10.0)}
 
-ALL = CASES + INSTANCES
+ALL = CASES + MIXED + INSTANCES

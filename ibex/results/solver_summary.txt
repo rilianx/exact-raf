@@ -1,0 +1,4 @@
+synq: inst=78 resueltas S/SH/E=[45, 61, 61] comunes=45 celdas SH=0.260 E=0.259 SHsqS=-- cpu SH=0.290 E=0.297 E/SH=1.000 menos/mas=2/5 no resueltas=17 gap SH=0.369 E=0.366 inconsistencias=0
+synt: inst=24 resueltas S/SH/E=[19, 20, 20] comunes=19 celdas SH=0.666 E=0.619 SHsqS=0.67 cpu SH=0.695 E=0.668 E/SH=0.928 menos/mas=10/1 no resueltas=4 gap SH=0.457 E=0.558 inconsistencias=0
+synp: inst=18 resueltas S/SH/E=[18, 18, 18] comunes=18 celdas SH=0.826 E=0.794 SHsqS=0.83 cpu SH=0.915 E=0.893 E/SH=0.961 menos/mas=8/2 no resueltas=0 gap SH=nan E=nan inconsistencias=0
+Ibex medium+hard: inst=38 resueltas S/SH/E=[33, 35, 35] comunes=32 celdas SH=0.923 E=0.888 SHsqS=1.00 cpu SH=0.892 E=0.846 E/SH=0.962 menos/mas=7/0 no resueltas=3 gap SH=0.950 E=0.950 inconsistencias=0
