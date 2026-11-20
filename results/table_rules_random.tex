@@ -1,34 +1,29 @@
 \begin{table}[t]
 \centering
-\caption{Single products of random forms with $n$ variables: mean residual width of rules S, M and SH relative to E, maximum of SH/E, and time per product of the Python implementation ($\mu$s). $\rho$ scales the residual radii of the operands; 500 products per row.}
+\caption{Single products of random forms with $n$ variables: mean width of the enclosures of rules S and SH relative to E, and maximum of SH/E. $\rho$ scales the error radii of the operands; 500 products per row.}
 \label{tab:random}
 \small
-\setlength{\tabcolsep}{4pt}
-\begin{tabular}{rrrrrrrrrr}
+\begin{tabular}{rrrrr}
 \toprule
- & & \multicolumn{3}{c}{Mean width / E} & & \multicolumn{4}{c}{Time ($\mu$s)} \\
-\cmidrule(lr){3-5}\cmidrule(lr){7-10}
-$n$ & $\rho$ & S & M & SH & max SH/E & S & M & SH & E \\
+ & & \multicolumn{2}{c}{Mean width / E} & \\
+\cmidrule(lr){3-4}
+$n$ & $\rho$ & S & SH & max SH/E \\
 \midrule
-2 & 0.0 & 1.656 & 1.338 & 1.000 & 1.000 & 6 & 5 & 9 & 13 \\
- & 0.1 & 1.504 & 1.284 & 1.019 & 1.138 & 14 & 4 & 10 & 14 \\
- & 1.0 & 1.366 & 1.165 & 1.070 & 1.370 & 7 & 4 & 10 & 13 \\
+2 & 0.0 & 1.656 & 1.000 & 1.000 \\
+ & 0.1 & 1.504 & 1.019 & 1.138 \\
+ & 1.0 & 1.366 & 1.070 & 1.370 \\
 \midrule
-5 & 0.0 & 1.901 & 1.518 & 1.000 & 1.000 & 9 & 8 & 13 & 23 \\
- & 0.1 & 1.847 & 1.492 & 1.007 & 1.048 & 9 & 9 & 15 & 20 \\
- & 1.0 & 1.630 & 1.336 & 1.036 & 1.261 & 9 & 9 & 14 & 20 \\
+5 & 0.0 & 1.901 & 1.000 & 1.000 \\
+ & 0.1 & 1.847 & 1.007 & 1.048 \\
+ & 1.0 & 1.630 & 1.036 & 1.261 \\
 \midrule
-10 & 0.0 & 1.961 & 1.550 & 1.000 & 1.000 & 15 & 20 & 20 & 33 \\
- & 0.1 & 1.919 & 1.532 & 1.002 & 1.013 & 13 & 21 & 20 & 33 \\
- & 1.0 & 1.781 & 1.434 & 1.012 & 1.119 & 13 & 21 & 20 & 33 \\
+10 & 0.0 & 1.961 & 1.000 & 1.000 \\
+ & 0.1 & 1.919 & 1.002 & 1.013 \\
+ & 1.0 & 1.781 & 1.012 & 1.119 \\
 \midrule
-20 & 0.0 & 1.975 & 1.560 & 1.000 & 1.000 & 22 & 60 & 34 & 58 \\
- & 0.1 & 1.964 & 1.556 & 1.000 & 1.004 & 21 & 63 & 34 & 59 \\
- & 1.0 & 1.902 & 1.505 & 1.004 & 1.025 & 21 & 65 & 34 & 58 \\
-\midrule
-50 & 0.0 & 1.994 & 1.567 & 1.000 & 1.000 & 43 & 323 & 75 & 129 \\
- & 0.1 & 1.996 & 1.567 & 1.000 & 1.001 & 44 & 339 & 84 & 159 \\
- & 1.0 & 1.949 & 1.539 & 1.001 & 1.006 & 61 & 358 & 77 & 151 \\
+20 & 0.0 & 1.975 & 1.000 & 1.000 \\
+ & 0.1 & 1.964 & 1.000 & 1.004 \\
+ & 1.0 & 1.902 & 1.004 & 1.025 \\
 \bottomrule
 \end{tabular}
 \end{table}

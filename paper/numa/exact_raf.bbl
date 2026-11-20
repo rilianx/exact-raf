@@ -68,17 +68,6 @@ Siegfried~M. Rump and Masahide Kashiwagi.
 \newblock {\em Nonlinear Theory and Its Applications, IEICE}, 6(3):341--359,
   2015.
 
-\bibitem{makino2003}
-Kyoko Makino and Martin Berz.
-\newblock Taylor models and other validated functional inclusion methods.
-\newblock {\em International Journal of Pure and Applied Mathematics},
-  4(4):379--456, 2003.
-
-\bibitem{neumaier2003taylor}
-Arnold Neumaier.
-\newblock Taylor forms -- use and limits.
-\newblock {\em Reliable Computing}, 9(1):43--79, 2003.
-
 \bibitem{ziegler1995lectures}
 G{\"u}nter~M. Ziegler.
 \newblock {\em Lectures on Polytopes}, volume 152 of {\em Graduate Texts in
@@ -94,6 +83,23 @@ Iwona Skalna.
 Gilles Chabert and Luc Jaulin.
 \newblock Contractor programming.
 \newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
+
+\bibitem{ibexaffine}
+Jordan Ninin, Gilles Chabert, et~al.
+\newblock {ibex-affine}: affine arithmetic plugin of the {Ibex} library.
+\newblock \url{https://github.com/ibex-team/ibex-affine}.
+\newblock Accessed 2026.
+
+\bibitem{shewchuk1997adaptive}
+Jonathan~Richard Shewchuk.
+\newblock Adaptive precision floating-point arithmetic and fast robust
+  geometric predicates.
+\newblock {\em Discrete \& Computational Geometry}, 18(3):305--363, 1997.
+
+\bibitem{higham2002accuracy}
+Nicholas~J. Higham.
+\newblock {\em Accuracy and Stability of Numerical Algorithms}.
+\newblock SIAM, Philadelphia, 2 edition, 2002.
 
 \bibitem{coprin}
 Coprin.

@@ -15,7 +15,8 @@ from scipy import stats
 
 from common import RESULTS
 
-METHODS = [("af2", "AF2"), ("tm", "TM"), ("faf2", "S"), ("zcaa", "M"), ("skalna", "SH"), ("exact", "E")]
+# methods shown in the tables of the paper (M = old ZCAA and TM are kept in the records only)
+METHODS = [("af2", "AF2"), ("faf2", "S"), ("skalna", "SH"), ("exact", "E")]
 SIZE = {"small": "small", "medium": "medium", "large": "large"}
 
 
@@ -90,22 +91,22 @@ def stats_block(name, records):
 
 def random_table(rows):
     lines = [r"\begin{table}[t]", r"\centering",
-             r"\caption{Single products of random forms with $n$ variables: mean residual width of rules S, M and SH "
-             r"relative to E, maximum of SH/E, and time per product of the Python implementation ($\mu$s). "
-             r"$\rho$ scales the residual radii of the operands; 500 products per row.}",
-             r"\label{tab:random}", r"\small", r"\setlength{\tabcolsep}{4pt}",
-             r"\begin{tabular}{rrrrrrrrrr}", r"\toprule",
-             r" & & \multicolumn{3}{c}{Mean width / E} & & \multicolumn{4}{c}{Time ($\mu$s)} \\",
-             r"\cmidrule(lr){3-5}\cmidrule(lr){7-10}",
-             r"$n$ & $\rho$ & S & M & SH & max SH/E & S & M & SH & E \\", r"\midrule"]
+             r"\caption{Single products of random forms with $n$ variables: mean width of the enclosures of rules S "
+             r"and SH relative to E, and maximum of SH/E. $\rho$ scales the error radii of the operands; "
+             r"500 products per row.}",
+             r"\label{tab:random}", r"\small",
+             r"\begin{tabular}{rrrrr}", r"\toprule",
+             r" & & \multicolumn{2}{c}{Mean width / E} & \\", r"\cmidrule(lr){3-4}",
+             r"$n$ & $\rho$ & S & SH & max SH/E \\", r"\midrule"]
     prev = None
     for r in rows:
+        if r["n"] > 20:
+            continue
         if prev is not None and r["n"] != prev:
             lines.append(r"\midrule")
-        q, t = r["ratio_to_exact"], r["time_us"]
-        lines.append(f"{r['n'] if r['n'] != prev else ''} & {r['rho']:.1f} & {q['faf2']:.3f} & {q['zcaa']:.3f} & "
-                     f"{q['skalna']:.3f} & {r['max_skalna_over_exact']:.3f} & {t['faf2']:.0f} & {t['zcaa']:.0f} & "
-                     f"{t['skalna']:.0f} & {t['exact']:.0f} \\\\")
+        q = r["ratio_to_exact"]
+        lines.append(f"{r['n'] if r['n'] != prev else ''} & {r['rho']:.1f} & {q['faf2']:.3f} & "
+                     f"{q['skalna']:.3f} & {r['max_skalna_over_exact']:.3f} \\\\")
         prev = r["n"]
     lines += [r"\bottomrule", r"\end{tabular}", r"\end{table}"]
     return "\n".join(lines)
