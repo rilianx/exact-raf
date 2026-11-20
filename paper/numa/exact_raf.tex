@@ -92,6 +92,16 @@ Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyaj
 
 \paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$ (this is the square of the affine arithmetic of Ibex), and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} shows that the latter is already exact in most cases.
 
+\paragraph{The same products in the variables.} In a branch-and-bound solver, the symbols are tied to a box $B=\{v\in\R^n: |v_i-m_i|\le w_i\}$ by $\eps_i=(v_i-m_i)/w_i$, and a reduced affine form is a linear function of the variables plus a residual interval,
+\[
+\hat x = \ell_x(v)+\rho_x,\qquad \ell_x(v)=x_0+\sum_i\frac{x_i}{w_i}(v_i-m_i),\qquad \rho_x\in[-x_r,x_r],
+\]
+so that $x_0=\ell_x(m)$ is the value of the linear part at the center of the box and $x_r$ is the radius of the residual; the two hyperplanes $\ell_x(v)\pm x_r$ are the range enclosure and the linear relaxation used by the solver. In these terms, the product keeps the linear part $\ell_x(m)\ell_y(v)+\ell_y(m)\ell_x(v)-\ell_x(m)\ell_y(m)$, which is~\eqref{eq:product}, and a multiplication formula encloses
+\[
+N=\ell_x(m)\,\rho_y+\ell_y(m)\,\rho_x+\big(\ell_x(v)-\ell_x(m)+\rho_x\big)\big(\ell_y(v)-\ell_y(m)+\rho_y\big)
+\]
+over $v\in B$, $\rho_x\in[-x_r,x_r]$ and $\rho_y\in[-y_r,y_r]$. The results below read directly in this form: Lemma~\ref{lem:vertices} says that the extrema of $N$ are attained with both residuals at an endpoint of their intervals; the zonotope $Z$ of Lemma~\ref{lem:zonotope} is the image of $B$ by $v\mapsto(\ell_x(v)-\ell_x(m),\,\ell_y(v)-\ell_y(m))$, and the central symmetry $e\mapsto-e$ used in the proofs is the reflection through the center of $B$; and Corollary~\ref{cor:gain} says that E can improve on SH only when both factors have a residual and the values of both linear parts at the center of the box are nonzero.
+
 \paragraph{AF2.} AF2~\cite{messine2002extentions} keeps, besides the symmetric error term $a_\pm\eps_\pm$, two one-sided terms $a_+\eps_+$, $\eps_+\in[0,1]$, and $a_-\eps_-$, $\eps_-\in[-1,0]$; in a product, the positive and negative squares $x_iy_i\eps_i^2$ go to $\eps_+$ and $\eps_-$, and the other nonlinear terms to $\eps_\pm$.
 
 \section{The exact multiplication}
