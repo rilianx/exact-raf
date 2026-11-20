@@ -12,6 +12,7 @@
 //   --ctc=hc4+xn           HC4 y despues el politopo de XTaylor, en punto fijo
 //   --ctc=default          el contractor de DefaultSolver (HC4, ACID, Newton si es cuadrado, politopo XTaylor)
 //   --ctc=default+affine   el de DefaultSolver seguido del politopo afin
+//   --ctc=default-xn+affine el de DefaultSolver con el politopo afin EN LUGAR del de XTaylor (HC4, ACID, Newton, afin)
 //   --arith=af2|raa|aa  --knomial_k=K  --knomial_budget=N  --knomial_bound=interval|directed  --trig=...
 //                          igual que en ibexopt-raak
 // Biseccion y pila: las de DefaultSolver (SmearSumRelative si el sistema es cuadrado de igualdades,
@@ -33,7 +34,7 @@ using namespace ibex;
 int main(int argc, char** argv) {
 	args::ArgumentParser parser("ibexsolve-raak", "IbexSolve con contractor elegible y relajaciones de ibex-affine (AF2 / RAA / AA, k-nomial)");
 	args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
-	args::ValueFlag<string> _ctc(parser, "ctc", "Contractor: affine* | xn | hc4 | hc4+affine | hc4+xn | default | default+affine", {"ctc"});
+	args::ValueFlag<string> _ctc(parser, "ctc", "Contractor: affine* | xn | hc4 | hc4+affine | hc4+xn | default | default+affine | default-xn+affine", {"ctc"});
 	args::ValueFlag<string> _arith(parser, "arith", "Affine arithmetic: af2* | raa | sh | exact | aa", {"arith"});
 	args::ValueFlag<int> _knomialK(parser, "knomial_k", "k-nomial rewriting: 0* = none, K>=2 = blocks of up to K variables", {"knomial_k"});
 	args::ValueFlag<long> _knomialBudget(parser, "knomial_budget", "Node budget of the clique search per product (0* = unlimited)", {"knomial_budget"});
@@ -92,17 +93,18 @@ int main(int argc, char** argv) {
 		else if (ctcname == "hc4") c = new CtcHC4(sys.ctrs, 0.01);
 		else if (ctcname == "hc4+affine") c = new CtcFixPoint(*new CtcCompo(*new CtcHC4(sys.ctrs, 0.01), *new CtcPolytopeHull(*aff)));
 		else if (ctcname == "hc4+xn") c = new CtcFixPoint(*new CtcCompo(*new CtcHC4(sys.ctrs, 0.01), *new CtcPolytopeHull(*new LinearizerXTaylor(sys))));
-		else if (ctcname == "default" || ctcname == "default+affine") {
+		else if (ctcname == "default" || ctcname == "default+affine" || ctcname == "default-xn+affine") {
 			Array<Ctc> l(5); int idx = 0;
 			l.set_ref(idx++, *new CtcHC4(sys.ctrs, 0.01));
 			l.set_ref(idx++, *new CtcAcid(sys, *new CtcHC4(sys.ctrs, 0.1, true)));
 			if (eqs) l.set_ref(idx++, *new CtcNewton(eqs->f_ctrs, 5e8, eps_min, 1.e-4));
-			l.set_ref(idx++, *new CtcFixPoint(*new CtcCompo(*new CtcPolytopeHull(*new LinearizerXTaylor(sys)), *new CtcHC4(sys.ctrs, 0.01))));
-			if (ctcname == "default+affine")
+			if (ctcname != "default-xn+affine")
+				l.set_ref(idx++, *new CtcFixPoint(*new CtcCompo(*new CtcPolytopeHull(*new LinearizerXTaylor(sys)), *new CtcHC4(sys.ctrs, 0.01))));
+			if (ctcname == "default+affine" || ctcname == "default-xn+affine")
 				l.set_ref(idx++, *new CtcFixPoint(*new CtcCompo(*new CtcPolytopeHull(*aff), *new CtcHC4(sys.ctrs, 0.01))));
 			l.resize(idx);
 			c = new CtcCompo(l);
-		} else { cerr << "--ctc=" << ctcname << ": affine | xn | hc4 | hc4+affine | hc4+xn | default | default+affine" << endl; return 1; }
+		} else { cerr << "--ctc=" << ctcname << ": affine | xn | hc4 | hc4+affine | hc4+xn | default | default+affine | default-xn+affine" << endl; return 1; }
 
 		Bsc* bsc = eqs ? (Bsc*) new SmearSumRelative(*eqs, eps_min) : (Bsc*) new RoundRobin(eps_min);
 		CellBuffer* buf = _bfs ? (CellBuffer*) new CellList() : (CellBuffer*) new CellStack();
