@@ -224,3 +224,60 @@ Por instancia, en [`resumen_m3.txt`](resumen_m3.txt). Las que más bajan con `M2
 - **Un encierro final barato pero fuerte:** un certificado tipo SDP reutilizable, o el k-nomial y los bloques
   producto en C++, en lugar de la SDP en cada evaluación. Falta medir M3 solo con bloques producto, sin la SDP,
   para separar esos dos efectos.
+
+## M3 con resto centrado y encierros finales separados ([`medir_m3c.py`](medir_m3c.py), [`resumir_m3c.py`](resumir_m3c.py))
+
+**Resto centrado (`M3c`).** En el producto, cada parte cuadrática se separa como `q = m + q̂`: el centro m de su
+rango pasa a la constante, que es exacta, y el resto de grado 3 y 4 se acota con q̂ ∈ [−r, r]. En los cuadrados,
+el término `q̂²` queda en [0, r²]. `M3o` es la versión original, que acotaba el resto con el rango completo de q.
+
+**Encierros finales**, calculados por separado sobre la misma forma:
+
+| sufijo | encierro |
+|---|---|
+| `_tt` | barato: cada símbolo con su parte lineal y su diagonal, exacto, más el resto término a término |
+| `_prodk` | la menor entre `_tt` y los bloques producto |
+| `_kn6` | la menor entre `_tt` y el k-nomial con k = 6 de `ibex_KNomial.h`, en C++ |
+| `_sdp` | la menor entre `_tt` y la SDP de Shor |
+
+Medido en las mismas 7534 combinaciones de expresión y caja. Ninguna queda por debajo del rango interior. Tabla
+completa en [`resumen_m3c.txt`](resumen_m3c.txt).
+
+**Ancho / M0** (media geométrica):
+
+| conjunto | prof | M2 | M3o_tt | M3c_tt | M3c_prodk | M3c_kn6 | M3c_sdp | M2\|M3c_sdp | M0 / INNER → (M2\|M3c_sdp) / INNER |
+|---|---|---|---|---|---|---|---|---|---|
+| optimización | 0 | 0,975 | 0,991 | 0,990 | 0,965 | 0,977 | 0,927 | 0,923 | 2,50 → 2,31 |
+| | 10 | 0,959 | 0,958 | 0,957 | 0,941 | 0,953 | 0,914 | 0,912 | 1,74 → 1,58 |
+| | 20 | 0,968 | 0,962 | 0,962 | 0,950 | 0,961 | 0,937 | 0,936 | 1,40 → 1,31 |
+| NCSP | 0 | 0,965 | 1,043 | 1,032 | 0,981 | 0,978 | 0,967 | 0,958 | 1,62 → 1,55 |
+| | 10 | 0,979 | 1,005 | 1,004 | 0,957 | 0,970 | 0,946 | 0,945 | 1,50 → 1,42 |
+| | 20 | 0,991 | 1,010 | 1,010 | 0,965 | 0,983 | 0,965 | 0,965 | 1,38 → 1,33 |
+
+**Instancias que bajan más de un 2 %:**
+
+| variante | instancias |
+|---|---|
+| M2 | 6 |
+| M3c_tt | 10 |
+| M3c_kn6 | 12 |
+| **M3c_prodk** | **27** |
+| M3c_sdp | 28 |
+| M2\|M3c_sdp | 30 |
+
+### Lectura
+
+1. **Centrar el resto ayuda poco en promedio**, aunque sí en algunas instancias: en Pramanik, M3_tt pasa de 0,77 a
+   0,74. M3c_tt sigue siendo peor que M1 en el 10 % de los casos (773 frente a 783). Así que el resto de grado 3 y 4
+   no era la causa principal.
+2. **La pérdida está en el encierro final barato.** M1 encierra cada producto exacto con SH. M3_tt, en cambio,
+   acota la Q agregada término a término y pierde esa exactitud. Con los bloques producto, que recuperan productos
+   de dos sumas exactos, M3c baja a 0,94–0,965 en optimización y a 0,957–0,98 en NCSP, y mejora 27 instancias:
+   casi lo mismo que la SDP (28), sin resolver ninguna SDP.
+3. **El k-nomial (k = 6) aporta menos que los bloques producto** sobre estas formas: 12 instancias frente a 27. Los
+   productos de factores no lineales generan formas con poca diagonal útil para cuadrados.
+4. **La SDP sigue siendo la mejor**, con un 3 a 4 % más que los bloques producto, pero no se puede pagar por nodo.
+5. **En conjunto, la vía bilineal y cuadrática reduce el ancho entre un 5 y un 9 % en promedio**, mejora unas 30 de
+   las 58 instancias y llega a un 35–55 % en pocas (ex6_2_6, ex6_2_8, Pramanik, s365mod). La brecha frente al rango
+   interior se cierra solo en una fracción: a profundidad 10, de 1,74 a 1,58 en optimización y de 1,50 a 1,42 en
+   NCSP.
