@@ -1,7 +1,8 @@
 """Resumen de barridos ibexopt: media geometrica de celdas y CPU vs af2 (instancias resueltas por todas),
 resueltas, y comparacion exact vs sh. Uso: python summarize_opt.py dir_rows [dir_rows ...]"""
 import csv, glob, math, sys, collections
-V = ["art_af2_k0", "art_raa_k0", "art_sh_k0", "art_exact_k0"]
+import os
+V = os.environ.get("VARIANTS", "art_af2_k0 art_raa_k0 art_sh_k0 art_exact_k0").split()
 for d in sys.argv[1:]:
     R = collections.defaultdict(dict)
     for f in glob.glob(d + "/*.csv"):
