@@ -18,13 +18,14 @@ cmake -S jcgeraldo-ibex-lib -B jcgeraldo-ibex-lib/build -DCMAKE_BUILD_TYPE=Relea
 make -C jcgeraldo-ibex-lib/build -j"$JOBS" > ibexlib-make.log 2>&1
 make -C jcgeraldo-ibex-lib/build install > ibexlib-install.log 2>&1
 
-# 2. ibex-affine en c219009c + parche consolidado (0001-0015) + 0016
+# 2. ibex-affine en c219009c + parche consolidado (0001-0015) + 0016 + 0017
 RAAK="$ROOT/jcgeraldo-ibex-lib/raak"
 if [ ! -d ibex-affine ]; then
   git clone -q https://github.com/ibex-team/ibex-affine.git ibex-affine
   git -C ibex-affine checkout -q -B raak c219009cc6425826b760939b9486776f744ded96
   git -C ibex-affine apply "$RAAK/patches/raak-ibex-affine-consolidado.patch"
   git -C ibex-affine apply "$HERE/patches/0016-ibex-affine-multiplicacion-exacta.patch"
+  git -C ibex-affine apply "$HERE/patches/0017-ibex-affine-multiplicacion-rapida.patch"
 fi
 cmake -S ibex-affine -B ibex-affine/build -DCMAKE_BUILD_TYPE=Release -DIBEX_DIR="$PREFIX" \
       -DCMAKE_INSTALL_PREFIX="$PREFIX" > affine-cmake.log 2>&1

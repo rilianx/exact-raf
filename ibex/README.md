@@ -8,6 +8,7 @@ carpeta `raak/`). Especificación: `paper/numa/IBEX_EXACT_SPEC.md`.
 | Archivo | Contenido |
 |---|---|
 | `patches/0016-ibex-affine-multiplicacion-exacta.patch` | Sobre `ibex-affine` `c219009c` + `raak-ibex-affine-consolidado.patch` (0001–0015). Agrega `ibex_ExactMult.h`, los modos `AFFINE_SH` y `AFFINE_EXACT` y la rama correspondiente en `operator*=`; `Asqr` usa en ambos modos el cuadrado exacto de `AFFINE_RAA`. |
+| `patches/0017-ibex-affine-multiplicacion-rapida.patch` | Sobre 0016. `ibex_ExactMultFast.h`: recorrido en `double` con cota a priori del redondeo, predicado angular filtrado, sin asignaciones y las cuatro esquinas en una pasada (ver `fast/`). Con `IBEX_RAF_SQR=af2`, `sh`/`exact` usan el cuadrado de fAF2 (ablación). |
 | `cli/` | `ibexopt-raak` e `ibexsolve-raak` de JCGeraldo con `--arith=sh` y `--arith=exact` y la línea `EXACT-MULT stats`. |
 | `tests/affine_containment_check.cpp` | Prueba de contención de JCGeraldo (sin tolerancia, en intervalos) con las variantes `sh_k0` y `exact_k0` y la comparación de anchos. |
 | `tests/bench_mult.cpp` | Tiempo por producto según `n`, con y sin error en los factores (resultados en `results/bench_mult.csv`). |
@@ -28,3 +29,10 @@ y el centro y el radio se suman con los mismos `twoSum` y factores `(1+2·AF_EM)
   con el error achicado al 90 % detecta 1696 (`sh`) y 1719 (`exact`) violaciones, así que la prueba es sensible.
 - En productos aislados (200 000 casos), el encierro de `exact` está siempre contenido en el de `sh`.
 - `ex5_4_3` (`ibexopt`, `art`): mismo óptimo con las cuatro aritméticas; 42 celdas con `af2`/`raa`, 40 con `sh`/`exact`.
+
+## Parche 0017 (versión rápida)
+
+- `affine_containment_check 20000 11`: **0 violaciones seguras** (`results/containment_20000_0017_stderr.txt`).
+- Verificación contra el rango exacto en aritmética racional: 86 000 casos, 0 violaciones (`fast/`).
+- Costo por producto (`results/bench_mult_0017.csv`): `exact` cuesta 2.4 a 5.4 veces `af2` (antes 7 a 45)
+  y es de 1.5 a 18 veces más barato que `raa`.
