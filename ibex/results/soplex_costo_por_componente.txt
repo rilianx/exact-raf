@@ -1,0 +1,31 @@
+Costo por componente con SoPlex 4.0.2 + parche 0018 (optimizaciones de ibex-team/ibex-lib develop), una corrida
+por caso (ibexsolve-raak --ctc=default-xn+affine, 120 s; ibexopt-raak --lr=art, 60 s). Contador LinearizerCount:
+llamadas al linearizador por celda (cada una construye el politopo para CtcPolytopeHull), filas por llamada,
+segundos dentro del linearizador; t_resto = tiempo total - t_lin (LPs y demas contractores).
+
+inst       arith    celdas   tiempo llam/celda filas/llam      t_lin      t_resto
+Pramanik   af2        5335     1.14       1.65        5.2       0.47         0.68
+Pramanik   sh         2609     0.79       1.90        5.4       0.41         0.39
+Pramanik   q2         1721     0.57       1.90        5.4       0.35         0.22
+Pramanik   q2kn       1087     0.80       2.01        5.5       0.67         0.13
+Pramanik   q2pc       1215     2.77       1.98        5.5       2.76         0.01
+Directkin  af2        1991     4.18       2.36       21.8       0.95         3.23
+Directkin  sh         1153     2.55       2.49       21.8       0.66         1.89
+Directkin  q2         1323     2.83       2.51       21.9       0.61         2.22
+Directkin  q2kn       1051     2.72       2.46       21.9       0.89         1.83
+Directkin  q2pc       1155     4.47       2.48       21.9       2.41         2.07
+ex6_2_8    af2       18014     3.21       1.57        3.0       1.06         2.15
+ex6_2_8    sh        15718     3.29       1.58        3.0       1.26         2.02
+ex6_2_8    q2         5896     1.04       1.63        3.1       0.25         0.80
+ex6_2_8    q2kn       5872     1.13       1.63        3.1       0.32         0.81
+ex6_2_8    q2pc       5818     1.31       1.64        3.1       0.51         0.79
+ex7_3_5bis af2        5680     1.24       1.01        7.1       0.31         0.93
+ex7_3_5bis sh         5704     1.42       1.01        7.1       0.45         0.97
+ex7_3_5bis q2         3614     0.77       0.95        7.6       0.13         0.64
+ex7_3_5bis q2kn       3604     0.77       0.95        7.6       0.17         0.60
+ex7_3_5bis q2pc       3566     1.09       0.95        7.7       0.41         0.69
+
+Lectura: llamadas por celda y filas por llamada son practicamente iguales en todas las aritmeticas (las filas
+son lineales y del mismo numero), y el resto por celda tambien (Directkin: 1,6-1,7 ms por celda). El sobrecosto
+de LP observado con Clp no aparece con SoPlex. q2pc gasta en la linealizacion (bloques producto en cada
+evaluacion).
