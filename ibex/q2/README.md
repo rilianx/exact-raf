@@ -102,7 +102,76 @@ Datos: [`csp17_q2_t120.csv`](../results/csp17_q2_t120.csv) y [`csp17_q2_t120_res
 En las 4 instancias que resuelven todas, la media de celdas relativa a af2 es: sh 0,72, q2 0,68, q2kn 0,57 y
 q2pc 0,60. En tiempo, q2kn y q2pc son entre 1,1 y 1,2 veces af2 (sh 0,78).
 
-## Lectura
+
+## Resultados con SoPlex 4.0.2 (resultados de referencia)
+
+Compilación con `LP_LIB=soplex` (SoPlex 4.0.2, incluido en ibex-lib) y el parche 0018, que porta las
+optimizaciones de SoPlex de `ibex-team/ibex-lib` develop del 4-11-2026:
+- reloj apagado (`2db5d751`);
+- Neumaier-Shcherbina sin matrices densas (`b86f8667`);
+- cota de los LPs detenidos antes del óptimo (`9ea5ef6c`).
+
+La evaluación de grado 2 es la optimizada: sin `std::map`, con memoria reutilizada, sin la evaluación por
+intervalos redundante y con k = 3 en q2kn. Las cinco variantes corrieron en la misma compilación y la misma
+máquina.
+
+Datos:
+- [`opt_q2_soplex_t30.csv`](../results/opt_q2_soplex_t30.csv) y [resumen](../results/opt_q2_soplex_t30_resumen.txt)
+- [`csp17_q2_soplex_t120.csv`](../results/csp17_q2_soplex_t120.csv) y [resumen](../results/csp17_q2_soplex_t120_resumen.txt)
+- costo por componente: [`soplex_costo_por_componente.txt`](../results/soplex_costo_por_componente.txt)
+
+**Las filas son lineales y su costo de LP es el mismo en todas las aritméticas.** Las llamadas al LP por celda
+(1,6–2,5), las filas por llamada y el costo del LP por celda son prácticamente iguales con af2, sh y q2\*. El
+sobrecosto de LP que se veía con Clp no aparece con SoPlex.
+
+### Optimización (30 s; medias geométricas relativas a af2 en las instancias que resuelven todas)
+
+| conjunto | variante | resueltas | celdas / af2 | CPU / af2 |
+|---|---|---|---|---|
+| Ibex medium+hard y COCONUT (41; 25 resueltas por todas) | af2 | 29 | 1 | 1 |
+| | sh | 29 | 0,919 | 0,966 |
+| | **q2** | **30** | 0,732 | **0,691** |
+| | **q2kn** | **30** | **0,716** | 0,728 |
+| | q2pc | 29 | 0,870 | 1,128 |
+| synq (78; 27 resueltas por todas) | af2 | 42 | 1 | 1 |
+| | sh | 52 | 0,206 | 0,253 |
+| | q2 | 78 | 0,028 | 0,038 |
+| | **q2kn** | **78** | 0,019 | **0,028** |
+| | q2pc | 77 | 0,018 | 0,033 |
+| generador fqf (54; 22 resueltas por todas) | af2 | 33 | 1 | 1 |
+| | sh | 33 | 1,001 | 0,983 |
+| | q2 | 34 | 0,749 | 0,693 |
+| | q2kn | 36 | 0,533 | 0,486 |
+| | **q2pc** | **36** | **0,465** | **0,437** |
+
+### NCSP (120 s)
+
+| instancia | af2 | sh | q2 | q2kn | q2pc |
+|---|---|---|---|---|---|
+| Pramanik | 5335 celdas, 1,2 s | 2609, 0,9 s | 1721, **0,6 s** | **1087**, 0,8 s | 1215, 2,8 s |
+| Directkin | 1991, 4,2 s | 1153, **2,7 s** | 1323, 2,8 s | **1051**, 2,9 s | 1155, 4,6 s |
+| Dietmaier | sin terminar en 120 s, 50 soluciones | 54 soluciones en 84 s | sin terminar, 49 | 54 en 89 s | 54 en 111 s |
+| Trigexp2-\*, Neveu1, ponts-geo | prácticamente iguales; q2pc más lenta | | | | |
+
+En las 4 instancias que resuelven todas, relativo a af2:
+
+| variante | celdas | tiempo |
+|---|---|---|
+| sh | 0,72 | 0,88 |
+| q2 | 0,68 | **0,74** |
+| q2kn | **0,57** | 0,83 |
+| q2pc | 0,60 | 1,32 |
+
+### Lectura con SoPlex
+
+1. **q2 y q2kn son las mejores variantes en general.** En Ibex medium+hard usan 0,72–0,73 veces las celdas de af2
+   y 0,69–0,73 veces el tiempo, y resuelven 30 instancias frente a 29. En synq resuelven las 78 (af2, 42). En NCSP
+   bajan celdas y tiempo frente a af2 y a SH.
+2. **q2pc es la mejor en formas cuadráticas densas** (el generador: 0,47 de las celdas y 0,44 del tiempo), pero
+   cuesta más por celda en el resto, porque recalcula los bloques producto en cada evaluación.
+3. **SH por producto,** en cambio, casi no gana en Ibex medium+hard (0,92 de las celdas) y nada en el generador.
+
+## Lectura (barrido anterior, con Clp)
 
 1. **En optimización, q2kn es la mejor variante:** con unas 0,78 veces las celdas y el tiempo de af2 en Ibex
    medium+hard, unas 0,55 veces en el generador y unas 0,03 veces en synq, resolviendo las 78 de synq frente a 41

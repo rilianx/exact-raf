@@ -1,0 +1,32 @@
+coherencia de f*: 0 casos con cota inferior por encima de la mejor cota superior
+
+## ibex medium+hard y coconut: 41 instancias; resueltas por todas (cpu af2 >= 0,05 s): 25
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 29 | 1.000 | 1.000 | 1633 |
+| sh | 29 | 0.919 | 0.966 | 1554 |
+| q2 | 30 | 0.732 | 0.691 | 1731 |
+| q2kn | 30 | 0.716 | 0.728 | 1606 |
+| q2pc | 29 | 0.870 | 1.128 | 1260 |
+
+## synq: 78 instancias; resueltas por todas (cpu af2 >= 0,05 s): 27
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 42 | 1.000 | 1.000 | 3960 |
+| sh | 52 | 0.206 | 0.253 | 3225 |
+| q2 | 78 | 0.028 | 0.038 | 2916 |
+| q2kn | 78 | 0.019 | 0.028 | 2638 |
+| q2pc | 77 | 0.018 | 0.033 | 2128 |
+
+## fqf: 54 instancias; resueltas por todas (cpu af2 >= 0,05 s): 22
+
+| variante | resueltas | celdas / af2 (geo) | CPU / af2 (geo) | celdas por s |
+|---|---|---|---|---|
+| af2 | 33 | 1.000 | 1.000 | 2090 |
+| sh | 33 | 1.001 | 0.983 | 2129 |
+| q2 | 34 | 0.749 | 0.693 | 2258 |
+| q2kn | 36 | 0.533 | 0.486 | 2294 |
+| q2pc | 36 | 0.465 | 0.437 | 2221 |
+
