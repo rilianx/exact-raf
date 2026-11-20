@@ -9,6 +9,8 @@
 // Interruptores (Fase 1, parche 0004):
 //   --lr=xn|art|compo        relajacion lineal (sin cambio de significado)
 //   --arith=af2|raa|aa       aritmetica afin; solo tiene efecto con art/compo
+//   --arith=q2|q2kn|q2pc|q2full  formas afines de grado 2 (LinearizerQuad2, ibex/q2/), con encierro final
+//                            barato | k-nomial k=6 | bloques producto (pares + completo) | bloques producto completos
 //   --knomial_k=K            0 = sin reescritura k-nomial; K>=2 = reescritura con bloques de hasta K
 // Alias de compatibilidad con el prototipo (imprimen una linea "[compat]"):
 //   --lr=raak       == --lr=art   --arith=raa --knomial_k=3
@@ -28,6 +30,7 @@
 
 #include "ibex.h"
 #include "ibex_Optimizer04Config_Affine.h"
+#include "ibex_LinearizerQuad2.h"
 #include "ibex_KNomial.h"
 #include "ibex_ExactMult.h"
 #include "ibex_AffineTrig.h"
@@ -71,7 +74,7 @@ int main(int argc, char** argv) {
     args::ValueFlag<int> _slices3Bcidhc4(bcidhc4Group, "slices_3bcidhc4", "Number of slices for 3bcidhc4", {"slices"});
 
     args::ValueFlag<std::string> _linearRelaxation(parser, "linear relaxation", "Linear relaxation (xn*|art|compo). Alias: raak = art+raa+k3, raakcompo = compo+raa+k3", {"lr"});
-    args::ValueFlag<std::string> _arith(parser, "arith", "Affine arithmetic for art/compo: af2* (fAF2), raa (RAA of [A]), sh (Skalna-Hladik), exact (exact product, patch 0016), aa (traditional AA, patch 0007)", {"arith"});
+    args::ValueFlag<std::string> _arith(parser, "arith", "Affine arithmetic for art/compo: af2* (fAF2), raa (RAA of [A]), sh (Skalna-Hladik), exact (exact product, patch 0016), aa (traditional AA, patch 0007), q2|q2kn|q2pc|q2full (degree-2 affine forms, ibex/q2)", {"arith"});
     args::ValueFlag<int> _knomialK(parser, "knomial_k", "k-nomial rewriting: 0* = none, K>=2 = blocks of up to K variables", {"knomial_k"});
     args::ValueFlag<int> _raakK(parser, "raak_k", "[compat] 0 -> af2,k=0 | 1 -> raa,k=0 | K>=2 -> raa,k=K", {"raak_k"});
     args::ValueFlag<long> _knomialBudget(parser, "knomial_budget", "Node budget of the clique search per product: 0* = unlimited (patch 0011). Overrides RAAK_NODE_BUDGET", {"knomial_budget"});
@@ -132,8 +135,9 @@ int main(int argc, char** argv) {
         std::cerr << "--lr=" << lr << ": relajacion desconocida (xn | art | compo; alias raak | raakcompo)" << std::endl;
         return 1;
     }
-    if (arith != "af2" && arith != "raa" && arith != "aa" && arith != "sh" && arith != "exact") {
-        std::cerr << "--arith=" << arith << ": aritmetica desconocida (af2 | raa | sh | exact | aa)" << std::endl;
+    const bool is_q2 = (arith == "q2" || arith == "q2kn" || arith == "q2pc" || arith == "q2full");
+    if (arith != "af2" && arith != "raa" && arith != "aa" && arith != "sh" && arith != "exact" && !is_q2) {
+        std::cerr << "--arith=" << arith << ": aritmetica desconocida (af2 | raa | sh | exact | aa | q2 | q2kn | q2pc | q2full)" << std::endl;
         return 1;
     }
     if (knomial_k < 0 || knomial_k == 1) {
@@ -200,7 +204,7 @@ int main(int argc, char** argv) {
     ibex::knomial_max_k() = uses_affine ? knomial_k : 0;
     std::cout << "affine_mode=" << (ibex::affine_mode() == ibex::AFFINE_RAA ? "RAA" : ibex::affine_mode() == ibex::AFFINE_SH ? "SH" : ibex::affine_mode() == ibex::AFFINE_EXACT ? "EXACT" : "AF2")
               << " knomial_max_k=" << ibex::knomial_max_k()
-              << " linearizador=" << (!uses_affine ? "xn" : (arith == "aa" ? "LinearizerAffineT<AF_fAFFullI>" : "LinearizerAffine2")) << std::endl;
+              << " linearizador=" << (!uses_affine ? "xn" : (arith == "aa" ? "LinearizerAffineT<AF_fAFFullI>" : is_q2 ? "LinearizerQuad2" : "LinearizerAffine2")) << std::endl;
 
     std::vector<char*> argv_new;
     for (auto& arg : args) {
@@ -233,6 +237,12 @@ int main(int argc, char** argv) {
                     s.calls, s.sqr_products, s.sqr_used,
                     s.corner_products, s.corner_used, cross_ratio,
                     s.aa_products, s.aa_used);
+    }
+
+    if (is_q2) {
+        const ibex::Quad2Stats& q = ibex::quad2_stats();
+        std::printf("QUAD2 stats: final=%s evaluaciones=%ld fallidas=%ld restricciones_no_soportadas=%ld filas=%ld\n",
+                    arith.c_str(), q.evals, q.failed, q.unsupported, q.rows);
     }
 
     // [raak local] Fase 2: contadores de la linealizacion de sin/cos (solo si hubo alguna)

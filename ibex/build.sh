@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Reconstruye Ibex + ibex-affine (parches RAA-K 0001-0015 de JCGeraldo + 0016 de este repo) y el CLI
-# ibexopt-raak / ibexsolve-raak con --arith=af2|raa|sh|exact.
+# ibexopt-raak / ibexsolve-raak con --arith=af2|raa|sh|exact (y ibexopt-raak con --arith=q2|q2kn|q2pc|q2full).
 #   ROOT=/ruta/de/trabajo LP_LIB=clp|soplex bash ibex/build.sh
 set -euo pipefail
 HERE="$(cd "$(dirname "$0")" && pwd)"
@@ -32,12 +32,14 @@ cmake -S ibex-affine -B ibex-affine/build -DCMAKE_BUILD_TYPE=Release -DIBEX_DIR=
 make -C ibex-affine/build -j"$JOBS" > affine-make.log 2>&1
 make -C ibex-affine/build install > affine-install.log 2>&1
 
-# 3. CLI (fuentes de JCGeraldo con --arith=sh|exact)
+# 3. CLI (fuentes de JCGeraldo con --arith=sh|exact, y en este repo --arith=q2|q2kn|q2pc|q2full:
+#    LinearizerQuad2, formas afines de grado 2, ibex/q2/)
 CLI="$ROOT/ibexopt-raak"
-mkdir -p "$CLI/src/bin"
-cp "$RAAK/cli/cli_CMakeLists.txt"               "$CLI/CMakeLists.txt"
-cp "$RAAK/cli/cli_Optimizer04Config_Affine.h"   "$CLI/src/ibex_Optimizer04Config_Affine.h"
-cp "$RAAK/cli/cli_Optimizer04Config_Affine.cpp" "$CLI/src/ibex_Optimizer04Config_Affine.cpp"
+mkdir -p "$CLI/src/bin" "$CLI/src/q2"
+cp "$HERE/cli/cli_CMakeLists.txt"               "$CLI/CMakeLists.txt"
+cp "$HERE/cli/cli_Optimizer04Config_Affine.h"   "$CLI/src/ibex_Optimizer04Config_Affine.h"
+cp "$HERE/cli/cli_Optimizer04Config_Affine.cpp" "$CLI/src/ibex_Optimizer04Config_Affine.cpp"
+cp "$HERE"/q2/*.h                               "$CLI/src/q2/"
 cp "$HERE/cli/cli_ibexopt_raak.cpp"             "$CLI/src/bin/ibexopt_raak.cpp"
 cp "$HERE/cli/cli_ibexsolve_raak.cpp"           "$CLI/src/bin/ibexsolve_raak.cpp"
 cp "$ROOT/jcgeraldo-ibex-lib/src/bin/parse_args.h" "$CLI/src/bin/parse_args.h"
