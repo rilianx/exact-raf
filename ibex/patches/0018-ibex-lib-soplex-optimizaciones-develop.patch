@@ -1,0 +1,273 @@
+# Optimizaciones de SoPlex 4.0.2 de ibex-team/ibex-lib (rama develop, 4-11-2026), portadas al fork
+# JCGeraldo/ibex-lib (raak-experimentos), que no tiene la infraestructura de estadisticas de develop:
+#   2db5d751 SoPlex: switch the clock off unless a short time limit is set (parche soplex-4.0.2.timer.patch)
+#   b86f8667 LPSolver: Neumaier-Shcherbina without dense matrices
+#   9ea5ef6c CtcPolytopeHull: use the bound of LPs stopped before optimality
+# Se aplica sobre la raiz de ibex-lib (git apply). No incluye la actualizacion a SoPlex 8.1.0 (9-11-2026).
+diff --git a/lp_lib_wrapper/soplex/CMakeLists.txt b/lp_lib_wrapper/soplex/CMakeLists.txt
+index 5f13bc8..d58bebb 100644
+--- a/lp_lib_wrapper/soplex/CMakeLists.txt
++++ b/lp_lib_wrapper/soplex/CMakeLists.txt
+@@ -39,6 +39,12 @@ else ()
+   patch ("${SOPLEX_NAME}: " "${CMAKE_CURRENT_SOURCE_DIR}/3rd" "${wdir}"
+           "${logdir}" "${soplex_basename}.CMake.patch")
+ 
++  # The TIMER parameter must also switch the timers of the LU factorization
++  # and of the statistics: otherwise every FTRAN/BTRAN reads the clock (a
++  # system call), even with TIMER_OFF.
++  patch ("${SOPLEX_NAME}: " "${CMAKE_CURRENT_SOURCE_DIR}/3rd" "${wdir}"
++          "${logdir}" "${soplex_basename}.timer.patch")
++
+   ### Configure
+   message (STATUS "${SOPLEX_NAME}: configure")
+   # Original values will be restored at the end of this file
+diff --git a/lp_lib_wrapper/soplex/ibex_LPLibWrapper.cpp b/lp_lib_wrapper/soplex/ibex_LPLibWrapper.cpp
+index 7f52e66..9d0bf28 100644
+--- a/lp_lib_wrapper/soplex/ibex_LPLibWrapper.cpp
++++ b/lp_lib_wrapper/soplex/ibex_LPLibWrapper.cpp
+@@ -105,12 +105,28 @@ LPSolver::~LPSolver() {
+     delete mysoplex;
+ }
+ 
++namespace {
++
++// Reading the clock is a system call that SoPlex makes at every
++// FTRAN/BTRAN of its LU factorization; on the small LPs of a contractor it
++// is a large part of the cost of a call. The clock is only needed to
++// enforce a time limit, so it is switched off unless the time limit is
++// below the default one (which no LP of a contractor reaches).
++// [ibex-team/ibex-lib develop 2db5d751, portado al fork raak]
++void set_timelimit(soplex::SoPlex* mysoplex, double timeout) {
++    mysoplex->setRealParam(soplex::SoPlex::TIMELIMIT, timeout);
++    mysoplex->setIntParam(soplex::SoPlex::TIMER,
++            timeout < LPSolver::default_timeout ? soplex::SoPlex::TIMER_CPU : soplex::SoPlex::TIMER_OFF);
++}
++
++} // anonymous namespace
++
+ void LPSolver::init(LPSolver::Mode mode, double tolerance, double timeout, int max_iter) {
+     mysoplex = new soplex::SoPlex();
+     mode_ = mode;
+     mysoplex->setIntParam(SoPlex::VERBOSITY, SoPlex::VERBOSITY_ERROR);
+     mysoplex->setIntParam(SoPlex::ITERLIMIT, max_iter);
+-	mysoplex->setRealParam(SoPlex::TIMELIMIT, timeout);
++	set_timelimit(mysoplex, timeout);
+ 	mysoplex->setRealParam(SoPlex::FEASTOL, tolerance);
+ 	mysoplex->setRealParam(SoPlex::OPTTOL, tolerance);
+ 	mysoplex->setIntParam(SoPlex::SOLVEMODE, SoPlex::SOLVEMODE_REAL);
+@@ -224,9 +240,11 @@ LPSolver::Status LPSolver::minimize() {
+         break;
+     case SPxSolver::ABORT_TIME:
+         status_ = LPSolver::Status::Timeout;
++        bound_from_last_basis();
+         break;
+     case SPxSolver::ABORT_ITER:
+         status_ = LPSolver::Status::MaxIter;
++        bound_from_last_basis();
+         break;
+     case SPxSolver::INFEASIBLE:
+         {
+@@ -253,10 +271,21 @@ LPSolver::Status LPSolver::minimize() {
+         //std::string error_msg = "LPSolver: solve status is an internal Soplex status (" + std::to_string(soplex_status) + "). This is probably an error for you.";
+         //ibex_warning(error_msg.c_str());
+         status_ = LPSolver::Status::Unknown;
++        bound_from_last_basis();
+     }
+     return status_;
+ }
+ 
++void LPSolver::bound_from_last_basis() {
++    if (mode_ != LPSolver::Mode::Certified || !mysoplex->hasSol()) return;
++    DVectorReal dvec_dual(nb_rows());
++    if (!mysoplex->getDualReal(dvec_dual)) return;
++    uncertified_dual_ = dvec2ivec(dvec_dual);
++    neumaier_shcherbina_postprocessing();
++    // An empty enclosure means an empty polytope (a row with lhs > rhs).
++    bound_at_stop_ = obj_.is_empty() ? POS_INFINITY : obj_.lb();
++}
++
+ void LPSolver::set_cost(const Vector& obj) {
+     assert(obj.size() == nb_vars());
+     assert(isfinite(obj));
+@@ -303,7 +332,7 @@ void LPSolver::set_tolerance(double tolerance) {
+ 
+ void LPSolver::set_timeout(double timeout) {
+     has_changed = true;
+-    mysoplex->setRealParam(SoPlex::TIMELIMIT, timeout);
++    set_timelimit(mysoplex, timeout);
+ }
+ 
+ void LPSolver::set_max_iter(int max_iter) {
+diff --git a/src/contractor/ibex_CtcPolytopeHull.cpp b/src/contractor/ibex_CtcPolytopeHull.cpp
+index 6e706ab..1a9ba2c 100644
+--- a/src/contractor/ibex_CtcPolytopeHull.cpp
++++ b/src/contractor/ibex_CtcPolytopeHull.cpp
+@@ -155,7 +155,20 @@ void CtcPolytopeHull::optimizer(IntervalVector& box) {
+ 				break;
+ 			}
+ 
+-			else if (stat == LPSolver::Status::Unknown) {
++			else {
++				// MaxIter, Timeout or Unknown: the dual of the basis where the
++				// solver stopped still gives a certified bound. Apply it and go
++				// on with the next bound instead of abandoning the pass.
++				double lb = mylinearsolver.proved_bound_at_stop();
++				if (lb > box[i].ub()) {
++					delete[] inf_bound;
++					delete[] sup_bound;
++					throw PolytopeHullEmptyBoxException();
++				}
++				if (lb > box[i].lb()) {
++					box[i]=Interval(lb,box[i].ub());
++					mylinearsolver.set_bounds(i,box[i]);
++				}
+ 				int next=-1;
+ 				for (int j=0;j<nb_var;j++) {
+ 					if (inf_bound[j]==0) {
+@@ -209,7 +222,18 @@ void CtcPolytopeHull::optimizer(IntervalVector& box) {
+ 				break;
+ 			}
+ 
+-			else if (stat == LPSolver::Status::Unknown) {
++			else {
++				// MaxIter, Timeout or Unknown: see the left bound.
++				double ub = -mylinearsolver.proved_bound_at_stop();
++				if (ub < box[i].lb()) {
++					delete[] inf_bound;
++					delete[] sup_bound;
++					throw PolytopeHullEmptyBoxException();
++				}
++				if (ub < box[i].ub()) {
++					box[i]=Interval(box[i].lb(),ub);
++					mylinearsolver.set_bounds(i,box[i]);
++				}
+ 				int next=-1;
+ 				for (int j=0;j<nb_var;j++) {
+ 					if (inf_bound[j]==0) {
+@@ -224,7 +248,7 @@ void CtcPolytopeHull::optimizer(IntervalVector& box) {
+ 				if (next==-1) break;
+ 			}
+ 		}
+-		else break; // in case of stat==MAX_ITER  we do not recall the simplex on a another variable  (for efficiency reason)
++		else break;
+ 	}
+ 	delete[] inf_bound;
+ 	delete[] sup_bound;
+diff --git a/src/numeric/ibex_LPSolver.cpp b/src/numeric/ibex_LPSolver.cpp
+index 4d077a1..bdc44ba 100644
+--- a/src/numeric/ibex_LPSolver.cpp
++++ b/src/numeric/ibex_LPSolver.cpp
+@@ -42,20 +42,45 @@ std::ostream& operator<<(std::ostream& os, const LPSolver::Status x){
+ 	return os;
+ }
+ 
++namespace {
++
++// Computes lambda'*b (in interval arithmetic) and A'*lambda (in floating
++// point, as the dense product Matrix*Vector did) row by row, skipping the
++// rows with a null multiplier. The simplex multipliers are sparse (only the
++// rows active in the basis are nonzero), so this avoids building rows() and
++// its transpose, two dense matrices, at every call.
++void sparse_dual_products(const LPSolver& lp, const Vector& lambda, Interval& lambda_b, Vector& At_lambda) {
++	const int n = lp.nb_vars();
++	const int m = lp.nb_rows();
++	lambda_b = Interval::zero();
++	At_lambda = Vector::zeros(n);
++	for (int i = 0; i < m; ++i) {
++		// A row with lhs > rhs makes the polytope empty. The dense product
++		// propagated its empty interval to the bound even with a null
++		// multiplier (and CtcPolytopeHull then empties the box): keep that.
++		if (lp.lhs_rhs(i).is_empty()) { lambda_b.set_empty(); return; }
++		const double li = lambda[i];
++		if (li == 0.0) continue;
++		lambda_b += li*lp.lhs_rhs(i);
++		const Vector r = lp.row(i);
++		for (int j = 0; j < n; ++j)
++			if (r[j] != 0.0) At_lambda[j] += li*r[j];
++	}
++}
++
++} // anonymous namespace
++
+ bool LPSolver::neumaier_shcherbina_postprocessing() {
+-    Matrix A_trans = rows_transposed();
+-    IntervalVector b = lhs_rhs();
+-    IntervalVector rest = A_trans*uncertified_dual_;
++	Interval lambda_b;
++	Vector At_lambda(nb_vars());
++	sparse_dual_products(*this, uncertified_dual_, lambda_b, At_lambda);
++	IntervalVector rest(At_lambda);
+ 	rest -= cost();
+-	//Interval certified_obj_raw = uncertified_dual_*b - rest*ivec_bounds_;
+-	//certified_obj_ = Interval(certified_obj_raw.lb(), uncertified_obj_.ub());
+-    obj_ = uncertified_dual_*b - rest*ivec_bounds_;
++	obj_ = lambda_b - rest*ivec_bounds_;
+ 	return true;
+ }
+ 
+ bool LPSolver::neumaier_shcherbina_infeasibility_test() {
+-    ibex::Matrix A_trans = rows_transposed();
+-    IntervalVector b = lhs_rhs();
+     Vector lambda(1);
+ 	// It is possible that the solver does not find an infeasible direction
+ 	// even when the problem is infeasible.
+@@ -64,9 +89,11 @@ bool LPSolver::neumaier_shcherbina_infeasibility_test() {
+         return false;
+     }
+ 
+-
+-    IntervalVector rest = A_trans * lambda ;
+-    Interval d = rest * ivec_bounds_ - lambda * b;
++	Interval lambda_b;
++	Vector At_lambda(nb_vars());
++	sparse_dual_products(*this, lambda, lambda_b, At_lambda);
++    IntervalVector rest(At_lambda);
++    Interval d = rest * ivec_bounds_ - lambda_b;
+ 
+     // if 0 does not belong to d, the infeasibility is proved
+     return !d.contains(0.0);
+@@ -77,6 +104,11 @@ void LPSolver::invalidate() {
+     status_ = LPSolver::Status::Unknown;
+     has_solution_ = false;
+     has_infeasible_dir_ = false;
++    bound_at_stop_ = NEG_INFINITY;
++}
++
++double LPSolver::proved_bound_at_stop() const {
++    return bound_at_stop_;
+ }
+ 
+ bool LPSolver::is_feasible() const {
+diff --git a/src/numeric/ibex_LPSolver.h b/src/numeric/ibex_LPSolver.h
+index 0d6dc43..ba8721a 100644
+--- a/src/numeric/ibex_LPSolver.h
++++ b/src/numeric/ibex_LPSolver.h
+@@ -278,6 +278,17 @@ public:
+ 	 */
+     Vector cost() const;
+ 
++	/**
++	 * \brief Certified lower bound of the minimum when the last call to
++	 * minimize() stopped before optimality (MaxIter, Timeout or Unknown).
++	 *
++	 * The Neumaier-Shcherbina bound is valid for any vector of multipliers,
++	 * so the dual of the basis where the solver stopped still gives a valid
++	 * (possibly weak) bound. Return -oo if no such bound is available: no
++	 * dual solution stored, or uncertified mode.
++	 */
++	double proved_bound_at_stop() const;
++
+ 	/**
+ 	 * \brief Return the cost for variable index.
+ 	 */
+@@ -362,6 +373,10 @@ private:
+     bool has_infeasible_dir_ = false;
+     Vector uncertified_infeasible_dir_{1};
+     Interval obj_;
++    double bound_at_stop_ = NEG_INFINITY;
++
++    // Neumaier-Shcherbina bound from the dual of the basis where the solver stopped.
++    void bound_from_last_basis();
+ 
+     bool has_changed = true;
+ 

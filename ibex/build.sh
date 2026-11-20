@@ -13,6 +13,11 @@ cd "$ROOT"
 
 # 1. ibex-lib: fork de JCGeraldo (rama raak-experimentos), que trae el cambio 0003 y los parches RAA-K
 [ -d jcgeraldo-ibex-lib ] || git clone -q -b raak-experimentos https://github.com/JCGeraldo/ibex-lib jcgeraldo-ibex-lib
+# 1b. optimizaciones de SoPlex 4.0.2 de ibex-team/ibex-lib develop (parche 0018 de este repo), si LP_LIB=soplex
+if [ "$LP_LIB" = soplex ]; then
+  git -C jcgeraldo-ibex-lib apply --reverse --check "$HERE/patches/0018-ibex-lib-soplex-optimizaciones-develop.patch" 2>/dev/null \
+    || git -C jcgeraldo-ibex-lib apply "$HERE/patches/0018-ibex-lib-soplex-optimizaciones-develop.patch"
+fi
 cmake -S jcgeraldo-ibex-lib -B jcgeraldo-ibex-lib/build -DCMAKE_BUILD_TYPE=Release -DLP_LIB="$LP_LIB" \
       -DCMAKE_INSTALL_PREFIX="$PREFIX" > ibexlib-cmake.log 2>&1
 make -C jcgeraldo-ibex-lib/build -j"$JOBS" > ibexlib-make.log 2>&1
