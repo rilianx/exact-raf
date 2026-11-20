@@ -281,3 +281,29 @@ completa en [`resumen_m3c.txt`](resumen_m3c.txt).
    las 58 instancias y llega a un 35–55 % en pocas (ex6_2_6, ex6_2_8, Pramanik, s365mod). La brecha frente al rango
    interior se cierra solo en una fracción: a profundidad 10, de 1,74 a 1,58 en optimización y de 1,50 a 1,42 en
    NCSP.
+
+## Tiempos ([`tiempos.py`](tiempos.py), [`resumen_tiempos.txt`](resumen_tiempos.txt))
+
+Se midieron 1158 combinaciones de expresión y caja (caminata 1, profundidades 0 y 10); 772 de ellas tienen parte
+cuadrática. Todo está en Python salvo el k-nomial, que es C++. Los tiempos sirven para comparar entre sí los
+componentes, no como valores absolutos.
+
+| componente | mediana (µs) | p90 (µs) | mediana / evaluación M0 |
+|---|---|---|---|
+| evaluación M0 (fAF2 + SH) | 375 | 2404 | 1 |
+| evaluación M1 | 257 | 2168 | 0,82 |
+| evaluación M3 centrado | 225 | 2389 | 0,75 |
+| encierro barato (`_tt`) | 6 | 16 | 0,02 |
+| bloques producto (Python) | 14 503 | 57 566 | 18 |
+| k-nomial k = 6 (C++, en lote) | 70 | — | 0,16 |
+| SDP (SCS) | 62 674 | 255 116 | 32 |
+
+**Tamaño de la forma homogeneizada** (número de símbolos + 1): mediana 5, p90 13 y máximo 102. Las formas son
+chicas.
+
+**Lectura:**
+- Evaluar con formas cuadráticas (M3) no cuesta más que con M1 en estos tamaños.
+- El encierro barato es despreciable.
+- Los bloques producto, en este prototipo en Python, cuestan unas 18 evaluaciones. Una versión en C++ debería
+  quedar en el orden del k-nomial, que es ~70 µs.
+- La SDP cuesta unas 30 evaluaciones y solo es viable fuera del bucle de cada nodo.

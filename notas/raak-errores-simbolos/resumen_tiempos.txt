@@ -1,0 +1,16 @@
+1158 expresiones/cajas (caminata 1, prof 0 y 10); 772 con parte cuadratica
+
+| componente | N | mediana (us) | p90 (us) | mediana / t_M0 |
+|---|---|---|---|---|
+| M0 | 1158 | 375 | 2404 | 1.00 |
+| M1 | 1158 | 257 | 2168 | 0.82 |
+| M2 | 1158 | 279 | 63753 | 0.96 |
+| M3c_eval | 1158 | 225 | 2389 | 0.75 |
+| tt | 1158 | 6 | 16 | 0.02 |
+| homog | 772 | 12 | 29 | 0.02 |
+| prodk | 758 | 14503 | 57566 | 18.34 |
+| kn6_medio_lote | 772 | 70 | 70 | 0.16 |
+| sdp | 637 | 62674 | 255116 | 31.66 |
+
+tamano m de la forma homogeneizada: mediana 5, p90 13, max 102
+prodk se mide solo con m <= 40 y sdp con m <= 60 (como en la medicion)
