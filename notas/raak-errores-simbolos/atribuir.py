@@ -4,7 +4,7 @@ que aporta cada tipo de operacion, en las mismas cajas que medir_cajas.py.
 
 Uso: python3 atribuir.py <salida.csv> <bch>...
 """
-import csv, math, sys, time
+import csv, math, sys, time, zlib
 from collections import defaultdict
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
@@ -20,7 +20,7 @@ def main():
     for f in files:
         t0 = time.time()
         box0, consts, trees = A.read_bch(f)
-        for w, d, box in MC.walks(box0, seed=hash(Path(f).stem) % 2**32):
+        for w, d, box in MC.walks(box0, seed=zlib.crc32(Path(f).stem.encode())):
             for name, tree in trees:
                 try:
                     F = A.Evaluator(box, consts, "M1").ev(tree)

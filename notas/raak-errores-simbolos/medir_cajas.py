@@ -7,7 +7,7 @@ profundidades DEPTHS. Varias caminatas por instancia.
 
 Uso: python3 medir_cajas.py <salida.csv> <bch>...
 """
-import csv, math, sys, time
+import csv, math, sys, time, zlib
 from pathlib import Path
 import numpy as np
 
@@ -38,7 +38,7 @@ def main():
     for f in files:
         t0 = time.time()
         box0, consts, trees = A.read_bch(f)
-        for w, d, box in walks(box0, seed=hash(Path(f).stem) % 2**32):
+        for w, d, box in walks(box0, seed=zlib.crc32(Path(f).stem.encode())):
             for name, tree in trees:
                 r = {"instancia": Path(f).stem, "n": len(box0), "expr": name, "caminata": w, "prof": d}
                 try:
