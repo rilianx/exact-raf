@@ -79,17 +79,6 @@ Iwona Skalna.
 \newblock Algorithm for min-range multiplication of affine forms.
 \newblock {\em Numerical Algorithms}, 63(4):601--614, 2013.
 
-\bibitem{chabert2009}
-Gilles Chabert and Luc Jaulin.
-\newblock Contractor programming.
-\newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
-
-\bibitem{ibexaffine}
-Jordan Ninin, Gilles Chabert, et~al.
-\newblock {ibex-affine}: affine arithmetic plugin of the {Ibex} library.
-\newblock \url{https://github.com/ibex-team/ibex-affine}.
-\newblock Accessed 2026.
-
 \bibitem{shewchuk1997adaptive}
 Jonathan~Richard Shewchuk.
 \newblock Adaptive precision floating-point arithmetic and fast robust
@@ -101,12 +90,35 @@ Nicholas~J. Higham.
 \newblock {\em Accuracy and Stability of Numerical Algorithms}.
 \newblock SIAM, Philadelphia, 2 edition, 2002.
 
+\bibitem{chabert2009}
+Gilles Chabert and Luc Jaulin.
+\newblock Contractor programming.
+\newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
+
 \bibitem{coprin}
 Coprin.
 \newblock The coprin examples page.
 \newblock
   \url{https://www-sop.inria.fr/coprin/logiciels/ALIAS/Benches/benches.html},
   2024.
+\newblock Accessed: 2024-09-12.
+
+\bibitem{ibexaffine}
+Jordan Ninin, Gilles Chabert, et~al.
+\newblock {ibex-affine}: affine arithmetic plugin of the {Ibex} library.
+\newblock \url{https://github.com/ibex-team/ibex-affine}.
+\newblock Accessed 2026.
+
+\bibitem{araya2017}
+Ignacio Araya and Bertrand Neveu.
+\newblock lsmear: a variable selection strategy for interval branch and bound
+  solvers.
+\newblock {\em Journal of Global Optimization}, 71(3):483--500, 2018.
+
+\bibitem{coconut}
+Continuous Constraints.
+\newblock Coconut.
+\newblock \url{https://arnold-neumaier.at/glopt/coconut/index.html}, 2024.
 \newblock Accessed: 2024-09-12.
 
 \end{thebibliography}
