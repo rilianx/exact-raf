@@ -14,6 +14,7 @@
 //   --ctc=default+affine   el de DefaultSolver seguido del politopo afin
 //   --ctc=default-xn+affine el de DefaultSolver con el politopo afin EN LUGAR del de XTaylor (HC4, ACID, Newton, afin)
 //   --arith=af2|raa|aa  --knomial_k=K  --knomial_budget=N  --knomial_bound=interval|directed  --trig=...
+//   --arith=q2|q2kn|q2pc|q2full: formas afines de grado 2 (LinearizerQuad2, ibex/q2/), solo con --ctc=*affine*
 //                          igual que en ibexopt-raak
 // Biseccion y pila: las de DefaultSolver (SmearSumRelative si el sistema es cuadrado de igualdades,
 // RoundRobin si no; busqueda en profundidad).
@@ -21,6 +22,7 @@
 #include <fstream>
 #include "ibex.h"
 #include "ibex_LinearizerAffine2.h"
+#include "ibex_LinearizerQuad2.h"
 #include "ibex_KNomial.h"
 #include "ibex_ExactMult.h"
 #include "ibex_AffineTrig.h"
@@ -35,7 +37,7 @@ int main(int argc, char** argv) {
 	args::ArgumentParser parser("ibexsolve-raak", "IbexSolve con contractor elegible y relajaciones de ibex-affine (AF2 / RAA / AA, k-nomial)");
 	args::HelpFlag help(parser, "help", "Display this help menu", {'h', "help"});
 	args::ValueFlag<string> _ctc(parser, "ctc", "Contractor: affine* | xn | hc4 | hc4+affine | hc4+xn | default | default+affine | default-xn+affine", {"ctc"});
-	args::ValueFlag<string> _arith(parser, "arith", "Affine arithmetic: af2* | raa | sh | exact | aa", {"arith"});
+	args::ValueFlag<string> _arith(parser, "arith", "Affine arithmetic: af2* | raa | sh | exact | aa | q2 | q2kn | q2pc | q2full (degree-2 affine forms, ibex/q2)", {"arith"});
 	args::ValueFlag<int> _knomialK(parser, "knomial_k", "k-nomial rewriting: 0* = none, K>=2 = blocks of up to K variables", {"knomial_k"});
 	args::ValueFlag<long> _knomialBudget(parser, "knomial_budget", "Node budget of the clique search per product (0* = unlimited)", {"knomial_budget"});
 	args::ValueFlag<string> _knomialBound(parser, "knomial_bound", "interval* | directed", {"knomial_bound"});
@@ -57,7 +59,8 @@ int main(int argc, char** argv) {
 	const string ctcname = _ctc ? _ctc.Get() : "affine";
 	const string arith = _arith ? _arith.Get() : "af2";
 	const int knomial_k = _knomialK ? _knomialK.Get() : 0;
-	if (arith != "af2" && arith != "raa" && arith != "aa" && arith != "sh" && arith != "exact") { cerr << "--arith=" << arith << ": af2 | raa | sh | exact | aa" << endl; return 1; }
+	const bool is_q2 = (arith == "q2" || arith == "q2kn" || arith == "q2pc" || arith == "q2full");
+	if (arith != "af2" && arith != "raa" && arith != "aa" && arith != "sh" && arith != "exact" && !is_q2) { cerr << "--arith=" << arith << ": af2 | raa | sh | exact | aa | q2 | q2kn | q2pc | q2full" << endl; return 1; }
 	if (knomial_k < 0 || knomial_k == 1) { cerr << "--knomial_k debe ser 0 o >= 2" << endl; return 1; }
 	affine_mode() = (arith == "raa") ? AFFINE_RAA : (arith == "sh") ? AFFINE_SH : (arith == "exact") ? AFFINE_EXACT : AFFINE_AF2;
 	knomial_max_k() = knomial_k;
@@ -85,7 +88,14 @@ int main(int argc, char** argv) {
 		// piezas (viven hasta el final del programa)
 		Linearizer* aff = NULL;
 		const bool need_aff = ctcname.find("affine") != string::npos;
-		if (need_aff) aff = (arith == "aa") ? (Linearizer*) new LinearizerAffineT<AF_fAFFullI>(sys) : (Linearizer*) new LinearizerAffine2(sys);
+		if (need_aff) {
+			if (is_q2) {   // [este repo] formas afines de grado 2 (ibex/q2/ibex_LinearizerQuad2.h)
+				const quad2::FinalBound fb = arith == "q2kn" ? quad2::FB_KN : arith == "q2pc" ? quad2::FB_PC
+				                           : arith == "q2full" ? quad2::FB_FULL : quad2::FB_TT;
+				aff = new LinearizerQuad2(sys, fb);
+			} else
+				aff = (arith == "aa") ? (Linearizer*) new LinearizerAffineT<AF_fAFFullI>(sys) : (Linearizer*) new LinearizerAffine2(sys);
+		}
 		Ctc* c = NULL;
 		if (sys.nb_ctr == 0) c = new CtcIdentity(sys.nb_var);
 		else if (ctcname == "affine") c = new CtcFixPoint(*new CtcPolytopeHull(*aff));
@@ -139,7 +149,9 @@ int main(int argc, char** argv) {
 		     << " solution=" << d.nb_solution() << " boundary=" << d.nb_boundary() << " unknown=" << d.nb_unknown() << " pending=" << d.nb_pending()
 		     << " productos=" << ks.calls << " con_bloques=" << ks.calls_with_blocks << " bloques=" << ks.blocks << " usados=" << ks.calls_used
 		     << " corner_used=" << ks.corner_used << " sqr_used=" << ks.sqr_used
-		     << " exact_products=" << exact_mult_stats().products << " exact_coupled=" << exact_mult_stats().coupled << endl;
+		     << " exact_products=" << exact_mult_stats().products << " exact_coupled=" << exact_mult_stats().coupled
+		     << " q2_evals=" << quad2_stats().evals << " q2_failed=" << quad2_stats().failed << " q2_unsupported=" << quad2_stats().unsupported
+		     << " q2_rows=" << quad2_stats().rows << endl;
 		return 0;
 	} catch (SyntaxError& e) {
 		cout << "RAAK-SOLVE status=SYNTAX_ERROR" << endl; return 2;

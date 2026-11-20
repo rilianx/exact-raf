@@ -1,0 +1,9 @@
+instancia,conjunto,variante,estado,celdas,f_lb,f_ub,cpu_s,quad2
+chem-1,hard,af2,TIME,22420,-48.2456102253,-47.7015950114,29.9998970001,
+chem-1,hard,sh,TIME,20140,-47.8310834718,-47.7055104159,29.9992770001,
+chem-1,hard,q2,TIME,34090,-81.1599680263,-47.646706827,29.9989560001,final=q2 evaluaciones=352035 fallidas=0 restricciones_no_soportadas=0 filas=391150
+chem-1,hard,q2kn,TIME,32594,-81.6330369461,-47.646706827,29.9998100001,final=q2kn evaluaciones=336411 fallidas=0 restricciones_no_soportadas=0 filas=373790
+chem-1,hard,q2pc,TIME,31858,-82.1287869535,-47.646706827,29.9986150001,final=q2pc evaluaciones=328734 fallidas=0 restricciones_no_soportadas=0 filas=365260
+chem,hard,af2,TIME,22488,-48.244418829,-47.7032074732,29.9969800001,
+chem,hard,sh,TIME,20780,-47.82538582,-47.7055104159,29.9990910001,
+chem,hard,q2,TIME,33768,-81.2379880808,-47.646706827,29.9993250001,final=q2 evaluaciones=348759 fallidas=0 restricciones_no_soportadas=0 filas=387510
