@@ -3,7 +3,8 @@
 // Entrada (stdin), una linea por trabajo:
 //   Q n k  q11 q12 ... qnn        -> cota [L,U] de x^T Q x en [-1,1]^n (Q completa)
 //   P n k  a1..an b1..bn          -> knomial_quad_bound del producto (a^T x)(b^T x)
-// Salida: L U nbloques tam_max_bloque
+// Salida: L U nbloques tam_max_bloque tiempo_us (tiempo solo para "Q")
+#include <chrono>
 #include <cstdio>
 #include <iostream>
 #include <string>
@@ -44,10 +45,13 @@ int main() {
   while (std::cin >> tag) {
     int n, k; std::cin >> n >> k;
     double L, U; int nb = 0, kmax = 0;
+    double us = 0;
     if (tag == "Q") {
       std::vector<double> Q(n * n);
       for (auto& v : Q) std::cin >> v;
+      auto t0 = std::chrono::steady_clock::now();
       bound_full(Q, n, k, L, U, nb, kmax);
+      us = std::chrono::duration<double, std::micro>(std::chrono::steady_clock::now() - t0).count();
     } else {
       std::vector<double> a(n), b(n);
       for (auto& v : a) std::cin >> v;
@@ -57,6 +61,6 @@ int main() {
       nb = knomial_quad_bound(a, b, n, k, sh, rad);
       L = sh - rad; U = sh + rad;
     }
-    std::printf("%.17g %.17g %d %d\n", L, U, nb, kmax);
+    std::printf("%.17g %.17g %d %d %.3f\n", L, U, nb, kmax, us);
   }
 }

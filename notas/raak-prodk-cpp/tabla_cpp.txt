@@ -1,0 +1,22 @@
+7532 expresiones/cajas, 58 instancias
+
+| encierro final de M3 centrado | ancho/M00 optim. | ancho/M00 NCSP | inst. con mejora > 2 % | ancho/INNER optim. | ancho/INNER NCSP | tiempo C++ del encierro (mediana / p90, µs) |
+|---|---|---|---|---|---|---|
+| (fAF2 + SH, M0, referencia) | 0.987 | 0.947 | 12 | 1.74 | 1.50 | — |
+| encierro barato (tt) | 0.950 | 0.955 | 17 | 1.67 | 1.52 | — |
+| k-nomial k = 6 (C++) | 0.946 | 0.922 | 17 | 1.66 | 1.46 | — |
+| bloques producto C++: solo pares | 0.947 | 0.923 | 17 | 1.67 | 1.47 | 3.8 / 19 |
+| bloques producto C++: pares + completo (m <= 12) | 0.934 | 0.914 | 27 | 1.64 | 1.45 | 12.2 / 54 |
+| bloques producto C++: pares + triples | 0.926 | 0.905 | 31 | 1.63 | 1.44 | 16.1 / 238 |
+| bloques producto C++: pares + triples + completo | 0.925 | 0.905 | 32 | 1.63 | 1.44 | 24.0 / 327 |
+| SDP (Python, referencia) | 0.910 | 0.903 | 30 | 1.60 | 1.43 | — |
+
+Tiempo por forma en C++ (mediana / p90, µs), por tamano m de la forma homogeneizada:
+
+| m | formas | k-nomial k=6 | pares + completo | pares + triples | pares + triples + completo |
+|---|---|---|---|---|---|
+| 2–5 | 2691 | 0.4 / 1 | 4.8 / 14 | 7.1 / 17 | 9.3 / 25 |
+| 6–10 | 825 | 0.7 / 1 | 23.6 / 44 | 38.5 / 84 | 54.2 / 128 |
+| 11–20 | 1303 | 1.7 / 3 | 37.2 / 146 | 155.6 / 403 | 215.3 / 425 |
+| 21–40 | 118 | 5.8 / 359 | 55.0 / 286 | 725.1 / 14154 | 722.5 / 14122 |
+| 41–200 | 91 | 15.8 / 85 | 54.2 / 209 | 52.6 / 187 | 52.9 / 184 |
