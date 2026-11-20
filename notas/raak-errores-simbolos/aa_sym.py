@@ -84,7 +84,7 @@ class Evaluator:
         """Agrega un error de magnitud e >= 0 a la forma: escalar (M0) o simbolo nuevo (M1, M2). En M1/M2 el
         simbolo lleva la etiqueta de la operacion que lo creo ('#e<k>:<tag>'), para el presupuesto de error."""
         if e <= 0: return form
-        if self.mode == "M0": return AF(form.c, form.lin, form.err + e)
+        if self.mode in ("M0", "M00"): return AF(form.c, form.lin, form.err + e)
         self.nsym += 1
         lin = dict(form.lin); lin[f"#e{self.nsym}:{tag}"] = e
         return AF(form.c, lin, form.err)
@@ -98,6 +98,13 @@ class Evaluator:
 
     # -- operaciones
     def mul(self, x, y):
+        if self.mode == "M00":   # fAF2 de Ibex por omision: formula (5) de Skalna-Hladik (regla 'af2' del spec)
+            keys = sorted(set(x.lin) | set(y.lin))
+            a = np.array([x.lin.get(k, 0.0) for k in keys]); b = np.array([y.lin.get(k, 0.0) for k in keys])
+            Sx, Sy = np.abs(a).sum(), np.abs(b).sum()
+            lin = {k: y.c * x.lin.get(k, 0.0) + x.c * y.lin.get(k, 0.0) for k in keys}
+            err = abs(x.c) * y.err + abs(y.c) * x.err + (Sx + x.err) * (Sy + y.err) - 0.5 * np.abs(a * b).sum()
+            return AF(x.c * y.c + 0.5 * float((a * b).sum()), lin, err)
         keys = sorted(set(x.lin) | set(y.lin))
         u = [x.lin.get(k, 0.0) for k in keys] + [x.err, 0.0]
         v = [y.lin.get(k, 0.0) for k in keys] + [0.0, y.err]

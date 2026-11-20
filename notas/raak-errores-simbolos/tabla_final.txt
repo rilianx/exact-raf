@@ -1,0 +1,15 @@
+Precision: 7532 expresiones/cajas, 58 instancias. Tiempo: 1158 expresiones/cajas.
+
+| metodo | qué es | ancho/M00 optim. | ancho/M00 NCSP | inst. con mejora > 2 % (de 58) | ancho/INNER optim. | ancho/INNER NCSP | tiempo mediano (µs) | tiempo / M00 |
+|---|---|---|---|---|---|---|---|---|
+| M00 | fAF2 de Ibex (formula S) | 1.000 | 1.000 | 0 | 1.76 | 1.59 | 168 | 1.00 |
+| M0 | fAF2 + SH (parches 0016/0017) | 0.987 | 0.947 | 12 | 1.74 | 1.50 | 377 | 1.52 |
+| M1 | errores como simbolos + SH | 0.975 | 0.940 | 12 | 1.72 | 1.49 | 257 | 1.20 |
+| M2 | M1 + sumas de productos agregadas | 0.952 | 0.927 | 16 | 1.67 | 1.47 | 277 | 1.39 |
+| M3c_tt | grado 2 + encierro barato | 0.950 | 0.955 | 17 | 1.67 | 1.52 | 221 | 1.22 |
+| M3c_kn6 | grado 2 + k-nomial k=6 (C++) | 0.946 | 0.922 | 17 | 1.66 | 1.46 | 359 | 1.59 |
+| M3c_prodk | grado 2 + bloques producto (Python) | 0.934 | 0.911 | 29 | 1.64 | 1.45 | 21600 | 42.00 |
+| M2∩M3c_prodk | interseccion de M2 y la anterior | 0.933 | 0.906 | 31 | 1.64 | 1.44 | 25162 | 56.00 |
+| M3c_sdp | grado 2 + SDP de Shor | 0.910 | 0.903 | 30 | 1.60 | 1.43 | 64066 | 68.07 |
+
+Notas: tiempo de prodk y sdp solo donde se calcularon (m <= 40 y m <= 60); en el resto el metodo cae al encierro barato.

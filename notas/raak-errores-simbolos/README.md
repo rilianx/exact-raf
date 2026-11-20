@@ -307,3 +307,41 @@ chicas.
 - Los bloques producto, en este prototipo en Python, cuestan unas 18 evaluaciones. Una versión en C++ debería
   quedar en el orden del k-nomial, que es ~70 µs.
 - La SDP cuesta unas 30 evaluaciones y solo es viable fuera del bucle de cada nodo.
+
+## Tabla conjunta: precisión y tiempo, con Ibex por omisión como referencia ([`tabla_final.py`](tabla_final.py))
+
+**Las dos referencias.** Hasta aquí M0 era "fAF2 con la multiplicación SH", el modo `AFFINE_SH` de los parches
+0016/0017. Ibex por omisión es otra cosa: fAF2 con su fórmula de producto, la fórmula (5) de Skalna-Hladík (`af2`
+en `paper/numa/IBEX_EXACT_SPEC.md`), que desplaza el centro en `½Σaᵢbᵢ` y suma
+`(Sx+ex)(Sy+ey) − ½Σ|aᵢbᵢ|` al error. Se agregó ese modo como **M00** ([`medir_m00.py`](medir_m00.py)) y es la
+referencia de esta tabla.
+
+**Cómo se mide:**
+- **Precisión:** 7532 combinaciones de expresión y caja, todas las profundidades. Media geométrica por instancia y
+  después entre instancias.
+- **Tiempo:** mediana por expresión y caja del costo total de cada método (evaluación más encierro final), en el
+  subconjunto de [`tiempos.csv`](tiempos.csv).
+- **Advertencia:** son prototipos en Python, salvo el k-nomial en C++. Las razones de tiempo no son las de una
+  implementación en C++. Como referencia compilada, en C++ un producto SH cuesta unas 2,5 veces uno de fAF2 con
+  n = 20 (`../../ibex/results/bench_mult*.csv`).
+
+| método | qué es | ancho / M00, optim. | ancho / M00, NCSP | instancias que mejoran > 2 % (de 58) | ancho / INNER, optim. | ancho / INNER, NCSP | tiempo mediano (µs, Python) | tiempo / M00 |
+|---|---|---|---|---|---|---|---|---|
+| M00 | fAF2 de Ibex (fórmula S) | 1 | 1 | — | 1,76 | 1,59 | 168 | 1 |
+| M0 | fAF2 + SH (parches 0016/0017) | 0,987 | 0,947 | 12 | 1,74 | 1,50 | 377 | 1,5 |
+| M1 | errores como símbolos + SH | 0,975 | 0,940 | 12 | 1,72 | 1,49 | 257 | 1,2 |
+| M2 | M1 + sumas de productos agregadas | 0,952 | 0,927 | 16 | 1,67 | 1,47 | 277 | 1,4 |
+| M3c_tt | grado 2 + encierro barato | 0,950 | 0,955 | 17 | 1,67 | 1,52 | 221 | 1,2 |
+| M3c_kn6 | grado 2 + k-nomial k = 6 (C++) | 0,946 | 0,922 | 17 | 1,66 | 1,46 | 359 | 1,6 |
+| M3c_prodk | grado 2 + bloques producto (Python) | 0,934 | 0,911 | 29 | 1,64 | 1,45 | 21 600 | 42 |
+| M2 ∩ M3c_prodk | intersección de M2 y la anterior | 0,933 | 0,906 | 31 | 1,64 | 1,44 | 25 162 | 56 |
+| M3c_sdp | grado 2 + SDP de Shor | 0,910 | 0,903 | 30 | 1,60 | 1,43 | 64 066 | 68 |
+
+**Lectura:**
+1. **Frente a Ibex por omisión, SH ya gana sobre todo en NCSP** (0,947), y con esto en 12 instancias.
+2. **Las formas de grado 2 con un encierro final barato pero estructurado (k-nomial en C++)** llegan a 0,946 en
+   optimización y 0,922 en NCSP, con un costo del orden de M0.
+3. **Con bloques producto o SDP se llega a 0,91–0,93 y a unas 30 instancias que mejoran**, pero en Python cuestan
+   entre 42 y 68 evaluaciones. Los bloques producto necesitan una implementación en C++ para saber su costo real.
+4. **El techo de esta línea es moderado.** Aun con la SDP, la brecha frente al rango interior baja solo de 1,76 a
+   1,60 en optimización y de 1,59 a 1,43 en NCSP.
