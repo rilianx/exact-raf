@@ -69,20 +69,7 @@ class AF:
 
 
 def product_range(u, v):
-    w = PF.sh_width(u, v)  # ancho; tambien hace falta el centro
-    V = PF.zono_vertices(u, v)
-    lo, hi = math.inf, -math.inf
-    for p, q in zip(V, V[1:] + V[:1]):
-        d = q - p
-        ts = [0.0, 1.0]
-        den = 2 * d[0] * d[1]
-        if den != 0:
-            t = -(p[0] * d[1] + p[1] * d[0]) / den
-            if 0 < t < 1: ts.append(t)
-        for t in ts:
-            x, y = p + t * d
-            lo, hi = min(lo, x * y), max(hi, x * y)
-    return lo, hi
+    return PF.sh_range(u, v)   # rango exacto (SH), con orden angular exacto y normalizacion
 
 
 class Evaluator:

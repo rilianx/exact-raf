@@ -68,33 +68,14 @@ class AF:
     def scale(self, a): return AF(a * self.c, {k: a * v for k, v in self.lin.items()}, abs(a) * self.err)
 
 
-def zono_vertices(u, v):
-    g = [(a, b) if (b > 0 or (b == 0 and a > 0)) else (-a, -b) for a, b in zip(u, v) if a or b]
-    if not g:
-        return [(0.0, 0.0)]
-    g.sort(key=lambda t: math.atan2(t[1], t[0]))
-    p = np.array([-sum(t[0] for t in g), -sum(t[1] for t in g)])
-    V = [p.copy()]
-    for t in g: p = p + 2 * np.array(t); V.append(p.copy())
-    for t in g: p = p - 2 * np.array(t); V.append(p.copy())
-    return V
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "raak-qplib"))
+import prodk_fast as _PF  # noqa: E402
 
 
 def product_range(u, v):
-    """Rango exacto de (u^T z)(v^T z) en [-1,1]^m: x*y sobre el zonotopo plano (u^T z, v^T z)."""
-    V = zono_vertices(u, v)
-    lo, hi = math.inf, -math.inf
-    for p, q in zip(V, V[1:] + V[:1]):
-        d = q - p
-        ts = [0.0, 1.0]
-        den = 2 * d[0] * d[1]
-        if den != 0:
-            t = -(p[0] * d[1] + p[1] * d[0]) / den
-            if 0 < t < 1: ts.append(t)
-        for t in ts:
-            x, y = p + t * d
-            lo, hi = min(lo, x * y), max(hi, x * y)
-    return lo, hi
+    """Rango exacto de (u^T z)(v^T z) en [-1,1]^m (SH). Usa prodk_fast.sh_range: orden angular exacto con producto
+    cruz y normalizacion de u y v (la version anterior con atan2 podia empatar y dar un rango angosto)."""
+    return _PF.sh_range(u, v)
 
 
 def af_mul(x, y):

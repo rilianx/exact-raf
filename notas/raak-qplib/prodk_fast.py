@@ -10,7 +10,7 @@ Misma idea y mismos candidatos que ../raak-pares/medir_prodk.py, pero:
 
 ancho(PRODK) = sum_p SH(u_p, v_p) + TT(R_final), valido para cualquier eleccion de bloques.
 """
-import heapq, itertools, math
+import functools, heapq, itertools, math
 import numpy as np
 
 TS = (1.0, 0.75, 0.5, 0.25)
@@ -21,10 +21,19 @@ def tt(R):
     return d + 2 * (np.abs(R).sum() - d)
 
 
+def _cmp_angle(p, q):
+    """Orden angular exacto en el semiplano superior (angulo en [0, pi)): p antes que q si cross(p, q) > 0."""
+    c = p[0] * q[1] - p[1] * q[0]
+    return -1 if c > 0 else (1 if c < 0 else 0)
+
+
 def zono_vertices(u, v):
+    """Vertices del zonotopo plano {(u^T z, v^T z) : z en [-1,1]^m}, en orden. El orden de los generadores se
+    decide con el producto cruz (no con atan2, que empata en punto flotante cuando u y v tienen escalas muy
+    distintas y produce un poligono no convexo: rango demasiado angosto)."""
     g = [(a, b) if (b > 0 or (b == 0 and a > 0)) else (-a, -b) for a, b in zip(u, v) if a or b]
     if not g: return [np.zeros(2)]
-    g.sort(key=lambda t: math.atan2(t[1], t[0]))
+    g.sort(key=functools.cmp_to_key(_cmp_angle))
     p = -np.array([sum(t[0] for t in g), sum(t[1] for t in g)])
     V = [p.copy()]
     for t in g: p = p + 2 * np.array(t); V.append(p.copy())
@@ -38,7 +47,12 @@ def sh_width(u, v):
 
 
 def sh_range(u, v):
-    V = zono_vertices(u, v)
+    """Rango exacto de (u^T z)(v^T z) en [-1,1]^m (Skalna-Hladik). u y v se normalizan por separado (el rango
+    escala por su*sv) para que el zonotopo tenga ambas coordenadas del mismo orden."""
+    u = np.asarray(u, dtype=float); v = np.asarray(v, dtype=float)
+    su, sv = np.abs(u).max(initial=0.0), np.abs(v).max(initial=0.0)
+    if su == 0 or sv == 0: return 0.0, 0.0
+    V = zono_vertices(u / su, v / sv)
     lo, hi = math.inf, -math.inf
     for p, q in zip(V, V[1:] + V[:1]):
         d = q - p
@@ -50,7 +64,7 @@ def sh_range(u, v):
         for t in ts:
             x, y = p + t * d
             lo, hi = min(lo, x * y), max(hi, x * y)
-    return lo, hi
+    return lo * su * sv, hi * su * sv
 
 
 def local_candidates(RS):
