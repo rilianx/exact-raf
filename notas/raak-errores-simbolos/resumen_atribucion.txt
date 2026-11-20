@@ -1,0 +1,86 @@
+
+Fraccion del radio (%) por origen, todas las expresiones
+| conjunto | prof | inst | lineal | mul_lin | mul_comp | sqr_lin | sqr_comp | recip | pow | exp | log | sqrt | sincos | abs | otro |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| optimizacion | 0 | 41 | 78 | 6 | 7 | 5 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 |
+| optimizacion | 5 | 41 | 81 | 5 | 7 | 4 | 0 | 0 | 0 | 0 | 3 | 0 | 0 | 0 | 0 |
+| optimizacion | 10 | 41 | 82 | 4 | 6 | 3 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0 | 0 |
+| optimizacion | 20 | 41 | 87 | 2 | 4 | 2 | 0 | 0 | 0 | 0 | 4 | 0 | 0 | 0 | 0 |
+| NCSP | 0 | 17 | 48 | 1 | 18 | 17 | 6 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 |
+| NCSP | 5 | 17 | 50 | 1 | 16 | 16 | 5 | 0 | 11 | 1 | 0 | 0 | 0 | 0 | 0 |
+| NCSP | 10 | 17 | 56 | 1 | 14 | 14 | 3 | 0 | 10 | 2 | 0 | 0 | 0 | 0 | 0 |
+| NCSP | 20 | 17 | 65 | 0 | 11 | 11 | 1 | 0 | 8 | 4 | 0 | 0 | 0 | 0 | 0 |
+
+Fraccion del radio (%) por origen, solo expresiones con M0/INNER >= 1,5
+| conjunto | prof | inst | lineal | mul_lin | mul_comp | sqr_lin | sqr_comp | recip | pow | exp | log | sqrt | sincos | abs | otro |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| optimizacion | 0 | 21 | 31 | 5 | 45 | 1 | 0 | 0 | 2 | 1 | 15 | 0 | 0 | 0 | 0 |
+| optimizacion | 5 | 22 | 30 | 2 | 45 | 1 | 0 | 1 | 2 | 1 | 16 | 0 | 2 | 0 | 0 |
+| optimizacion | 10 | 22 | 26 | 2 | 37 | 0 | 0 | 2 | 1 | 1 | 28 | 0 | 4 | 0 | 0 |
+| optimizacion | 20 | 20 | 39 | 1 | 26 | 0 | 0 | 2 | 1 | 2 | 26 | 1 | 3 | 0 | 0 |
+| NCSP | 0 | 13 | 44 | 0 | 46 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 1 | 0 | 0 |
+| NCSP | 5 | 13 | 45 | 1 | 42 | 0 | 8 | 0 | 0 | 3 | 0 | 0 | 1 | 0 | 0 |
+| NCSP | 10 | 12 | 47 | 1 | 41 | 0 | 6 | 0 | 0 | 5 | 0 | 0 | 1 | 0 | 0 |
+| NCSP | 20 | 11 | 48 | 0 | 37 | 0 | 2 | 0 | 0 | 12 | 0 | 0 | 0 | 0 | 0 |
+
+Origen dominante por instancia (todas las cajas), con la sobreestimacion media M0/INNER:
+  3pk-borne        M0/INNER=  1.25  lineal= 82%  sqr_lin=18%, mul_lin=0%
+  Dietmaier        M0/INNER=  1.11  lineal= 33%  sqr_lin=67%, mul_lin=0%
+  Directkin        M0/INNER=  2.27  lineal= 33%  mul_comp=27%, sqr_lin=19%
+  Neveu1           M0/INNER=  1.03  lineal= 13%  sqr_lin=87%, mul_lin=0%
+  Pramanik         M0/INNER=  3.55  lineal= 49%  sqr_comp=39%, mul_comp=7%
+  Trigexp2-11      M0/INNER=  1.68  lineal= 62%  mul_comp=19%, pow=15%
+  Trigexp2-13      M0/INNER=  1.67  lineal= 61%  mul_comp=20%, pow=15%
+  Trigexp2-13sp    M0/INNER=  1.09  lineal= 84%  mul_comp=10%, pow=6%
+  Trigexp2-15      M0/INNER= 11.08  lineal= 63%  mul_comp=20%, pow=14%
+  Trigexp2-17      M0/INNER=  1.68  lineal= 63%  mul_comp=20%, pow=14%
+  Trigexp2-19      M0/INNER=  1.68  lineal= 62%  mul_comp=21%, pow=14%
+  Trigexp2-21      M0/INNER=  6.12  lineal= 63%  mul_comp=21%, pow=14%
+  Trigexp2-23      M0/INNER=  1.70  lineal= 61%  mul_comp=22%, pow=14%
+  Trigexp2-3       M0/INNER=  1.31  lineal= 85%  pow=10%, mul_comp=4%
+  Trigexp2-5       M0/INNER=  1.38  lineal= 64%  pow=15%, mul_comp=14%
+  Trigexp2-7       M0/INNER=  6.12  lineal= 64%  mul_comp=15%, pow=13%
+  Trigexp2-9       M0/INNER=  1.73  lineal= 62%  mul_comp=18%, pow=15%
+  alkyl            M0/INNER=  1.06  lineal= 95%  mul_lin=3%, mul_comp=2%
+  alkylbis         M0/INNER=  1.06  lineal= 95%  mul_lin=3%, mul_comp=2%
+  bearing          M0/INNER=  1.14  lineal= 81%  exp=7%, mul_comp=6%
+  chem             M0/INNER=  8.36  lineal= 86%  log=9%, mul_comp=5%
+  chem-1           M0/INNER= 11.91  lineal= 86%  log=9%, mul_comp=5%
+  chembis          M0/INNER=  1.16  lineal= 94%  log=3%, mul_comp=3%
+  ex14_2_3         M0/INNER=  1.02  lineal= 98%  mul_comp=1%, recip=1%
+  ex14_2_7         M0/INNER=  1.12  lineal= 99%  mul_comp=1%, recip=1%
+  ex2_1_7          M0/INNER=  1.07  lineal= 98%  sqr_lin=2%, mul_lin=0%
+  ex2_1_8          M0/INNER=  1.04  lineal= 97%  sqr_lin=3%, mul_lin=0%
+  ex2_1_9          M0/INNER=  1.14  lineal= 90%  mul_lin=10%, mul_comp=0%
+  ex2_1_9fact      M0/INNER=  1.13  lineal= 90%  mul_lin=10%, mul_comp=0%
+  ex5_2_2_case3    M0/INNER=  1.17  lineal= 88%  mul_lin=12%, mul_comp=0%
+  ex5_3_2          M0/INNER=  1.18  lineal= 87%  mul_lin=13%, mul_comp=0%
+  ex6_1_3          M0/INNER=  1.22  lineal= 84%  mul_lin=16%, mul_comp=0%
+  ex6_1_3bis       M0/INNER=113647778306.33  lineal= 84%  mul_comp=10%, log=6%
+  ex6_1_4          M0/INNER=  1.19  lineal= 84%  mul_lin=16%, log=0%
+  ex6_2_10         M0/INNER=653.02  lineal= 82%  log=9%, mul_comp=8%
+  ex6_2_11         M0/INNER=2167.45  lineal= 60%  log=21%, mul_comp=16%
+  ex6_2_12         M0/INNER=1083.41  lineal= 76%  log=12%, mul_comp=11%
+  ex6_2_14         M0/INNER=202.64  lineal= 80%  log=10%, mul_comp=9%
+  ex6_2_6          M0/INNER=152.90  lineal= 60%  mul_comp=27%, log=14%
+  ex6_2_8          M0/INNER=400.81  lineal= 54%  mul_comp=35%, log=11%
+  ex6_2_9          M0/INNER=11921.84  lineal= 74%  log=13%, mul_comp=12%
+  ex7_3_4          M0/INNER=  1.11  lineal= 80%  mul_comp=17%, mul_lin=3%
+  ex7_3_4bis       M0/INNER=  1.09  lineal= 89%  mul_comp=10%, pow=1%
+  ex7_3_5bis       M0/INNER=  1.29  lineal= 84%  mul_comp=14%, pow=2%
+  ex8_4_4bis       M0/INNER=  1.05  lineal= 94%  sqr_comp=4%, mul_comp=1%
+  ex8_5_1bis       M0/INNER=  1.16  lineal= 84%  mul_comp=8%, recip=3%
+  ex8_5_2_1        M0/INNER=  1.08  lineal= 90%  mul_comp=5%, mul_lin=3%
+  haverly          M0/INNER=  1.14  lineal= 91%  mul_lin=9%, mul_comp=0%
+  himmel16         M0/INNER=  1.05  lineal= 45%  sqr_lin=46%, mul_lin=9%
+  launch           M0/INNER=  1.08  lineal= 93%  mul_lin=4%, mul_comp=2%
+  like             M0/INNER= 19.77  lineal= 89%  log=11%, mul_comp=0%
+  like-1           M0/INNER= 38.97  lineal= 87%  log=13%, mul_comp=0%
+  mistake          M0/INNER=  1.10  lineal= 38%  sqr_lin=34%, mul_lin=28%
+  ponts-geo        M0/INNER=  1.07  lineal= 38%  sqr_lin=62%, mul_lin=0%
+  s365mod          M0/INNER=  1.67  lineal= 56%  sqr_lin=16%, mul_comp=14%
+  sambal           M0/INNER=  1.01  lineal= 94%  sqr_lin=6%, mul_lin=0%
+  schwefel5        M0/INNER=  1.16  lineal= 86%  mul_comp=9%, sincos=4%
+  schwefel5-abs    M0/INNER=  1.11  lineal= 87%  mul_comp=8%, sincos=5%
+
+Instancias por origen dominante (sin contar la parte lineal): {'mul_comp': 23, 'sqr_lin': 10, 'mul_lin': 10, 'log': 10, 'sqr_comp': 2, 'pow': 2, 'exp': 1}

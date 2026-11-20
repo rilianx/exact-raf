@@ -93,12 +93,13 @@ class Evaluator:
         self.memo, self.nsym = {}, 0
 
     # -- simbolos de error
-    def new_err(self, form, e):
-        """Agrega un error de magnitud e >= 0 a la forma: escalar (M0) o simbolo nuevo (M1, M2)."""
+    def new_err(self, form, e, tag="otro"):
+        """Agrega un error de magnitud e >= 0 a la forma: escalar (M0) o simbolo nuevo (M1, M2). En M1/M2 el
+        simbolo lleva la etiqueta de la operacion que lo creo ('#e<k>:<tag>'), para el presupuesto de error."""
         if e <= 0: return form
         if self.mode == "M0": return AF(form.c, form.lin, form.err + e)
         self.nsym += 1
-        lin = dict(form.lin); lin[f"#e{self.nsym}"] = e
+        lin = dict(form.lin); lin[f"#e{self.nsym}:{tag}"] = e
         return AF(form.c, lin, form.err)
 
     def is_const(self, n):
@@ -116,11 +117,13 @@ class Evaluator:
         lo, hi = product_range(u, v)
         lin = {k: y.c * x.lin.get(k, 0.0) + x.c * y.lin.get(k, 0.0) for k in keys}
         f = AF(x.c * y.c + (lo + hi) / 2, lin, abs(y.c) * x.err + abs(x.c) * y.err)
-        return self.new_err(f, (hi - lo) / 2)
+        haserr = lambda z: z.err > 0 or any(k.startswith("#") for k in z.lin)
+        tag = ("sqr" if x is y else "mul") + ("_comp" if haserr(x) or haserr(y) else "_lin")
+        return self.new_err(f, (hi - lo) / 2, tag)
 
-    def lin_approx(self, x, a, d1, d2):
+    def lin_approx(self, x, a, d1, d2, tag="otro"):
         r = x.scale(a)
-        return self.new_err(AF(r.c + (d1 + d2) / 2, r.lin, r.err), (d2 - d1) / 2)
+        return self.new_err(AF(r.c + (d1 + d2) / 2, r.lin, r.err), (d2 - d1) / 2, tag)
 
     def unary(self, name, x):
         lo, hi = x.rng()
@@ -129,37 +132,37 @@ class Evaluator:
                  "sin": math.sin, "cos": math.cos, "abs": abs}[name]
             return AF(f(x.c))
         if name == "exp":
-            a = math.exp(lo); return self.lin_approx(x, a, *sorted((math.exp(lo) - a * lo, math.exp(hi) - a * hi)))
+            a = math.exp(lo); return self.lin_approx(x, a, *sorted((math.exp(lo) - a * lo, math.exp(hi) - a * hi)), tag="exp")
         if name in ("log", "sqrt"):
             if hi <= 0: raise ValueError(f"{name} de intervalo no positivo")
             lo = max(lo, 1e-300)
             f, a = (math.log, 1 / hi) if name == "log" else (math.sqrt, 0.5 / math.sqrt(hi))
-            return self.lin_approx(x, a, *sorted((f(lo) - a * lo, f(hi) - a * hi)))
+            return self.lin_approx(x, a, *sorted((f(lo) - a * lo, f(hi) - a * hi)), tag=name)
         if name == "recip":
             if lo <= 0 <= hi: raise ValueError("division por intervalo que contiene 0")
             a = -1 / (lo * hi)
             t0 = math.copysign(math.sqrt(lo * hi), lo)
             ds = [1 / t - a * t for t in (lo, hi, t0) if lo <= t <= hi]
-            return self.lin_approx(x, a, min(ds), max(ds))
+            return self.lin_approx(x, a, min(ds), max(ds), tag="recip")
         if name == "abs":
             if lo >= 0: return x
             if hi <= 0: return x.scale(-1)
         f = {"sin": math.sin, "cos": math.cos, "abs": abs}.get(name)
         if f is None: raise ValueError(name)
-        return self.secant(x, f, lo, hi)
+        return self.secant(x, f, lo, hi, tag="sincos" if name in ("sin", "cos") else name)
 
-    def secant(self, x, f, lo, hi, npts=2001):
+    def secant(self, x, f, lo, hi, npts=2001, tag="otro"):
         a = (f(hi) - f(lo)) / (hi - lo)
         ts = np.linspace(lo, hi, npts)
         d = np.array([f(t) for t in ts]) - a * ts
         pad = 0.01 * (d.max() - d.min()) + 1e-15
-        return self.lin_approx(x, a, d.min() - pad, d.max() + pad)
+        return self.lin_approx(x, a, d.min() - pad, d.max() + pad, tag)
 
     def power(self, x, k):
         if k == 2: return self.mul(x, x)
         lo, hi = x.rng()
         if hi - lo <= 0: return AF(x.c ** k)
-        return self.secant(x, lambda t: t ** k, lo, hi)
+        return self.secant(x, lambda t: t ** k, lo, hi, tag="pow")
 
     # -- combinaciones lineales y sumas de productos
     def lincomb(self, n, c=1.0, out=None):
@@ -220,7 +223,7 @@ class Evaluator:
             l3, h3, _ = PF.prodk_interval(Q)
             L, H = max(L, l3), min(H, h3)
         best_c, best_r = (L + H) / 2, max(0.0, (H - L) / 2)
-        return self.new_err(acc.add(AF(const + best_c)), best_r)
+        return self.new_err(acc.add(AF(const + best_c)), best_r, "sumprod")
 
     def ev(self, n):
         key = ast.dump(n)

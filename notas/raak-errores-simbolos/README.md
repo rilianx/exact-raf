@@ -88,3 +88,72 @@ python3 resumir.py cajas.csv > resumen.txt
 ```
 
 Usa `../raak-qplib/prodk_fast.py` para los bloques producto. Tarda unos 5 minutos.
+
+## Presupuesto de error: de dónde viene el ancho
+
+[`atribuir.py`](atribuir.py) descompone el radio del encierro de M1 en dos partes: la parte lineal en las
+variables y la contribución de cada símbolo de error, ya propagado hasta el final. Cada símbolo lleva la etiqueta
+de la operación que lo creó:
+
+| etiqueta | operación |
+|---|---|
+| `mul_lin` | producto de factores afines sin error |
+| `mul_comp` | producto con al menos un factor que ya trae error: el factor es una expresión no lineal |
+| `sqr_lin`, `sqr_comp` | lo mismo para cuadrados |
+| `recip`, `pow`, `exp`, `log`, `sqrt`, `sincos`, `abs` | funciones |
+
+Hay dos salvedades:
+- La parte lineal es en buena medida el rango verdadero de la expresión, no sobreestimación.
+- Lo relevante es el reparto en las expresiones que sí están sobreestimadas.
+
+Tablas completas en [`resumen_atribucion.txt`](resumen_atribucion.txt).
+
+**Fracción del radio (%) en expresiones con M0 / INNER ≥ 1,5** (media sobre instancias):
+
+| conjunto | prof | inst | lineal | mul_lin | **mul_comp** | sqr_comp | pow | exp | log | sincos |
+|---|---|---|---|---|---|---|---|---|---|---|
+| optimización | 0 | 21 | 31 | 5 | **45** | 0 | 2 | 1 | 15 | 0 |
+| | 10 | 22 | 26 | 2 | **37** | 0 | 1 | 1 | 28 | 4 |
+| | 20 | 20 | 39 | 1 | **26** | 0 | 1 | 2 | 26 | 3 |
+| NCSP | 0 | 13 | 44 | 0 | **46** | 9 | 0 | 0 | 0 | 1 |
+| | 10 | 12 | 47 | 1 | **41** | 6 | 0 | 5 | 0 | 1 |
+| | 20 | 11 | 48 | 0 | **37** | 2 | 0 | 12 | 0 | 0 |
+
+Sin contar la parte lineal, el origen dominante de cada instancia se reparte así:
+
+| origen dominante | instancias |
+|---|---|
+| `mul_comp` | 23 |
+| `sqr_lin` | 10 |
+| `mul_lin` | 10 |
+| `log` | 10, casi todas de ex6_2_\* |
+| `sqr_comp` | 2 |
+| `pow` | 2 |
+| `exp` | 1 |
+
+### Lectura
+
+1. **La fuente principal son los productos de factores que ya traen error** (`mul_comp`): entre el 26 y el 46 % del
+   radio en las expresiones sobreestimadas, en los dos conjuntos. Son productos de dos expresiones no lineales, es
+   decir, polinomios de grado mayor que 2 o productos de funciones.
+2. **Cada producto ya se encierra exacto** (SH sobre todos los símbolos, que equivale a E). Lo que se pierde es la
+   dependencia: el error de un factor se trata como un símbolo independiente de las variables, aunque en realidad
+   es una función de ellas, típicamente cuadrática. Ninguna mejora de la multiplicación de dos formas afines puede
+   recuperar eso.
+3. **Los productos y cuadrados de factores lineales** (`mul_lin`, `sqr_lin`) dominan en 20 instancias, pero esas
+   instancias casi no están sobreestimadas (M0 / INNER entre 1,03 y 1,15). SH ya resuelve ese caso.
+4. **ln aparece solo en ex6_2_\***, donde los términos `x·ln(x)` sobre [10⁻⁶, 1] tienen linealizaciones muy malas.
+   Es un caso particular.
+5. **exp crece con la profundidad en NCSP** (12 % a profundidad 20, por Trigexp2), pero es secundario.
+
+### Qué sugiere
+
+Atacar la pérdida de dependencia en los productos de factores no lineales. La forma general de hacerlo es una
+aritmética que **guarde los términos de segundo orden** `εᵀQε` en la forma (formas afines cuadráticas, como
+Messine y Touhami, o modelos de Taylor de orden 2), en vez de convertir cada parte no lineal en un símbolo nuevo.
+Con eso, el error de un factor sigue siendo una función cuadrática de las variables, y el producto siguiente
+puede aprovecharlo.
+
+El costo es O(n²) por operación. El k-nomial, los bloques producto o la SDP volverían a tener sentido, porque
+acotarían esa Q al final, una vez por expresión. Antes de implementarlo se puede medir con el mismo esquema: un
+modo M3 con formas cuadráticas, truncando lo de grado mayor que 2 a un símbolo, en las mismas cajas.
