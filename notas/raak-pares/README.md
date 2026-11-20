@@ -85,3 +85,53 @@ python3 medir_pares.py reales ../raak-medicion-reales/nodos.csv reales_pares.csv
     $B/benchs/optim/medium/*.bch $B/benchs/optim/hard/*.bch $B/raak/instancias/reales/{3pk-borne,mistake,s365mod}.bch
 python3 resumir.py > resumen.txt
 ```
+
+## Generalización del k-nomial: reducción por bloques producto (`PRODK`)
+
+[`medir_prodk.py`](medir_prodk.py) extrae de Q, de forma ávida, bloques que son productos de dos sumas
+`(uᵀz)(vᵀz)`, cada uno encerrado exacto con SH, y acota el residuo término a término. Es lo mismo que hace el
+k-nomial, que solo extrae cuadrados (u = v).
+
+- **Si u y v no comparten variables, no se gana nada:** el encierro de SH coincide con el término a término. La
+  ganancia viene de que las sumas compartan variables.
+- **No necesita diagonal en todas las variables del bloque**, a diferencia de un cuadrado.
+
+**Candidatos por soporte.** Para pares, triples conectados y el soporte completo si hay a lo más 12 símbolos:
+- el par espectral de la submatriz, `(a+b)(a−b)`;
+- el autovector dominante, como cuadrado;
+- filas de factor común;
+- cada uno con fracciones 1, ¾, ½ y ¼.
+
+Tabla completa en [`resumen_prodk.txt`](resumen_prodk.txt).
+
+**synq** (ancho / exacto; `MIN2` es la menor entre PRODK y el k-nomial con k = 6):
+
+| | SH | Qk6 | PRODK | MIN2 | la menor de todas | PRODK < Qk6 |
+|---|---|---|---|---|---|---|
+| todas | 6,01 | 1,27 | **1,22** | 1,21 | 1,14 | 58 / 78 |
+| n = 3 | 3,37 | 1,11 | **1,01** | 1,01 | 1,01 | 14 / 18 |
+| d = 0,2 | 7,16 | 1,11 | **1,04** | 1,03 | 1,03 | 21 / 24 |
+| d = 0,9 | 5,74 | 1,51 | 1,46 | 1,44 | 1,22 | 15 / 24 |
+
+**Reales** (ancho / SH, media por instancia): Qk6 0,952, PRODK 0,959, MIN2 0,944, la menor de todas 0,927,
+exacto 0,920.
+
+| instancia | Qk6 | PRODK | exacto |
+|---|---|---|---|
+| ex8_5_2_1 | 0,92 | **0,82** | 0,82 |
+| ex8_5_1bis | 0,95 | **0,88** | 0,88 |
+| ex14_2_3 | **0,94** | 1,00 | 0,89 |
+| ex14_2_7 | **0,99** | 1,06 | 0,90 |
+| ex6_2_6, ex6_2_8 | 0,35–0,40 | 0,35–0,40 | 0,35–0,40 |
+
+**Lectura:**
+- Los bloques producto le ganan al k-nomial en synq (58 de 78 instancias, sobre todo cuando Q es dispersa).
+- En ex8_5_\* llegan al exacto.
+- En ex14_2_\* pierden, porque los candidatos ávidos no encuentran la estructura que sí aprovecha el k-nomial.
+- Los dos métodos se complementan: lo natural es extraer bloques de ambos tipos, cuadrados y productos, en la
+  misma reducción.
+- Con diagonal cero (ex2_1_9) ninguno de los dos sirve: cualquier producto con variables compartidas crea
+  diagonal, y el residuo la paga. Ahí solo ayuda la cota espectral.
+
+**Costo:** el prototipo en Python tarda alrededor de 1 s por Q con n = 10. Hay que reimplementarlo antes de pensar
+en el solver.
