@@ -1,0 +1,26 @@
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lrrrrr}
+\toprule
+ & & & \multicolumn{3}{c}{Solved} \\
+\cmidrule(lr){4-6}
+Set & Inst. & $t_{\max}$ & S & SH & E \\
+\midrule
+synq & 78 & 300 & 45 & 61 & 61 \\
+synt & 24 & 60 & 19 & 20 & 20 \\
+synp & 18 & 60 & 18 & 18 & 18 \\
+Ibex medium+hard & 38 & 200 & 33 & 35 & 35 \\
+\bottomrule
+\end{tabular}\end{adjustbox}
+
+\medskip
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lrrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{Nodes / S} & \multicolumn{2}{c}{CPU / S} & \multicolumn{2}{c}{E vs SH} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Set & SH & E & SH$^\dagger$ & SH & E & nodes & $<$/$>$ \\
+\midrule
+synq & 0.26 & 0.26 & -- & 0.29 & 0.30 & 1.000 & 2/5 \\
+synt & 0.67 & 0.62 & 0.67 & 0.69 & 0.67 & 0.928 & 10/1 \\
+synp & 0.83 & 0.79 & 0.83 & 0.91 & 0.89 & 0.961 & 8/2 \\
+Ibex medium+hard & 0.92 & 0.89 & 1.00 & 0.89 & 0.85 & 0.962 & 7/0 \\
+\bottomrule
+\end{tabular}\end{adjustbox}
