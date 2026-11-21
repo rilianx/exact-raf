@@ -55,16 +55,16 @@ for name in ["table_rules_random", "table_rules_expressions", "table_cost"]:
 # tabla del solver en dos bloques
 rows = []
 for line in open(os.path.join(RES, "table_solver.tex")):
-    if line.count("&") == 12:
+    if line.count("&") == 13:
         c = [x.strip() for x in line.replace(r"\\", "").split("&")]
         if c[0] != "Set": rows.append(c)
-t1 = [r"\begin{tabular}{lrrrrr}", r"\toprule", r" & & & \multicolumn{3}{c}{Solved} \\", r"\cmidrule(lr){4-6}",
-      r"Set & Inst. & $t_{\max}$ & S & SH & E \\", r"\midrule"] + \
-     [" & ".join(c[0:6]) + r" \\" for c in rows] + [r"\bottomrule", r"\end{tabular}"]
+t1 = [r"\begin{tabular}{lrrrrrr}", r"\toprule", r" & & & \multicolumn{4}{c}{Solved} \\", r"\cmidrule(lr){4-7}",
+      r"Set & Inst. & $t_{\max}$ & S & S$^+$ & SH & E \\", r"\midrule"] + \
+     [" & ".join(c[0:7]) + r" \\" for c in rows] + [r"\bottomrule", r"\end{tabular}"]
 t2 = [r"\begin{tabular}{lrrrrrrr}", r"\toprule",
-      r" & \multicolumn{3}{c}{Nodes / S} & \multicolumn{2}{c}{CPU / S} & \multicolumn{2}{c}{E vs SH} \\",
+      r" & \multicolumn{3}{c}{Nodes / S$^+$} & \multicolumn{2}{c}{CPU / S$^+$} & \multicolumn{2}{c}{E vs SH} \\",
       r"\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}",
-      r"Set & SH & E & SH$^\dagger$ & SH & E & nodes & $<$/$>$ \\", r"\midrule"] + \
-     [" & ".join([c[0]] + c[6:13]) + r" \\" for c in rows] + [r"\bottomrule", r"\end{tabular}"]
+      r"Set & S & SH & E & SH & E & nodes & $<$/$>$ \\", r"\midrule"] + \
+     [" & ".join([c[0]] + c[7:14]) + r" \\" for c in rows] + [r"\bottomrule", r"\end{tabular}"]
 open(os.path.join(HERE, "table_solver_k.tex"), "w").write(fit("\n".join(t1)) + "\n\n\\medskip\n" + fit("\n".join(t2)) + "\n")
 print("ok")

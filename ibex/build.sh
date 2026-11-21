@@ -26,6 +26,7 @@ if [ ! -d ibex-affine ]; then
   git -C ibex-affine apply "$RAAK/patches/raak-ibex-affine-consolidado.patch"
   git -C ibex-affine apply "$HERE/patches/0016-ibex-affine-multiplicacion-exacta.patch"
   git -C ibex-affine apply "$HERE/patches/0017-ibex-affine-multiplicacion-rapida.patch"
+  git -C ibex-affine apply "$HERE/patches/0018-ibex-affine-cuadrado-chebyshev-af2.patch"
 fi
 cmake -S ibex-affine -B ibex-affine/build -DCMAKE_BUILD_TYPE=Release -DIBEX_DIR="$PREFIX" \
       -DCMAKE_INSTALL_PREFIX="$PREFIX" > affine-cmake.log 2>&1

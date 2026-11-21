@@ -1,0 +1,30 @@
+diff --git a/src/arithmetic/ibex_Affine2_fAF2.cpp b/src/arithmetic/ibex_Affine2_fAF2.cpp
+index adedbe0..b41542d 100644
+--- a/src/arithmetic/ibex_Affine2_fAF2.cpp
++++ b/src/arithmetic/ibex_Affine2_fAF2.cpp
+@@ -844,7 +844,7 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 		bool use_raak_sq = false;
+ 		double sq_half = 0.0, tq = 0.0;
+ 		// [parche 0017] con IBEX_RAF_SQR=af2, AFFINE_SH y AFFINE_EXACT usan el cuadrado de fAF2 (ablacion)
+-		if (affine_mode() == AFFINE_RAA || (affine_mode() != AFFINE_AF2 && !raf_af2_square())) {   // [parche 0016]
++		if (affine_mode() == AFFINE_RAA || (affine_mode() != AFFINE_AF2 && !raf_af2_square()) || (affine_mode() == AFFINE_AF2 && af2_cheb_square())) {   // [parches 0016, 0018]
+ 			KNomialStats& kst = knomial_stats();
+ 			kst.sqr_products++;
+ 			double eS = 0.0, sq = 0.0;
+diff --git a/src/arithmetic/ibex_KNomial.h b/src/arithmetic/ibex_KNomial.h
+index c643b29..d791f27 100644
+--- a/src/arithmetic/ibex_KNomial.h
++++ b/src/arithmetic/ibex_KNomial.h
+@@ -67,6 +67,12 @@ inline int& knomial_max_k() {
+ enum AffineMode { AFFINE_AF2 = 0, AFFINE_RAA = 1, AFFINE_SH = 2, AFFINE_EXACT = 3 };
+ 
+ /** [parche 0017] true si IBEX_RAF_SQR=af2: AFFINE_SH/AFFINE_EXACT usan el cuadrado de fAF2. */
++/** [parche 0018] true si IBEX_AF2_SQR=cheb: AFFINE_AF2 usa el cuadrado de Chebyshev (S+ = productos de fAF2 + cuadrado exacto). */
++inline bool af2_cheb_square() {
++	static const bool v = [] { const char* e = std::getenv("IBEX_AF2_SQR"); return e && std::string(e) == "cheb"; }();
++	return v;
++}
++
+ inline bool raf_af2_square() {
+ 	static const bool v = [] { const char* e = std::getenv("IBEX_RAF_SQR"); return e && std::string(e) == "af2"; }();
+ 	return v;
