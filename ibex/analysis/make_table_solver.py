@@ -3,22 +3,27 @@ Cada conjunto: S (af2) de un barrido, SH y E (parche 0017) de otro, y opcionalme
 import csv, glob, math, collections, os, sys
 RES = "/home/user/ibex-local/results"
 SETS = [  # nombre, tlim, dir S, dir SH/E, dir S+ (S con cuadrado de Chebyshev; None = sin cuadrados, S+ = S)
-    ("synq", 300, "opt-sinteticas", "opt-synq-v17-t300", None),
-    ("synt", 60, "opt-fun-t60", "opt-fun-v17-t60", None),
-    ("synp", 60, "opt-synp-t60", "opt-synp-v17-t60", "opt-synp-splus-t60"),
-    ("Ibex medium+hard", 200, "opt-ibexmh-t200", "opt-ibexmh-fast-t200", "opt-ibexmh-splus-t200"),
+    # (nombre, tlim, dir S, dir SH, dir S+, dir E con el parche 0019: un recorrido con dos desplazamientos)
+    ("synq", 300, "opt-sinteticas", "opt-synq-v17-t300", None, "opt-synq-v19-t300"),
+    ("synt", 60, "opt-fun-t60", "opt-fun-v17-t60", None, "opt-fun-v19-t60"),
+    ("synp", 60, "opt-synp-t60", "opt-synp-v17-t60", "opt-synp-splus-t60", "opt-synp-v19-t60"),
+    ("Ibex medium+hard", 200, "opt-ibexmh-t200", "opt-ibexmh-fast-t200", "opt-ibexmh-splus-t200", "opt-ibexmh-v19-t200"),
 ]
 def load(d):
     R = collections.defaultdict(dict)
     for f in glob.glob(os.path.join(RES, d, "rows", "*.csv")):
         for r in csv.reader(open(f)):
             if len(r) < 8 or r[0] == "instancia": continue
-            R[r[0]][r[1].split("_")[1]] = dict(st=r[2], c=int(r[3]), lb=float(r[4]), ub=float(r[5]), t=float(r[6]))
+            R[r[0].split("/")[-1]][r[1].split("_")[1]] = dict(st=r[2], c=int(r[3]), lb=float(r[4]), ub=float(r[5]), t=float(r[6]))
     return R
 gm = lambda x: math.exp(sum(map(math.log, x)) / len(x)) if x else float("nan")
 lines = []; out = []
-for name, tl, ds, dn, dq in SETS:
+for name, tl, ds, dn, dq, de in SETS:
     S, N = load(ds), load(dn); Q = load(dq) if dq else S
+    Ex = load(de)
+    for i in N:
+        if "exact" in Ex.get(i, {}): N[i]["exact"] = Ex[i]["exact"]
+        else: N[i].pop("exact", None)
     ok = lambda r: r["st"] == "SUCCESS"
     inst = [i for i in S if "af2" in S[i] and "af2" in Q.get(i, {}) and "sh" in N.get(i, {}) and "exact" in N.get(i, {})]
     solved = [sum(ok(X[i][v]) for i in inst) for X, v in [(S, "af2"), (Q, "af2"), (N, "sh"), (N, "exact")]]

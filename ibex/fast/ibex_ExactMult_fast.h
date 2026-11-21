@@ -38,17 +38,18 @@ inline bool angle_less(const Gen& a, const Gen& b) {
 struct Buf { std::vector<Gen> g; };
 inline Buf& buf() { static thread_local Buf b; return b; }
 
-/* Recorre el borde del zonotopo (generadores g ordenados) y actualiza, para cada desplazamiento
- * (cu[k], cv[k]) + constante kap[k], k < K, los extremos lo/hi de kap + (u+cu)(v+cv). */
+/* Recorre el borde del zonotopo (generadores g ordenados) una sola vez y devuelve, para cada desplazamiento
+ * (cu[k], cv[k]), k < K, los extremos lo[k], hi[k] de (u+cu)(v+cv) sobre el borde. Como el poligono es
+ * cerrado, el extremo q de la ultima arista es el vertice de partida: no hace falta evaluarlo antes. */
 template<int K>
-inline void walk(const std::vector<Gen>& g, const double* cu, const double* cv, const double* kap,
-                 double& lo, double& hi) {
+inline void walk(const std::vector<Gen>& g, const double* cu, const double* cv, double* lo, double* hi) {
 	double su = 0, sv = 0;
 	for (const Gen& x : g) { su += x.u; sv += x.v; }
 	double pu = -su, pv = -sv;
-	for (int k = 0; k < K; k++) {
-		const double val = kap[k] + (pu + cu[k]) * (pv + cv[k]);
-		lo = std::min(lo, val); hi = std::max(hi, val);
+	for (int k = 0; k < K; k++) { lo[k] = INFINITY; hi[k] = -INFINITY; }
+	if (g.empty()) {
+		for (int k = 0; k < K; k++) lo[k] = hi[k] = cu[k] * cv[k];
+		return;
 	}
 	for (int sgn = 0; sgn < 2; sgn++) {
 		const double f = sgn == 0 ? 2.0 : -2.0;
@@ -57,14 +58,14 @@ inline void walk(const std::vector<Gen>& g, const double* cu, const double* cv, 
 			for (int k = 0; k < K; k++) {
 				const double a = pu + cu[k], b = pv + cv[k];
 				const double qa = a + du, qb = b + dv;
-				const double vq = kap[k] + qa * qb;
-				lo = std::min(lo, vq); hi = std::max(hi, vq);
+				const double vq = qa * qb;
+				lo[k] = std::min(lo[k], vq); hi[k] = std::max(hi[k], vq);
 				if (A != 0.0) {
 					const double B = a * dv + b * du;
 					const double t = -B / (2.0 * A);
 					if (t > 0.0 && t < 1.0) {
-						const double vs = kap[k] + (a * b - B * B / (4.0 * A));
-						lo = std::min(lo, vs); hi = std::max(hi, vs);
+						const double vs = a * b - B * B / (4.0 * A);
+						lo[k] = std::min(lo[k], vs); hi[k] = std::max(hi[k], vs);
 					}
 				}
 			}
@@ -90,13 +91,13 @@ inline Interval raf_mult_enclosure_fast(const double* a, const double* b, size_t
 		g.push_back(Gen{u, v}); Su += u; Sv += std::fabs(v);
 	}
 	const bool coupled = (std::fabs(x0) * ey > 0.0) && (std::fabs(y0) * ex > 0.0);
-	double lo = INFINITY, hi = -INFINITY;
 	if (!exact || !coupled) {
 		if (ex > 0) { g.push_back(Gen{ex, 0.0}); Su += ex; }
 		if (ey > 0) { g.push_back(Gen{0.0, ey}); Sv += ey; }
 		std::sort(g.begin(), g.end(), angle_less);
 		const double z = 0.0;
-		walk<1>(g, &z, &z, &z, lo, hi);
+		double lo, hi;
+		walk<1>(g, &z, &z, &lo, &hi);
 		const double m = (double) g.size();
 		const double U = 3.0 * Su * (1 + 8 * eps), V = 3.0 * Sv * (1 + 8 * eps);
 		const double lin = (std::fabs(y0) * ex + std::fabs(x0) * ey) * (1 + 4 * eps);
@@ -104,9 +105,13 @@ inline Interval raf_mult_enclosure_fast(const double* a, const double* b, size_t
 		return outward(lo - lin, hi + lin, M);
 	}
 	std::sort(g.begin(), g.end(), angle_less);
-	const double cu[4] = {-ex, -ex, ex, ex}, cv[4] = {-ey, ey, -ey, ey};
-	const double kap[4] = {-x0 * ey - y0 * ex, x0 * ey - y0 * ex, -x0 * ey + y0 * ex, x0 * ey + y0 * ex};
-	walk<4>(g, cu, cv, kap, lo, hi);
+	// Esquinas (1,1) y (1,-1): la esquina (-s,-t) da el mismo rango de uv que (s,t) (Z = -Z) con kappa
+	// de signo opuesto, asi que cada par aporta [min - |kappa|, max + |kappa|]. Un solo recorrido.
+	const double cu[2] = {ex, ex}, cv[2] = {ey, -ey};
+	const double k0 = std::fabs(x0 * ey + y0 * ex), k1 = std::fabs(-x0 * ey + y0 * ex);
+	double L[2], H[2];
+	walk<2>(g, cu, cv, L, H);
+	const double lo = std::min(L[0] - k0, L[1] - k1), hi = std::max(H[0] + k0, H[1] + k1);
 	const double m = (double) g.size();
 	const double U = (ex + 3.0 * Su) * (1 + 8 * eps), V = (ey + 3.0 * Sv) * (1 + 8 * eps);
 	const double K = (std::fabs(x0) * ey + std::fabs(y0) * ex) * (1 + 4 * eps);
