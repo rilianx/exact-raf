@@ -42,6 +42,8 @@ BREAKS = [
   r"\begin{gathered}x_0y_0 + e^T(y_0x+x_0y) + k_1\eps_\pm + k_2\eps_+ + k_3\eps_-,\\ k_2=\sum_{x_iy_i>0}x_iy_i,\quad k_3=\sum_{x_iy_i<0}|x_iy_i|,\end{gathered}"),
  (r"\varphi_0(p+\tau d)=(p_u+\tau d_u)(p_v+\tau d_v)=P+B\tau+A\tau^2,\qquad P=p_up_v,\ B=p_ud_v+p_vd_u,\ A=d_ud_v,",
   r"\begin{gathered}\varphi_0(p+\tau d)=(p_u+\tau d_u)(p_v+\tau d_v)=P+B\tau+A\tau^2,\\ P=p_up_v,\quad B=p_ud_v+p_vd_u,\quad A=d_ud_v,\end{gathered}"),
+ (r"\hat x = x_0+\sum_i x_i\eps_i + x_\pm\eps_\pm + x_+\eps_+ + x_-\eps_-,\qquad \eps_\pm\in[-1,1],\ \eps_+\in[0,1],\ \eps_-\in[-1,0]:",
+  r"\begin{gathered}\hat x = x_0+\sum_i x_i\eps_i + x_\pm\eps_\pm + x_+\eps_+ + x_-\eps_-,\\ \eps_\pm\in[-1,1],\quad \eps_+\in[0,1],\quad \eps_-\in[-1,0]:\end{gathered}"),
 ]
 for a, b in BREAKS:
     if a in s:
