@@ -26,7 +26,7 @@
 \newcommand{\mmid}{\operatorname{mid}}
 
 \title{Exact multiplication of reduced affine forms}
-\author{Ignacio Araya \and Angelo Alvear Tapia \and Daniel Miranda \and Juan Aramayo \and Victor Reyes}
+\author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
 \date{}
 
 \begin{document}
@@ -118,28 +118,32 @@ For fixed $(s,t)$,
 \label{eq:Nst}
 N(e,s,t) = x_0y_rt+y_0x_rs + (u + x_rs)(v + y_rt),\qquad (u,v)=(e^Tx,\,e^Ty)\in Z,
 \end{equation}
-where $Z=\{\sum_i\eps_i(x_i,y_i): e\in\U^n\}\subset\R^2$ is the joint range of $e^Tx$ and $e^Ty$, a planar zonotope with generators $g_i=(x_i,y_i)$~\cite{ziegler1995lectures}. The range of~\eqref{eq:Nst} is thus the range of a shifted product $\varphi_c(u,v)=(u+c_1)(v+c_2)$ over $Z$.
+where $Z=\{\sum_i\eps_i(x_i,y_i): e\in\U^n\}\subset\R^2$ is the joint range of $e^Tx$ and $e^Ty$, a planar zonotope with generators $g_i=(x_i,y_i)$~\cite{ziegler1995lectures}. The range of~\eqref{eq:Nst} is thus $\kappa$ plus the range over $Z$ of the shifted product $\varphi_\delta(u,v)=(u+\delta_1)(v+\delta_2)$, where $\kappa=x_0y_rt+y_0x_rs$ and $\delta=(x_rs,\,y_rt)$; equivalently, of the product $\varphi_0(u,v)=uv$ over the translate $Z+\delta$.
 
 \begin{lemma}
 \label{lem:zonotope}
-Let $Z$ be a planar zonotope and $c\in\R^2$. The minimum and the maximum of $\varphi_c$ over $Z$ are attained on the boundary of $Z$. If the nonzero generators are replaced by $\tilde g_i=\pm g_i$ so that they lie in the half-plane $\{u>0\}\cup\{u=0,v>0\}$ and are sorted by increasing angle, $\tilde g_{(1)},\dots,\tilde g_{(m)}$, the boundary of $Z$ is the polygon with vertices
+Let $Z$ be a planar zonotope and $\delta\in\R^2$. The minimum and the maximum of $\varphi_\delta$ over $Z$ are attained on the boundary of $Z$. If the nonzero generators are replaced by $\tilde g_i=\pm g_i$ so that they lie in the half-plane $\{u>0\}\cup\{u=0,v>0\}$ and are sorted by increasing angle, $\tilde g_{(1)},\dots,\tilde g_{(m)}$, the boundary of $Z$ is the polygon with vertices
 \begin{equation}
 \label{eq:boundary}
 p_0=-\sum_k\tilde g_{(k)},\quad p_k = p_{k-1}+2\tilde g_{(k)}\ (k=1,\dots,m),\quad p_{m+k} = p_{m+k-1}-2\tilde g_{(k)}\ (k=1,\dots,m).
 \end{equation}
 \end{lemma}
 \begin{proof}
-The only critical point of $\varphi_c$ is $(-c_1,-c_2)$, where the Hessian $\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ is indefinite. A local extremum in the interior of $Z$ would be a critical point with a semidefinite Hessian, so there is none, and the extrema of the continuous function $\varphi_c$ on the compact set $Z$ lie on its boundary. Replacing $g_i$ by $-g_i$ does not change $Z$, since $\eps_i$ ranges over a symmetric interval. The description of the boundary of a planar zonotope by its generators sorted by angle is classical; see~\cite{ziegler1995lectures} and~\cite[Prop.~7]{skalna2017new} for the part of the boundary in the nonnegative quadrant.
+The only critical point of $\varphi_\delta$ is $(-\delta_1,-\delta_2)$, where the Hessian $\left(\begin{smallmatrix}0&1\\1&0\end{smallmatrix}\right)$ is indefinite. A local extremum in the interior of $Z$ would be a critical point with a semidefinite Hessian, so there is none, and the extrema of the continuous function $\varphi_\delta$ on the compact set $Z$ lie on its boundary. Replacing $g_i$ by $-g_i$ does not change $Z$, since $\eps_i$ ranges over a symmetric interval. The description of the boundary of a planar zonotope by its generators sorted by angle is classical; see~\cite{ziegler1995lectures} and~\cite[Prop.~7]{skalna2017new} for the part of the boundary in the nonnegative quadrant.
 \end{proof}
 
 \begin{figure}[t]
 \centering
 \includegraphics[width=\linewidth]{fig/zonotope.pdf}
-\caption{Lemma~\ref{lem:zonotope} and Algorithm~\ref{alg:exact} with three generators. (a) The generators, turned to the half-plane $u>0$ and sorted by angle; the boundary of $Z$ starts at $p_0=-\sum_k\tilde g_{(k)}$, adds $2\tilde g_{(1)},2\tilde g_{(2)},2\tilde g_{(3)}$ (colored edges) and then subtracts them in the same order. (b) Level curves of $\varphi_c$ for $c=(0.5,-0.4)$ (dashed: negative values). Its only critical point is a saddle, so its extrema over $Z$ lie on the boundary: here the minimum at a vertex and the maximum at the stationary point of an edge. Algorithm~\ref{alg:exact} performs this walk for the four shifts $c=(x_rs,y_rt)$.}
+\caption{Lemma~\ref{lem:zonotope} and Algorithm~\ref{alg:exact} with three generators. (a) The generators, turned to the half-plane $u>0$ and sorted by angle; the boundary of $Z$ starts at $p_0=-\sum_k\tilde g_{(k)}$, adds $2\tilde g_{(1)},2\tilde g_{(2)},2\tilde g_{(3)}$ (colored edges) and then subtracts them in the same order. (b) Level curves of $\varphi_\delta$ for $\delta=(0.5,-0.4)$ (dashed: negative values). Its only critical point is a saddle, so its extrema over $Z$ lie on the boundary: here the minimum at a vertex and the maximum at the stationary point of an edge. Algorithm~\ref{alg:exact} performs this walk for the four shifts $\delta=(x_rs,y_rt)$.}
 \label{fig:zonotope}
 \end{figure}
 
-On each edge $[p_{k-1},p_k]$, $\varphi_c(p_{k-1}+\tau(p_k-p_{k-1}))$ is a quadratic polynomial in $\tau\in[0,1]$, whose extrema are attained at $\tau\in\{0,1\}$ or at its stationary point. This gives Algorithm~\ref{alg:exact}.
+Let $[p,q]$ be an edge of the translated polygon $Z+\delta$, with direction $d=q-p$, parametrized as $p+\tau d$ with $\tau\in[0,1]$. Then
+\[
+\varphi_0(p+\tau d)=(p_u+\tau d_u)(p_v+\tau d_v)=P+B\tau+A\tau^2,\qquad P=p_up_v,\ B=p_ud_v+p_vd_u,\ A=d_ud_v,
+\]
+whose extrema over $[0,1]$ are attained at $\tau\in\{0,1\}$, with values $\varphi_0(p)$ and $\varphi_0(q)$, or, if $A\ne0$ and $\tau^*=-B/(2A)\in(0,1)$, at the stationary point, with value $P-B^2/(4A)$. This gives Algorithm~\ref{alg:exact}, where ``update $\ell,h$ with $w$'' stands for $\ell\gets\min(\ell,w)$, $h\gets\max(h,w)$.
 
 \begin{algorithm}[t]
 \caption{Exact multiplication of reduced affine forms}
@@ -148,12 +152,19 @@ On each edge $[p_{k-1},p_k]$, $\varphi_c(p_{k-1}+\tau(p_k-p_{k-1}))$ is a quadra
 \Require $\hat x = x_0+\sum_ix_i\eps_i+x_r\ex$, $\hat y = y_0+\sum_iy_i\eps_i+y_r\ey$
 \Ensure $\hat z$ with $\hat x\hat y\in\hat z$ for all $e,\ex,\ey$, and $x_0y_0+c\pm z_r = x_0y_0+\rng N$
 \State $\tilde g_{(1)},\dots,\tilde g_{(m)}\gets$ the nonzero $(x_i,y_i)$, turned to the half-plane $u>0$ and sorted by angle
-\State $\ell\gets+\infty$, $h\gets-\infty$
+\State $\sigma\gets\sum_{k=1}^m\tilde g_{(k)}$;\quad $\ell\gets+\infty$, $h\gets-\infty$
 \For{$s\in\{-1,1\}$, $t\in\{-1,1\}$}
-  \State $c\gets(x_rs,\,y_rt)$, $\kappa\gets x_0y_rt+y_0x_rs$
-  \For{each edge $[p,q]$ of the polygon~\eqref{eq:boundary}, shifted by $c$}
-    \State evaluate $\varphi_0$ at $p$, at $q$, and at the stationary point of $\tau\mapsto\varphi_0(p+\tau(q-p))$ if $\tau\in(0,1)$
-    \State update $\ell$ and $h$ with $\kappa$ plus these values
+  \State $\delta\gets(x_rs,\,y_rt)$, $\kappa\gets x_0y_rt+y_0x_rs$
+  \State $p\gets\delta-\sigma$ \Comment{vertex $p_0$ of~\eqref{eq:boundary}, translated by $\delta$}
+  \State update $\ell,h$ with $\kappa+p_up_v$
+  \For{$j=1,\dots,2m$}
+    \State $d\gets2\tilde g_{(j)}$ if $j\le m$, and $d\gets-2\tilde g_{(j-m)}$ otherwise
+    \State $q\gets p+d$; update $\ell,h$ with $\kappa+q_uq_v$
+    \State $A\gets d_ud_v$, $B\gets p_ud_v+p_vd_u$
+    \If{$A\ne0$ and $0<-B/(2A)<1$}
+      \State update $\ell,h$ with $\kappa+p_up_v-B^2/(4A)$
+    \EndIf
+    \State $p\gets q$
   \EndFor
 \EndFor
 \State $c\gets(\ell+h)/2$, $z_r\gets(h-\ell)/2$ (rounded outwards in a rigorous implementation)
@@ -161,18 +172,18 @@ On each edge $[p_{k-1},p_k]$, $\varphi_c(p_{k-1}+\tau(p_k-p_{k-1}))$ is a quadra
 \end{algorithmic}
 \end{algorithm}
 
-Algorithm~\ref{alg:exact} works as follows (Figure~\ref{fig:zonotope}). Line~1 turns the generators to the half-plane $u>0$ and sorts them by angle; this is done once, since the four polygons visited later are translates of the same polygon~\eqref{eq:boundary} and have the same edges. The outer loop visits the four vertices $(s,t)$ of $\U^2$, where the extrema of $N$ are attained (Lemma~\ref{lem:vertices}): with the error symbols fixed, $N(\cdot,s,t)$ is the constant $\kappa$ plus the product $uv$ evaluated on $Z$ translated by $c=(x_rs,y_rt)$, by~\eqref{eq:Nst}. The inner loop walks along the $2m$ edges of that translated polygon. On each edge, $uv$ is a quadratic polynomial in the position $\tau$ along the edge, so its extrema are at the two endpoints or at the stationary point, which is computed in $O(1)$; the extrema over the whole edge sequence are the extrema of $uv$ over the translated zonotope (Lemma~\ref{lem:zonotope}). After the four walks, $\ell$ and $h$ are the endpoints of $\rng N$, and their midpoint and half-width give the new center shift and error term.
+Algorithm~\ref{alg:exact} works as follows (Figure~\ref{fig:zonotope}). Line~1 turns the generators to the half-plane $u>0$ and sorts them by angle, and line~2 computes their sum $\sigma$; both are done once, since the four polygons visited later are translates of the same polygon~\eqref{eq:boundary}. The outer loop visits the four vertices $(s,t)$ of $\U^2$, where the extrema of $N$ are attained (Lemma~\ref{lem:vertices}): with the error symbols fixed, $N(\cdot,s,t)$ is $\kappa$ plus $\varphi_0$ on the translate $Z+\delta$, by~\eqref{eq:Nst}. The walk starts at the vertex $p=\delta-\sigma$, which is $p_0$ translated by $\delta$, and the inner loop follows~\eqref{eq:boundary}: it adds the edge vectors $2\tilde g_{(1)},\dots,2\tilde g_{(m)}$ and then subtracts them in the same order, so that $p$ visits all the vertices of $Z+\delta$ and returns to the start. On each edge $[p,q]$, it evaluates $\varphi_0$ at the end $q$ (the start $p$ was evaluated in the previous step) and, if it lies inside the edge, at the stationary point. After the four walks, $\ell$ and $h$ are the endpoints of $\rng N$, and their midpoint and half-width give the new center shift $c$ and error term $z_r$.
 
 \begin{theorem}
 \label{thm:exact}
 Algorithm~\ref{alg:exact} computes $\rng N$ exactly (in exact arithmetic) in $O(n\log n)$ time. Consequently, among all reduced affine forms with linear part $e^T(y_0x+x_0y)$ that enclose $\hat x\hat y$ over $\U^{n+2}$, the one returned by Algorithm~\ref{alg:exact} has the smallest error term $z_r$.
 \end{theorem}
 \begin{proof}
-By Lemma~\ref{lem:vertices}, the endpoints of $\rng N$ are the extreme endpoints of the ranges of $N(\cdot,s,t)$, and by~\eqref{eq:Nst} and Lemma~\ref{lem:zonotope}, each of them is the range of $\kappa+\varphi_c$ over the boundary of $Z$, which the inner loop computes exactly. The generators are sorted once, in $O(n\log n)$ time, and each of the four walks along the $2m\le 2n$ edges takes $O(n)$ time. For the second statement, a reduced affine form with that linear part encloses $\hat x\hat y$ if and only if $[c-z_r,c+z_r]\supseteq\rng N$, by~\eqref{eq:product}; the narrowest such interval is $\rng N$.
+By Lemma~\ref{lem:vertices}, the endpoints of $\rng N$ are the extreme endpoints of the ranges of $N(\cdot,s,t)$, and by~\eqref{eq:Nst} and Lemma~\ref{lem:zonotope}, each of them is the range of $\kappa+\varphi_\delta$ over the boundary of $Z$, which the inner loop computes exactly. The generators are sorted once, in $O(n\log n)$ time, and each of the four walks along the $2m\le 2n$ edges takes $O(n)$ time. For the second statement, a reduced affine form with that linear part encloses $\hat x\hat y$ if and only if $[c-z_r,c+z_r]\supseteq\rng N$, by~\eqref{eq:product}; the narrowest such interval is $\rng N$.
 \end{proof}
 
 \begin{remark}
-Skalna and Hlad\'{\i}k reduce the computation of $R_{\max}$ to linear time by replacing the sorting with repeated median selection~\cite[Prop.~8]{skalna2017new}. Their argument uses the central symmetry of $Z$ and of $\varphi_0$, which locates the maximizer in the nonnegative quadrant. For the shifted products of~\eqref{eq:Nst} this symmetry is lost: the extrema can lie on any of the four monotone chains of the boundary, and these chains may cross the coordinate axes of the shifted product. A prune-and-search over each chain, in the spirit of~\cite[Prop.~8]{skalna2017new}, is a natural candidate, but it requires proving that $\varphi_c$ is unimodal along each chain, including the parts where its factors have opposite signs, and we leave a linear-time version of Algorithm~\ref{alg:exact} open. In practice, the $O(n\log n)$ version is the one recommended in~\cite{skalna2017new} for moderate $n$, and in our implementation the sorting is shared by the four vertices.
+Skalna and Hlad\'{\i}k reduce the computation of $R_{\max}$ to linear time by replacing the sorting with repeated median selection~\cite[Prop.~8]{skalna2017new}. Their argument uses the central symmetry of $Z$ and of $\varphi_0$, which locates the maximizer in the nonnegative quadrant. For the shifted products of~\eqref{eq:Nst} this symmetry is lost: the extrema can lie on any of the four monotone chains of the boundary, and these chains may cross the coordinate axes of the shifted product. A prune-and-search over each chain, in the spirit of~\cite[Prop.~8]{skalna2017new}, is a natural candidate, but it requires proving that $\varphi_\delta$ is unimodal along each chain, including the parts where its factors have opposite signs, and we leave a linear-time version of Algorithm~\ref{alg:exact} open. In practice, the $O(n\log n)$ version is the one recommended in~\cite{skalna2017new} for moderate $n$, and in our implementation the sorting is shared by the four vertices.
 \end{remark}
 
 \begin{remark}
@@ -295,7 +306,7 @@ S can be much wider than SH even without errors: for $\hat x=\eps_1+\eps_2$ and 
 A floating-point implementation of Algorithm~\ref{alg:exact} must return an interval that contains $\rng N$. Two points need care.
 \begin{itemize}
 \item \emph{Angular order.} An incorrect order between two almost parallel generators would produce a path that cuts through the interior of $Z$ and could underestimate the range. The order is decided by the sign of $u_1v_2-v_1u_2$, evaluated in double precision with a forward error filter~\cite{shewchuk1997adaptive}: if $|\mathrm{fl}(u_1v_2)-\mathrm{fl}(v_1u_2)|$ exceeds $4\cdot2^{-52}(|\mathrm{fl}(u_1v_2)|+|\mathrm{fl}(v_1u_2)|)$ and neither product underflows, its sign is the exact one; otherwise the expression is evaluated in quadruple precision, where the two products are exact and the subtraction preserves the sign. Flipping a generator to the half-plane $u>0$ is exact.
-\item \emph{Boundary walk.} The vertices and the values on the edges are computed in double precision, and the resulting interval is widened by an a priori bound of the rounding errors. Let $m$ be the number of generators (including $(x_r,0)$ and $(0,y_r)$ for SH), $U=|c_1|+3\sum_k|u_k|$ and $V=|c_2|+3\sum_k|v_k|$, which bound $|u|$ and $|v|$ at every computed or exact vertex, partial sum and edge point. Each vertex is obtained with at most $3m+2$ additions, so its error is at most $(3m+2)\,\eps_m U$ in $u$ and $(3m+2)\,\eps_m V$ in $v$, with $\eps_m=2^{-52}$, which bounds the error of one operation in any rounding mode~\cite{higham2002accuracy}. On an edge $[p,p+d]$ with $d=\pm2g$ (exact), the value at the stationary point is $P-B^2/(4A)$ with $P=p_up_v$, $B=p_ud_v+p_vd_u$ and $A=d_ud_v$; since the stationary point is in $(0,1)$, $|B|<2|A|$, and $|P|,|A|\le UV$, $|B|\le2UV$, so each evaluated value has a rounding error of $O(\eps_m UV)$, and a wrong decision on whether the stationary point lies in $(0,1)$ changes the value by $O(\eps_m UV)$ as well. Adding the constant $\kappa$ and the term $|y_0|x_r+|x_0|y_r$ of SH, we widen the interval by $(8m+64)\,\eps_m\,(UV+|x_0|y_r+|y_0|x_r)$ and round its endpoints outwards. This widening is of the order of $10^{-13}$ times the width of the enclosure.
+\item \emph{Boundary walk.} The vertices and the values on the edges are computed in double precision, and the resulting interval is widened by an a priori bound of the rounding errors. Let $m$ be the number of generators (including $(x_r,0)$ and $(0,y_r)$ for SH), $U=|\delta_1|+3\sum_k|u_k|$ and $V=|\delta_2|+3\sum_k|v_k|$ (with $\delta=0$ for SH), which bound $|u|$ and $|v|$ at every computed or exact vertex, partial sum and edge point. Each vertex is obtained with at most $3m+2$ additions, so its error is at most $(3m+2)\,\eps_m U$ in $u$ and $(3m+2)\,\eps_m V$ in $v$, with $\eps_m=2^{-52}$, which bounds the error of one operation in any rounding mode~\cite{higham2002accuracy}. On an edge $[p,p+d]$ with $d=\pm2\tilde g_{(j)}$ (exact), the value at the stationary point is $P-B^2/(4A)$, with the notation above; since the stationary point is in $(0,1)$, $|B|<2|A|$, and $|P|,|A|\le UV$, $|B|\le2UV$, so each evaluated value has a rounding error of $O(\eps_m UV)$, and a wrong decision on whether the stationary point lies in $(0,1)$ changes the value by $O(\eps_m UV)$ as well. Adding the constant $\kappa$ and the term $|y_0|x_r+|x_0|y_r$ of SH, we widen the interval by $(8m+64)\,\eps_m\,(UV+|x_0|y_r+|y_0|x_r)$ and round its endpoints outwards. This widening is of the order of $10^{-13}$ times the width of the enclosure.
 \end{itemize}
 Our implementation sorts the generators once per product, walks the four shifted polygons of E in a single pass, and allocates no memory per product. For E, when $\min(|x_0|y_r,|y_0|x_r)=0$, it runs the single walk of SH, which gives the same interval by Corollary~\ref{cor:gain}.
 

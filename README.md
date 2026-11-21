@@ -2,7 +2,7 @@
 
 This repository contains the implementation and the experiments of the paper
 
-> I. Araya, A. Alvear Tapia, D. Miranda, J. Aramayo, V. Reyes.
+> I. Araya, D. Miranda, V. Reyes, J. Geraldo.
 > *Exact multiplication of reduced affine forms.* In preparation (Numerical Algorithms).
 
 A reduced affine form `x0 + x1 e1 + ... + xn en + xr ex` keeps a fixed number of noise symbols
@@ -245,8 +245,7 @@ If you use this code, please cite the paper (the reference will be updated upon 
 ```bibtex
 @unpublished{araya2026exact,
   title  = {Exact multiplication of reduced affine forms},
-  author = {Araya, Ignacio and Alvear Tapia, Angelo and Miranda, Daniel and
-            Aramayo, Juan and Reyes, Victor},
+  author = {Araya, Ignacio and Miranda, Daniel and Reyes, Victor and Geraldo, Juan},
   note   = {In preparation},
   year   = {2026}
 }
