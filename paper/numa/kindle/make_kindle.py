@@ -21,6 +21,8 @@ s = s.replace(r"\usepackage[a4paper,margin=27mm]{geometry}",
               r"\usepackage[paperwidth=100mm,paperheight=135mm,left=4mm,right=4mm,top=5mm,bottom=7mm,footskip=4mm]{geometry}"
               "\n\\usepackage{float}\n\\usepackage{adjustbox}\n\\sloppy\n\\setlength{\\emergencystretch}{3em}")
 s = s.replace(r"\begin{algorithm}[t]", r"\begin{algorithm}[H]")
+s = s.replace(r"\begin{figure}[t]", r"\begin{figure}[H]")
+s = s.replace(r"\includegraphics[width=\linewidth]{fig/zonotope.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}")
 s = fit(s)
 s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" + m.group(1) + "_k.tex}", s)
 
