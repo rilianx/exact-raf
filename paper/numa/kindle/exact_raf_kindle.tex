@@ -31,10 +31,10 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
-\date{\small Kindle version v10 (2026-11-21)}
+\date{\small Kindle version v11 (2026-11-21)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v10}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v11}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -387,7 +387,7 @@ For affine operands (Cases~1 and 1m), SH and E are exact, while AF2 and S lose 5
 
 We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabert2009,ibexaffine} (model fAF2 of its affine plugin), whose multiplication and square are those of formula S, with the rounding errors of each operation accumulated in the error term. Only the enclosure $[c-z_r,c+z_r]$ of $N$ (or $N_2$) changes: the linear part, its rounding errors and the way they are added to the error term are those of fAF2. Note that S is exact for the products and squares of the variables themselves, whose forms have a single noise symbol and no error, so that the formulae differ only for compound factors.
 
-\paragraph{Validation.} The implementation was checked against the exact range of $N$ computed with rational arithmetic on 86\,000 random products, including almost parallel generators and coefficients from $10^{-6}$ to $10^6$, without any violation, and with the containment test of the RAA-K experiments of the Ibex affine plugin~\cite{ibexaffine}, which evaluates 180\,000 random functions of nine families at sampled points with interval arithmetic: no enclosure was violated, while the test detects violations when the error term is artificially reduced by 10\%.
+\paragraph{Validation.} The implementation was checked against the exact range of $N$ computed with rational arithmetic on 86\,000 random products, including almost parallel generators and coefficients from $10^{-6}$ to $10^6$, without any violation, and with a containment test on whole expressions: $180\,000$ random expressions from nine families that combine products, squares and $\sin$, $\cos$, $\exp$ and $\ln$ of random affine functions $L$ of the variables, such as $(L\cdot L)\cdot(L\cdot L)$, $(L\cdot L+L)^2$ or $(\sin L+L)^2\cdot(L\cdot L)$, were evaluated in affine arithmetic over random boxes with radii from $10^{-6}$ to $3$, and at sampled vertices and interior points $p$ of each box, the value $f(p)$, computed in interval arithmetic, was required to intersect the enclosure, also computed in interval arithmetic. No enclosure was violated, while the same test detects violations when the error term is artificially reduced by 10\%.
 
 \paragraph{Cost.} Table~\ref{tab:cost} gives the time per product of the multiplication of fAF2 (S) and of SH and E. The exact-range multiplications cost 2.3--5.4 times as much as S; E costs about 10\% more than SH when the operands carry errors, and the same otherwise. In the solver experiments below, this overhead is a small fraction of the time per node.
 
@@ -404,9 +404,9 @@ We implemented SH and E in the affine arithmetic of the Ibex library~\cite{chabe
 
 We replaced the multiplication and the square of fAF2 by those of SH and E in IbexOpt~\cite{chabert2009}, configured with the affine linear relaxation of~\cite{ninin2015reliable}, in which every constraint and the objective are linearized over each box by evaluating them with reduced affine forms, the lsmear bisection heuristic~\cite{araya2017}, precision $10^{-7}$ on the variables and relative precision $10^{-6}$ on the objective. All the other components of the solver are unchanged, so that S, SH and E differ only in the enclosures of products and squares. We used four sets of instances:
 \begin{itemize}
-\item \emph{synq}: 78 synthetic problems with 3 to 10 variables, whose objective is a sum of products of random linear forms plus a linear term, under random linear constraints; every product has compound factors without errors, the case where SH and E are exact and S is not.
-\item \emph{synt}: 24 synthetic problems whose objective contains products of linear forms with univariate functions ($\sin$, $\cos$, $\exp$, $\ln$) and products of two univariate functions, such as $\cos(\cdot)\exp(\cdot)$, whose factors both carry linearization errors.
-\item \emph{synp}: 18 synthetic problems whose objective is a sum of products of two quadratic functions with nonzero constant terms, so that both factors carry errors and have nonzero centers, the favorable case of Corollary~\ref{cor:gain}.
+\item \emph{synq}: 78 synthetic problems over $x\in[-1,1]^n$, $n\in\{3,5,8,10\}$. The objective is a quadratic function $x^TQx+c^Tx$ written as a sum of $n$ products of affine functions, $\sum_k(a_k^Tx)(m_k^Tx)+c^Tx$, from a factorization $Q=A^TM$ of a random symmetric matrix with a random well-conditioned $A$; the off-diagonal entries of $Q$ are nonzero with probability $\rho\in\{0.2,0.5,0.9\}$ and uniform in $[-1,1]$, and its diagonal is positive or of mixed sign. There are one linear constraint and $\lfloor n/2\rfloor-1$ constraints of the same quadratic type, made feasible by taking as right-hand side the value at a random point of the box plus a margin, and three seeds per configuration. Every product has compound factors without errors, the case where SH and E are exact and S is not.
+\item \emph{synt}: 24 synthetic problems over $x\in[-1,1]^n$, $n\in\{3,5,8,10\}$, $\rho\in\{0.5,0.9\}$, three seeds, whose objective is a sum of $n$ terms that alternate between $(a_k^Tx)\,f_k(m_k^Tx)$ and $f_k(a_k^Tx)\,g_k(m_k^Tx)$, with $f_k,g_k\in\{\sin,\cos,\exp\}$, so that both factors of the second kind carry linearization errors; the constraints are built as for synq.
+\item \emph{synp}: 18 synthetic problems over $x\in[-1,1]^n$, $n\in\{3,5,8\}$, six seeds, whose objective is $\sum_{k=1}^n q_k(x)\,r_k(x)$ plus a linear term, where each $q_k$ and $r_k$ is a random constant of absolute value in $[0.5,2]$ plus two linear terms, a square and a bilinear term, so that both factors carry errors and have nonzero centers, the favorable case of Corollary~\ref{cor:gain}; there is one random linear constraint.
 \item \emph{medium+hard}: the 38 instances of the medium and hard sets of the optimization benchmark distributed with Ibex, taken from the COCONUT library~\cite{coconut}.
 \end{itemize}
 Each run used one core, with four simultaneous runs on the same machine, and the time limits of Table~\ref{tab:solver}. Table~\ref{tab:solver} reports the number of instances solved within the limit and, over the instances solved by the three multiplications, the geometric means of the numbers of nodes and of the CPU times relative to S, and the comparison of E with SH. The three multiplications found the same optimum, within the precision, on every instance solved by all of them.
@@ -436,7 +436,7 @@ In an interval branch-and-bound optimizer, the main practical effect comes from 
 \section*{Statements and declarations}
 \textbf{Funding.} ANID, Chile, FONDECYT Regular 2026, project No.~1260159.
 \textbf{Competing interests.} The authors have no relevant financial or non-financial interests to disclose.
-\textbf{Data availability.} Code, data and scripts: \url{https://github.com/rilianx/raa-affine-arithmetic}.
+\textbf{Data availability.} Code, data, the generators of the synthetic instances and the scripts that produce the tables and figures: \url{https://github.com/rilianx/raa-affine-arithmetic}.
 \textbf{Use of AI.} The authors used an AI assistant (Claude, Anthropic) to help implement and verify the code, run the experiments and check the proofs; all code, results and proofs were reviewed by the authors, who take full responsibility for them.
 
 \bibliographystyle{unsrt}
