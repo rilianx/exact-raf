@@ -159,16 +159,11 @@ whose extrema over $[0,1]$ are attained at $\tau\in\{0,1\}$, with values $\varph
   \For{$j=1,\dots,2m$}
     \State $d\gets2\tilde g_{(j)}$ if $j\le m$, and $d\gets-2\tilde g_{(j-m)}$ otherwise
     \State $q\gets p+d$
-    \State $\ell\gets\min(\ell,\,\kappa+q_uq_v)$
-    \State $h\gets\max(h,\,\kappa+q_uq_v)$
+    \State $\ell\gets\min(\ell,\,\kappa+q_uq_v)$, $h\gets\max(h,\,\kappa+q_uq_v)$
     \State $A\gets d_ud_v$, $B\gets p_ud_v+p_vd_u$
     \If{$A\ne0$ and $0<-B/(2A)<1$}
       \State $w\gets\kappa+p_up_v-B^2/(4A)$
-      \If{$A<0$} \Comment{$w$ is a maximum}
-        \State $h\gets\max(h,w)$
-      \Else \Comment{$w$ is a minimum}
-        \State $\ell\gets\min(\ell,w)$
-      \EndIf
+      \State $\ell\gets\min(\ell,w)$, $h\gets\max(h,w)$
     \EndIf
     \State $p\gets q$
   \EndFor
@@ -178,7 +173,7 @@ whose extrema over $[0,1]$ are attained at $\tau\in\{0,1\}$, with values $\varph
 \end{algorithmic}
 \end{algorithm}
 
-Algorithm~\ref{alg:exact} works as follows (Figure~\ref{fig:zonotope}). Line~1 turns the generators to the half-plane $u>0$ and sorts them by angle, and line~2 computes their sum $\sigma$; both are done once, since the four polygons visited later are translates of the same polygon~\eqref{eq:boundary}. The outer loop visits the four vertices $(s,t)$ of $\U^2$, where the extrema of $N$ are attained (Lemma~\ref{lem:vertices}): with the error symbols fixed, $N(\cdot,s,t)$ is $\kappa$ plus $\varphi_0$ on the translate $Z+\delta$, by~\eqref{eq:Nst}. The walk starts at the vertex $p=\delta-\sigma$, which is $p_0$ translated by $\delta$, and the inner loop follows~\eqref{eq:boundary}: it adds the edge vectors $2\tilde g_{(1)},\dots,2\tilde g_{(m)}$ and then subtracts them in the same order, so that $p$ visits all the vertices of $Z+\delta$ and returns to the start. On each edge $[p,q]$, it evaluates $\varphi_0$ at the end $q$ and, if it lies inside the edge, at the stationary point, which is a maximum of $\varphi_0$ on the edge when $A<0$ and a minimum when $A>0$, so that it can only raise $h$ or only lower $\ell$, respectively; since the polygon is closed, the ends of the $2m$ edges are all its vertices, including the starting one, which is the end of the last edge. (If $m=0$, $Z=\{0\}$ and the walk is replaced by the single value $\kappa+\delta_1\delta_2$.) After the four walks, $\ell$ and $h$ are the endpoints of $\rng N$, and their midpoint and half-width give the new center shift $c$ and error term $z_r$.
+Algorithm~\ref{alg:exact} works as follows (Figure~\ref{fig:zonotope}). Line~1 turns the generators to the half-plane $u>0$ and sorts them by angle, and line~2 computes their sum $\sigma$; both are done once, since the four polygons visited later are translates of the same polygon~\eqref{eq:boundary}. The outer loop visits the four vertices $(s,t)$ of $\U^2$, where the extrema of $N$ are attained (Lemma~\ref{lem:vertices}): with the error symbols fixed, $N(\cdot,s,t)$ is $\kappa$ plus $\varphi_0$ on the translate $Z+\delta$, by~\eqref{eq:Nst}. The walk starts at the vertex $p=\delta-\sigma$, which is $p_0$ translated by $\delta$, and the inner loop follows~\eqref{eq:boundary}: it adds the edge vectors $2\tilde g_{(1)},\dots,2\tilde g_{(m)}$ and then subtracts them in the same order, so that $p$ visits all the vertices of $Z+\delta$ and returns to the start. On each edge $[p,q]$, it evaluates $\varphi_0$ at the end $q$ and, if it lies inside the edge, at the stationary point, which is a maximum of $\varphi_0$ on the edge when $A<0$ and a minimum when $A>0$ (updating both $\ell$ and $h$ with it is harmless); since the polygon is closed, the ends of the $2m$ edges are all its vertices, including the starting one, which is the end of the last edge. (If $m=0$, $Z=\{0\}$ and the walk is replaced by the single value $\kappa+\delta_1\delta_2$.) After the four walks, $\ell$ and $h$ are the endpoints of $\rng N$, and their midpoint and half-width give the new center shift $c$ and error term $z_r$.
 
 \begin{theorem}
 \label{thm:exact}
