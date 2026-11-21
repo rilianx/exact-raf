@@ -1,0 +1,18 @@
+<section id="problema">
+<p class="eyebrow">El problema</p>
+<h2>El producto deja una parte no lineal N que hay que encerrar</h2>
+<div class="cols">
+<div class="col">
+<p class="formula">x̂ = x₀ + Σ xᵢεᵢ + xᵣ ξ<br>ŷ = y₀ + Σ yᵢεᵢ + yᵣ η</p>
+<p class="formula">x̂ · ŷ = x₀y₀ + eᵀ(y₀x + x₀y) + N</p>
+<p class="formula" style="background:#1D2B3A; color:#F7F5F0;">N = x₀yᵣ η + y₀xᵣ ξ + (eᵀx + xᵣ ξ)(eᵀy + yᵣ η)</p>
+</div>
+<div class="col">
+<p>Los εᵢ son los símbolos de ruido y ξ, η los símbolos de error de cada factor; todos recorren [−1, 1].</p>
+<p>Toda multiplicación conserva la parte lineal y encierra N en un intervalo [ℓ, h]:</p>
+<p class="lead">c = (ℓ + h)/2,&nbsp;&nbsp; zᵣ = (h − ℓ)/2</p>
+<p class="note">El mejor intervalo posible es el rango exacto de N. Eso es lo que calcula el Algoritmo 1.</p>
+</div>
+</div>
+<aside>N tiene dos partes: los términos x₀yᵣη + y₀xᵣξ, que acoplan el centro de un factor con el error del otro, y la parte cuadrática. Skalna y Hladík calculan exacto solo la parte cuadrática y acotan los otros dos términos por separado. Nosotros calculamos el rango de N completo.</aside>
+</section>

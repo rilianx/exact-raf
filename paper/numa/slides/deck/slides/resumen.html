@@ -1,0 +1,13 @@
+<section id="resumen" class="alt">
+<p class="eyebrow">Resumen</p>
+<h2>Cuatro recorridos del mismo polígono</h2>
+<div class="cards">
+<div class="card"><p class="big">1 · Ordenar</p><p class="lbl">Generadores al semiplano u &gt; 0, por ángulo, una sola vez: O(n log n).</p></div>
+<div class="card"><p class="big">2 · Esquinas</p><p class="lbl">Para cada (s, t) ∈ {±1}²: constante κ y traslado δ (Lema 1).</p></div>
+<div class="card"><p class="big">3 · Recorrer</p><p class="lbl">2m aristas de Z + δ; en cada una, extremos y punto estacionario: O(n) (Lema 2).</p></div>
+<div class="card hi"><p class="big">4 · Cerrar</p><p class="lbl">[ℓ, h] = rng N, de donde c y zᵣ (Teorema 1).</p></div>
+</div>
+<p class="lead">Costo total O(n log n), y el resultado es el rango exacto de la parte no lineal del producto.</p>
+<p class="note">En una implementación rigurosa, el orden se decide con un predicado exacto y el recorrido se ensancha con una cota del redondeo (Sección 5 del paper).</p>
+<aside>El ordenamiento se comparte entre las cuatro esquinas porque los cuatro polígonos son traslados del mismo. Si un factor no tiene error o tiene centro 0, E coincide con SH y basta un solo recorrido.</aside>
+</section>
