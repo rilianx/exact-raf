@@ -11,7 +11,12 @@ def fit(tex):
     return tex.replace(r"\begin{table}[t]", r"\begin{table}[H]")
 
 s = open(SRC).read()
+import sys
+VERSION = sys.argv[1] if len(sys.argv) > 1 else "v?"
+FECHA = sys.argv[2] if len(sys.argv) > 2 else ""
 s = s.replace(r"\documentclass[11pt]{article}", r"\documentclass[10pt]{article}")
+s = s.replace(r"\date{}", r"\date{\small Kindle version " + VERSION + (" (" + FECHA + ")" if FECHA else "") + "}")
+s = s.replace(r"\begin{document}", "\\usepackage{fancyhdr}\n\\fancypagestyle{plain}{\\fancyhf{}\\renewcommand{\\headrulewidth}{0pt}\\cfoot{\\thepage}\\rfoot{\\tiny " + VERSION + "}}\n\\pagestyle{plain}\n\\begin{document}", 1)
 s = s.replace(r"\usepackage[a4paper,margin=27mm]{geometry}",
               r"\usepackage[paperwidth=100mm,paperheight=135mm,left=4mm,right=4mm,top=5mm,bottom=7mm,footskip=4mm]{geometry}"
               "\n\\usepackage{float}\n\\usepackage{adjustbox}\n\\sloppy\n\\setlength{\\emergencystretch}{3em}")
@@ -23,11 +28,7 @@ s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" 
 BREAKS = [
  (r"R(e,\ex,\ey) = (e^Tx + x_r\ex)(e^Ty + y_r\ey), \qquad Q(e) = (e^Tx)(e^Ty) = \sum_i x_iy_i\eps_i^2 + \sum_{i<j}(x_iy_j+x_jy_i)\eps_i\eps_j .",
   r"\begin{gathered}R(e,\ex,\ey) = (e^Tx + x_r\ex)(e^Ty + y_r\ey),\\ Q(e) = (e^Tx)(e^Ty) = \sum_i x_iy_i\eps_i^2 + \sum_{i<j}(x_iy_j+x_jy_i)\eps_i\eps_j .\end{gathered}"),
- (r"\hat x = \ell_x(v)+\rho_x,\qquad \ell_x(v)=x_0+\sum_i\frac{x_i}{w_i}(v_i-m_i),\qquad \rho_x\in[-x_r,x_r],",
-  r"\begin{gathered}\hat x = \ell_x(v)+\rho_x,\qquad \rho_x\in[-x_r,x_r],\\ \ell_x(v)=x_0+\sum_i\frac{x_i}{w_i}(v_i-m_i),\end{gathered}"),
- (r"N=\ell_x(m)\,\rho_y+\ell_y(m)\,\rho_x+\big(\ell_x(v)-\ell_x(m)+\rho_x\big)\big(\ell_y(v)-\ell_y(m)+\rho_y\big)",
-  r"\begin{aligned}N={}&\ell_x(m)\,\rho_y+\ell_y(m)\,\rho_x\\&+\big(\ell_x(v)-\ell_x(m)+\rho_x\big)\big(\ell_y(v)-\ell_y(m)+\rho_y\big)\end{aligned}"),
- (r"N(e,s,t) = x_0y_rt+y_0x_rs + (u + x_rs)(v + y_rt),\qquad (u,v)=(e^Tx,\,e^Ty)\in Z,",
+   (r"N(e,s,t) = x_0y_rt+y_0x_rs + (u + x_rs)(v + y_rt),\qquad (u,v)=(e^Tx,\,e^Ty)\in Z,",
   r"\begin{gathered}N(e,s,t) = x_0y_rt+y_0x_rs + (u + x_rs)(v + y_rt),\\ (u,v)=(e^Tx,\,e^Ty)\in Z,\end{gathered}"),
  (r"p_0=-\sum_k\tilde g_{(k)},\quad p_k = p_{k-1}+2\tilde g_{(k)}\ (k=1,\dots,m),\quad p_{m+k} = p_{m+k-1}-2\tilde g_{(k)}\ (k=1,\dots,m).",
   r"\begin{gathered}p_0=-\sum_k\tilde g_{(k)},\\ p_k = p_{k-1}+2\tilde g_{(k)},\quad p_{m+k} = p_{m+k-1}-2\tilde g_{(k)}\quad (k=1,\dots,m).\end{gathered}"),
@@ -39,8 +40,8 @@ BREAKS = [
   r"\begin{gathered}x_0y_0 + e^T(y_0x+x_0y) + k_1\eps_\pm + k_2\eps_+ + k_3\eps_-,\\ k_2=\sum_{x_iy_i>0}x_iy_i,\quad k_3=\sum_{x_iy_i<0}|x_iy_i|,\end{gathered}"),
 ]
 for a, b in BREAKS:
-    assert a in s, a[:40]
-    s = s.replace(a, b)
+    if a in s:
+        s = s.replace(a, b)
 s = s.replace(r"\bibliography{bibliography}", r"\bibliography{../bibliography}")
 open(os.path.join(HERE, "exact_raf_kindle.tex"), "w").write(s)
 

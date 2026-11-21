@@ -31,8 +31,11 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Angelo Alvear Tapia \and Daniel Miranda \and Juan Aramayo \and Victor Reyes}
-\date{}
+\date{\small Kindle version v3 (2026-11-21)}
 
+\usepackage{fancyhdr}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v3}}
+\pagestyle{plain}
 \begin{document}
 \maketitle
 
@@ -60,7 +63,7 @@ The product of two reduced affine forms is a quadratic function of the symbols a
 \item The \emph{best multiplication} of Miyajima, Miyata and Kashiwagi~\cite{miyajima2003best}, implemented in the kv library~\cite{kvlib}, computes the exact range of the whole quadratic part, including the error symbols of the operands, in $O(n^2)$ time.
 \item Skalna and Hlad\'{\i}k~\cite{skalna2017new} compute the same exact range in linear time. They observe that $(e^Tx,e^Ty)$ ranges over a planar zonotope, whose boundary is described by the generators $(x_i,y_i)$ sorted by angle, and that the product $uv$ attains its extrema on that boundary. They describe their multiplication as yielding the minimum Chebyshev-type bounds, and it is the tightest of the existing formulae.
 \end{itemize}
-In standard AA, where the terms $x_0(\hat y-y_0)+y_0(\hat x-x_0)$ stay as linear terms in their own symbols, only the quadratic part has to be bounded; Rump and Kashiwagi~\cite{rump2015implementation} discuss several bounds for it, refer to~\cite{miyajima2003best} for the optimal one, and observe that the linear terms are dominant unless the midpoints are small compared to the radii. In reduced affine forms, however, the part of these linear terms that involves the error symbols, $x_0y_r\ey+y_0x_r\ex$, must also be folded into the new error term, and both the kv implementation of the best multiplication for forms with an accumulated error term and the multiplication of Skalna and Hlad\'{\i}k add the bound $|y_0|x_r+|x_0|y_r$ of these terms separately.
+The exact methods stop at the quadratic part because in standard AA it is all that has to be bounded: the terms $x_0(\hat y-y_0)+y_0(\hat x-x_0)$ stay as linear terms in their own symbols, and Rump and Kashiwagi~\cite{rump2015implementation} refer to~\cite{miyajima2003best} for the optimal bound of the quadratic part. In reduced affine forms, however, the terms $x_0y_r\ey+y_0x_r\ex$ involve the error symbols of the operands and must be folded into the new error term, and both the kv implementation for forms with an accumulated error term and the multiplication of Skalna and Hlad\'{\i}k add their bound $|y_0|x_r+|x_0|y_r$ separately.
 
 In this paper we observe that the multiplication of Skalna and Hlad\'{\i}k is not exact when both operands carry errors: two terms of the product, $x_0 y_r\ey$ and $y_0 x_r\ex$, are bounded separately from the quadratic part, although they share the error symbols with it. We show that the whole nonlinear part of the product is affine in each of the two error symbols, so that its range is the union of four ranges obtained with the error symbols fixed at the vertices of $\U^2$; for each vertex, what remains is a product of two shifted linear functions of the symbols, whose exact range follows from the geometry of planar zonotopes used by Skalna and Hlad\'{\i}k. The resulting multiplication computes the exact range of the nonlinear part of the product, in $O(n\log n)$ time.
 
@@ -103,16 +106,6 @@ We consider the following formulae, labeled as in~\cite{skalna2017new} when they
 Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyajima (Eq.~6 of~\cite{skalna2017new}), which groups the two bilinear terms $x_iy_j$ and $x_jy_i$ of each pair before bounding them; it lies between SH and S~\cite[Prop.~3]{skalna2017new} and plays no role in what follows.
 
 \paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} shows that the latter is already exact in most cases.
-
-\paragraph{The same products in the variables.} In a branch-and-bound solver, the symbols are tied to a box $B=\{v\in\R^n: |v_i-m_i|\le w_i\}$ by $\eps_i=(v_i-m_i)/w_i$, and a reduced affine form is a linear function of the variables plus a residual interval,
-\[
-\begin{gathered}\hat x = \ell_x(v)+\rho_x,\qquad \rho_x\in[-x_r,x_r],\\ \ell_x(v)=x_0+\sum_i\frac{x_i}{w_i}(v_i-m_i),\end{gathered}
-\]
-so that $x_0=\ell_x(m)$ is the value of the linear part at the center of the box and $x_r$ is the radius of the residual; the two hyperplanes $\ell_x(v)\pm x_r$ are the range enclosure and the linear relaxation used by the solver. In these terms, the product keeps the linear part $\ell_x(m)\ell_y(v)+\ell_y(m)\ell_x(v)-\ell_x(m)\ell_y(m)$, which is~\eqref{eq:product}, and a multiplication formula encloses
-\[
-\begin{aligned}N={}&\ell_x(m)\,\rho_y+\ell_y(m)\,\rho_x\\&+\big(\ell_x(v)-\ell_x(m)+\rho_x\big)\big(\ell_y(v)-\ell_y(m)+\rho_y\big)\end{aligned}
-\]
-over $v\in B$, $\rho_x\in[-x_r,x_r]$ and $\rho_y\in[-y_r,y_r]$. The results below read directly in this form: Lemma~\ref{lem:vertices} says that the extrema of $N$ are attained with both residuals at an endpoint of their intervals; the zonotope $Z$ of Lemma~\ref{lem:zonotope} is the image of $B$ by $v\mapsto(\ell_x(v)-\ell_x(m),\,\ell_y(v)-\ell_y(m))$, and the central symmetry $e\mapsto-e$ used in the proofs is the reflection through the center of $B$; and Corollary~\ref{cor:gain} says that E can improve on SH only when both factors have a residual and the values of both linear parts at the center of the box are nonzero.
 
 \paragraph{AF2.} AF2~\cite{messine2002extentions} keeps, besides the symmetric error term $a_\pm\eps_\pm$, two one-sided terms $a_+\eps_+$, $\eps_+\in[0,1]$, and $a_-\eps_-$, $\eps_-\in[-1,0]$; in a product, the positive and negative squares $x_iy_i\eps_i^2$ go to $\eps_+$ and $\eps_-$, and the other nonlinear terms to $\eps_\pm$.
 
