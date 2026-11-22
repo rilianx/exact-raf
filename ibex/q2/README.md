@@ -189,3 +189,35 @@ En las 4 instancias que resuelven todas, relativo a af2:
 - Bajar el costo por celda: vectores dispersos, menos `std::map` y reutilizar memoria entre restricciones.
 - Elegir el encierro final según el tamaño de la forma (k-nomial o bloques producto).
 - Barridos más largos y con más instancias, incluidas COCONUT completa y QPLIB.
+
+## Experimento: aproximación cuadrática de las funciones (resultado negativo)
+
+**Qué se probó.** En q2, cada función se linealiza con Chebyshev sobre el intervalo del nodo:
+`f(X) ≈ α·X + β ± δ`. Eso conserva la estructura cuadrática del argumento (escalada por α), pero la curvatura
+de la propia función va al error.
+
+Se probó una aproximación cuadrática `f(X) ≈ f(m) + α(X−m) + γ(X−m)² ± δ`, interpolando en los 3 nodos de
+Chebyshev del dominio:
+- `(X−m)²` se calcula como un producto q2 (grado 2 conservado, resto de grado 3–4 a error);
+- solo se usa cuando el error total es menor que el de la linealización.
+
+Se activa con la variable de entorno `Q2_UNARY` (por omisión, `lin`):
+
+| `Q2_UNARY` | qué hace |
+|---|---|
+| `lin` | linealización de Chebyshev (por omisión) |
+| `quad` | aproximación cuadrática con cota rigurosa `max|f'''|·r³/24` (`f'''` acotada con intervalos) |
+| `quadmuestreo` | aproximación cuadrática con el error medido por muestreo denso; no es rigurosa, sirve como techo de la idea |
+
+**Medición** ([`test_q2_ancho.cpp`](test_q2_ancho.cpp)): ancho del encierro de cada restricción en cajas
+aleatorias de escala 1, 10⁻¹, 10⁻² y 10⁻³, comparado con `lin` en las mismas cajas.
+
+| instancias | resultado |
+|---|---|
+| ex6_2_6, ex6_2_8, chem (`ln`), Pramanik | **nunca se usa**, ni siquiera con el error ideal: `ln` es singular en 0 y el dominio llega a 10⁻⁶, así que ninguna parábola le gana a la recta de Chebyshev |
+| ex14_2_7, bearing, Trigexp2-9 | se usa miles de veces, pero el ancho no cambia (1,000) |
+| Directkin | entre 0,98 y 1,02 según la escala |
+
+**Conclusión:** no vale la pena. El error de `ln` en ex6_2_\* está dominado por la singularidad cerca de 0 (por
+ejemplo, en los términos `x·ln(x)`), y eso no lo arregla una aproximación cuadrática. Se queda la
+linealización de Chebyshev.

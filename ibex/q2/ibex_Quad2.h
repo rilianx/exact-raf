@@ -183,6 +183,31 @@ inline Lin linearize(int op, double lo, double hi, double k) {
 	return bad;
 }
 
+// ------------------------------------------------------------------ aproximacion cuadratica de funciones
+// Modo de las funciones unarias: 0 = lineal (Chebyshev), 1 = cuadratica cuando mejora (variable Q2_UNARY=lin|quad).
+inline int q2_unary_mode() {
+	// 1 = cuadratica con cota de Taylor rigurosa; 2 = cuadratica con el error medido por muestreo denso (NO rigurosa,
+	// solo para medir el techo de la idea)
+	static int m = !getenv("Q2_UNARY") ? 0 : std::string(getenv("Q2_UNARY")) == "quad" ? 1
+	             : std::string(getenv("Q2_UNARY")) == "quadmuestreo" ? 2 : 0;
+	return m;
+}
+// Cota superior de |f^(3)| en dom (aritmetica de intervalos de Ibex, redondeo hacia fuera). +inf si no aplica.
+inline double third_deriv_bound(int op, const Interval& dom, double k) {
+	Interval t;
+	switch (op) {
+	case EXP: t = exp(dom); break;
+	case LOG: if (dom.lb() <= 0) return INFINITY; t = 2.0 / pow(dom, 3); break;
+	case SQRT: if (dom.lb() <= 0) return INFINITY; t = 0.375 / (pow(dom, 2) * sqrt(dom)); break;
+	case REC: if (dom.contains(0)) return INFINITY; t = 6.0 / pow(dom, 4); break;
+	case SIN: t = cos(dom); break;                    // f^(3) = -cos
+	case COS: t = sin(dom); break;                    // f^(3) = sin
+	case POW: { const int kk = (int) k; if (kk < 3) return 0.0; t = Interval((double) kk * (kk - 1) * (kk - 2)) * pow(dom, kk - 3); break; }
+	default: return INFINITY;                         // abs (no derivable), otras
+	}
+	return t.is_empty() ? INFINITY : t.mag();
+}
+
 // ------------------------------------------------------------------ cinta desde una ibex::Function
 struct Node { int op, a, b; double c, d; const ExprNode* e; };   // d: cota superior (CI); e: nodo de Ibex (IFUN)
 
@@ -312,6 +337,52 @@ struct Eval {
 	// mag: magnitud acumulada del calculo (suma, sobre todos los nodos del subarbol, del tamano de sus terminos);
 	// acota la escala de los errores de redondeo, tambien cuando hay cancelacion entre operandos grandes.
 	// El resultado queda en result() (sin copia); out recibe una copia si se pide.
+	// Aproximacion cuadratica f(X) ~ f(m) + alpha (X-m) + gamma (X-m)^2 +- delta, interpolando f en los tres nodos
+	// de Chebyshev de dom = [m-rr, m+rr] (m y m +- s, s = rr sqrt(3)/2). Cota del error de interpolacion:
+	// |f - p| <= max|f^(3)| rr^3 / 24  (max |(x-m)((x-m)^2 - s^2)| = rr^3/4 en el dominio). (X-m)^2 se calcula con
+	// mul_into (grado 2 conservado, resto de grado 3-4 a un simbolo). Se usa solo si delta + |gamma| (resto de
+	// (X-m)^2) < dlin (error de la linealizacion de Chebyshev); si no, devuelve false y se usa la lineal.
+	QF ybuf, ysq, ay, gs;
+	bool unary_quad(QF& r, const QF& x, const Node& N, const Interval& dom, double dlin) {
+		const double m = dom.mid(), rr = dom.rad();
+		if (!(rr > 0) || !std::isfinite(m)) return false;
+		const double sn = rr * 0.8660254037844386;
+		const double f0 = fval(N.op, m, N.c), fp = fval(N.op, m + sn, N.c), fm = fval(N.op, m - sn, N.c);
+		if (!(std::isfinite(f0) && std::isfinite(fp) && std::isfinite(fm))) return false;
+		const double alpha = (fp - fm) / (2 * sn), gamma = (fp + fm - 2 * f0) / (2 * sn * sn);
+		double dint;
+		if (q2_unary_mode() == 2) {          // muestreo denso del residuo (no riguroso)
+			dint = 0;
+			for (int i = 0; i <= 2000; i++) {
+				const double t = dom.lb() + dom.diam() * i / 2000.0, y = t - m;
+				const double fv = fval(N.op, t, N.c);
+				if (!std::isfinite(fv)) return false;
+				dint = std::max(dint, std::fabs(fv - (f0 + alpha * y + gamma * y * y)));
+			}
+			dint *= 1.01;
+		} else {
+			const double M3 = third_deriv_bound(N.op, dom, N.c);
+			if (!std::isfinite(M3)) return false;
+			dint = M3 * rr * rr * rr / 24.0;
+		}
+		if (!(dint < dlin)) return false;
+		ybuf.c = x.c - m; ybuf.lin = x.lin; ybuf.Q = x.Q;
+		const int nsym0 = nsym;
+		mul_into(ysq, ybuf, ybuf, true);
+		const double eS = (nsym > nsym0) ? ysq.lin.back().second : 0.0;   // error de truncar (X-m)^2
+		const double dtot = dint + std::fabs(gamma) * eS;
+		if (!(dtot < dlin)) { nsym = nsym0; return false; }
+		qf_scale_into(ay, ybuf, alpha);
+		qf_scale_into(gs, ysq, gamma);
+		r.c = f0 + ay.c + gs.c;
+		merge_into(r.lin, ay.lin, 1.0, gs.lin, 1.0);
+		merge_into(r.Q, ay.Q, 1.0, gs.Q, 1.0);
+		add_err(r, dint);
+		quad_unary_count()++;
+		return true;
+	}
+	static long& quad_unary_count() { static long c = 0; return c; }
+
 	const QF& result() const { return v[root_]; }
 	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev) { double mag; return eval(T, box, out, ev, mag); }
 	bool eval(const Tape& T, const IntervalVector& box, QF& out, Interval& ev, double& mag_out) {
@@ -369,8 +440,13 @@ struct Eval {
 				} else {
 					const Lin L = linearize(N.op, l, h, N.c);
 					if (!L.ok) return false;
-					qf_scale_into(r, x, L.alpha); r.c += 0.5 * (L.d1 + L.d2);
-					add_err(r, 0.5 * (L.d2 - L.d1));
+					const double dlin = 0.5 * (L.d2 - L.d1);
+					bool done = false;
+					if (q2_unary_mode() >= 1 && N.op != ABS) done = unary_quad(r, x, N, dx, dlin);
+					if (!done) {
+						qf_scale_into(r, x, L.alpha); r.c += 0.5 * (L.d1 + L.d2);
+						add_err(r, dlin);
+					}
 				}
 			} }
 			if (!std::isfinite(r.c)) return false;
