@@ -127,6 +127,16 @@ if __name__ == "__main__":
                r"where E is strictly narrower than SH (100 boxes per row for Trigexp1, 50 for the others).")
     with open(os.path.join(RESULTS, "table_rules_instances.tex"), "w") as fh:
         fh.write(table(data["instances"], caption, "tab:instances"))
+    with open(os.path.join(RESULTS, "table_rules_constraints.tex"), "w") as fh:
+        t = combined_table([(data["instances"], ["Trigexp1", "Trigexp2 (1)", "Trigexp2 (2)", "Pramanik"])])
+        t = t.replace(r"\caption{Controlled products and constraints from a benchmark of nonlinear systems: mean gap (\%) of each "
+                      r"method with respect to the optimal residual width for its own linear part, over all boxes "
+                      r"(100 per size for the controlled cases and Trigexp1, 50 for the other constraints), number of boxes "
+                      r"where E is strictly narrower than SH, and largest width reduction of E with respect to SH.}",
+                      r"\caption{Constraints from a benchmark of nonlinear systems: mean gap (\%) of each method with respect "
+                      r"to the optimal residual width, over all boxes (100 per size for Trigexp1, 50 for the other constraints), "
+                      r"number of boxes where E is strictly narrower than SH, and largest width reduction of E with respect to SH.}")
+        fh.write(t.replace(r"\label{tab:expressions}", r"\label{tab:constraints}"))
     with open(os.path.join(RESULTS, "table_rules_expressions.tex"), "w") as fh:
         fh.write(combined_table([(ctrl, ["Case 1", "Case 1m", "Case 2", "Case 3", "Case 4"]),
                                  (data["instances"], ["Trigexp1", "Trigexp2 (1)", "Trigexp2 (2)", "Pramanik"])]))

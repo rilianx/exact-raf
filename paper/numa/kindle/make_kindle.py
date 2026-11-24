@@ -51,7 +51,7 @@ for a, b in BREAKS:
 s = s.replace(r"\bibliography{bibliography}", r"\bibliography{../bibliography}")
 open(os.path.join(HERE, "exact_raf_kindle.tex"), "w").write(s)
 
-for name in ["table_rules_random", "table_rules_expressions", "table_cost"]:
+for name in ["table_rules_random", "table_rules_constraints", "table_cost"]:
     open(os.path.join(HERE, name + "_k.tex"), "w").write(fit(open(os.path.join(RES, name + ".tex")).read()))
 
 # tabla del solver en dos bloques

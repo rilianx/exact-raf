@@ -32,10 +32,10 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
-\date{\small Kindle version v20 (2026-11-24)}
+\date{\small Kindle version v21 (2026-11-24)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v20}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v21}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -344,7 +344,7 @@ becomes the product given by formula S when $k_2\eps_+$ and $k_3\eps_-$ are repl
 The re-centered form has center shift $\tfrac12(k_2-k_3)=\tfrac12x^Ty$ and error radius $k_1+\tfrac12(k_2+k_3) = k_1+\tfrac12|x|^T|y|$, which equals $z_r$ of formula S by the identity in the proof of Proposition~\ref{prop:chain}.
 \end{proof}
 
-Thus S and AF2 have the same width after one product, and they differ only in the next operations: AF2 keeps $k_2\eps_+$ and $k_3\eps_-$, whose ranges $[0,k_2]$ and $[-k_3,0]$ are not centered at $0$, and propagates them, while S moves their midpoints to the center of the form and keeps only their radii in the symmetric error term. Among residual intervals of a given radius, a zero-centered one minimizes the width propagated through a product with another interval: if $\mathbf r=[r_c-\rho,r_c+\rho]$ and $\mathbf y$ is an interval with $Y=\max_{y\in\mathbf y}|y|$, then $\wid(\mathbf r\mathbf y)\ge 2\rho Y$, with equality for $r_c=0$. This explains why S is tighter than AF2 in compositions of products (Section~\ref{sec:experiments}).
+Thus S and AF2 have the same width after one product, and they differ only in the next operations: AF2 keeps $k_2\eps_+$ and $k_3\eps_-$, whose ranges $[0,k_2]$ and $[-k_3,0]$ are not centered at $0$, and propagates them, while S moves their midpoints to the center of the form and keeps only their radii in the symmetric error term. Among residual intervals of a given radius, a zero-centered one minimizes the width propagated through a product with another interval: if $\mathbf r=[r_c-\rho,r_c+\rho]$ and $\mathbf y$ is an interval with $Y=\max_{y\in\mathbf y}|y|$, then $\wid(\mathbf r\mathbf y)\ge 2\rho Y$, with equality for $r_c=0$. Hence S can be tighter than AF2 in compositions of products.
 
 \begin{remark}
 S can be much wider than SH even without errors: for $\hat x=\eps_1+\eps_2$ and $\hat y=\eps_1-\eps_2$, S (and AF2) give an enclosure of width $6$, while SH and E give $2$, the width of the exact range $[-1,1]$ of $\eps_1^2-\eps_2^2$.
@@ -399,11 +399,11 @@ $f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 39.9 & 39.9 \\
 
 E is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and also for Leon and Rosenbrock. These functions contain squares $(x_i^2-x_j)^2$ computed as products $\hat v\cdot\hat v$ of a form that carries the error of the product $x_i\cdot x_i$ and whose center is far from zero, which is the most favorable case of Corollary~\ref{cor:gain}; in Booth and Matyas, every product has an operand without error, and E and SH coincide.
 
-\paragraph{Controlled products and benchmark constraints.} Finally, we consider expressions in three variables evaluated over random boxes inside $[-10,10]^3$ of three sizes, with widths in $[0.01,0.1]$, $[0.1,1]$ and $[1,10]$: four controlled products, Case~1 $(x_1+2x_2+3x_3)(4x_1+5x_2+6x_3)$, Case~2 $(x_1+2x_2^2+3x_3)(4x_1+5x_2+6x_3^2)$, Case~3 $(x_1+2x_2x_3)(3x_2+4x_1x_3)$ and Case~4 $(x_1+2x_2)(3x_2+4x_3)(5x_3+6x_1)$, the same expressions with some coefficients negated (Cases 1m--4m), and four constraints with products of nonlinear factors taken from a benchmark of nonlinear systems~\cite{coprin} (Trigexp1, two constraints of Trigexp2, and Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the products, computed with IbexOpt. Table~\ref{tab:expressions} shows Cases~1--4, Case~1m and the four constraints; Cases~2m--4m behave as Cases~2--4 (all the results are in the repository).
+\paragraph{Benchmark constraints.} Finally, we consider four constraints with products of nonlinear factors, in three variables, taken from a benchmark of nonlinear systems~\cite{coprin}: Trigexp1, two constraints of Trigexp2, and Pramanik. They are evaluated over random boxes of three sizes, with widths in $[0.01,0.1]$, $[0.1,1]$ and $[1,10]$, inside $[-10,10]^3$ (inside the domain $[0.06,1]^3$, and with the two smaller sizes, for Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the products, computed with IbexOpt (Table~\ref{tab:constraints}).
 
-\input{table_rules_expressions_k.tex}
+\input{table_rules_constraints_k.tex}
 
-For affine operands (Cases~1 and 1m), SH and E are exact, while AF2 and S lose 57\%, and 122\% when the bilinear terms cancel (Case~1m). When the operands carry errors, E is strictly narrower than SH in all the boxes of Cases~2 and~3 (and of 2m and 3m), by 1.8\% on average and by up to 15.1\% (20.5\% in Case~2m; one-sided Wilcoxon signed-rank test over the 2400 controlled boxes, $p=4\times10^{-198}$). The advantage grows with the size of the box: in the largest boxes, the mean gap of Case~3 drops from 7.6\% with SH to 2.8\% with E. In Case~4, each product has an operand without error, and E and SH coincide, as stated by Proposition~\ref{prop:oneerror}; S is tighter than AF2 in this chained product, as expected from Proposition~\ref{prop:af2}. On the benchmark constraints, E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%: the residuals of these constraints are dominated by the linearization of the univariate functions, and the factors of their products are sines, whose centers are close to zero when they are linearized over wide intervals, and exponentials or affine expressions without error.
+The residuals of SH and E are 4--16\% narrower than those of S and AF2, which coincide on these constraints. E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%: the residuals of these constraints are dominated by the linearization of the univariate functions, and the factors of their products are sines, whose centers are close to zero when they are linearized over wide intervals, and exponentials or affine expressions without error. E and SH coincide on the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and on Pramanik.
 
 \subsection{Implementation in Ibex}
 \label{sec:ibex}
