@@ -99,7 +99,12 @@ We consider the following formulae, labeled as in~\cite{skalna2017new} when they
 \end{description}
 Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyajima (Eq.~6 of~\cite{skalna2017new}), which groups the two bilinear terms $x_iy_j$ and $x_jy_i$ of each pair before bounding them; it lies between SH and S~\cite[Prop.~3]{skalna2017new} and plays no role in what follows.
 
-\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} gives the exact range of $N_2$ and shows that the latter is exact when $x_r\le\|x\|_1$.
+\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and~\eqref{eq:product} becomes $\hat x^2=x_0^2+2x_0\,e^Tx+N_2(e,\ex)$, with nonlinear part
+\begin{equation}
+\label{eq:N2}
+N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2 ,
+\end{equation}
+which is $N$ with $\hat y=\hat x$ and $\ey=\ex$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} gives the exact range of $N_2$ and shows that the latter is exact when $x_r\le\|x\|_1$.
 
 \paragraph{AF2.} AF2~\cite{messine2002extentions} keeps, besides the symmetric error term, two one-sided error terms that record errors of known sign; its product is described in Section~\ref{sec:hierarchy}, where it is related to formula S.
 
@@ -300,7 +305,7 @@ How often the bound is attained depends on the operands. In 100\,000 random prod
 
 \begin{propo}
 \label{prop:square}
-For the square of a form, let $S=\|x\|_1$. Then $\max N_2=2|x_0|x_r+(S+x_r)^2$ and
+For the square of a form, let $N_2$ be its nonlinear part~\eqref{eq:N2}, with extrema taken over $\U^{n+1}$, and $S=\|x\|_1$. Then $\max N_2=2|x_0|x_r+(S+x_r)^2$ and
 \[
 \min N_2=\begin{cases}-2|x_0|x_r & \text{if } x_r\le S,\\ -2|x_0|x_r+(x_r-S)^2 & \text{if } S<x_r\le S+|x_0|,\\ -x_0^2-2|x_0|S & \text{if } x_r>S+|x_0|.\end{cases}
 \]
