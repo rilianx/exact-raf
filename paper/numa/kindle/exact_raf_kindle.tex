@@ -11,6 +11,7 @@
 \usepackage{url}
 \usepackage{algorithm}
 \usepackage{algpseudocode}
+\newcommand{\seg}[2]{\overline{#1\,#2}}
 
 \newtheorem{theorem}{Theorem}
 \newtheorem{propo}{Proposition}
@@ -31,10 +32,10 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
-\date{\small Kindle version v16 (2026-11-22)}
+\date{\small Kindle version v17 (2026-11-24)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v16}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v17}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -105,7 +106,7 @@ We consider the following formulae, labeled as in~\cite{skalna2017new} when they
 \end{description}
 Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyajima (Eq.~6 of~\cite{skalna2017new}), which groups the two bilinear terms $x_iy_j$ and $x_jy_i$ of each pair before bounding them; it lies between SH and S~\cite[Prop.~3]{skalna2017new} and plays no role in what follows.
 
-\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} shows that the latter is already exact in most cases.
+\paragraph{Squares.} For the square $\hat x\hat x$ of a form, the two operands share the error symbol, and the nonlinear part is $N_2(e,\ex)=2x_0x_r\ex+(e^Tx+x_r\ex)^2$. The formulae above apply with $\ey=\ex$: S gives $c=\tfrac12x^Tx$ and $z_r=2|x_0|x_r+(\|x\|_1+x_r)^2-\tfrac12x^Tx$, and SH encloses the quadratic part by its exact range $[0,(\|x\|_1+x_r)^2]$ and adds $[-1,1]\,2|x_0|x_r$. Proposition~\ref{prop:square} gives the exact range of $N_2$ and shows that the latter is exact when $x_r\le\|x\|_1$.
 
 \paragraph{AF2.} AF2~\cite{messine2002extentions} keeps, besides the symmetric error term, two one-sided error terms that record errors of known sign; its product is described in Section~\ref{sec:hierarchy}, where it is related to formula S.
 
@@ -117,7 +118,7 @@ Skalna and Hlad\'{\i}k also consider an intermediate formula attributed to Miyaj
 $\min N = \min_{s,t\in\{-1,1\}}\ \min_{e\in\U^n} N(e,s,t)$ and $\max N = \max_{s,t\in\{-1,1\}}\ \max_{e\in\U^n} N(e,s,t)$, where $\min N$ and $\max N$ are taken over $\U^{n+2}$. Hence $\rng N$, which is an interval since $N$ is continuous and $\U^{n+2}$ is compact and connected, is determined by the four ranges $\rng_e N(\cdot,s,t)$ over $e\in\U^n$.
 \end{lemma}
 \begin{proof}
-For fixed $e$, $N(e,\ex,\ey)$ is a bilinear function of $(\ex,\ey)$, by~\eqref{eq:N}, so its extrema over $\U^2$ are attained at vertices: for every $(e,\ex,\ey)\in\U^{n+2}$ there are $(s,t)$, $(s',t')\in\{-1,1\}^2$ with $N(e,s,t)\le N(e,\ex,\ey)\le N(e,s',t')$. The minimum and the maximum of $N$ are therefore attained with $(\ex,\ey)$ at a vertex of $\U^2$.
+For fixed $e$, $N(e,\ex,\ey)$ is a bilinear function of $(\ex,\ey)$, by~\eqref{eq:N}: for fixed $\ey$ it is affine in $\ex$, so its extrema over $\ex\in\U$ are attained at $\ex=\pm1$, and for fixed $\ex=\pm1$ it is affine in $\ey$, so its extrema over $\ey\in\U$ are attained at $\ey=\pm1$. Hence its extrema over $\U^2$ are attained at vertices: for every $(e,\ex,\ey)\in\U^{n+2}$ there are $(s,t)$, $(s',t')\in\{-1,1\}^2$ with $N(e,s,t)\le N(e,\ex,\ey)\le N(e,s',t')$. The minimum and the maximum of $N$ are therefore attained with $(\ex,\ey)$ at a vertex of $\U^2$.
 \end{proof}
 
 For fixed $(s,t)$,
@@ -153,11 +154,11 @@ Since $Z=-Z$ and $\varphi_{-\delta}(-u,-v)=(-u-\delta_1)(-v-\delta_2)=\varphi_\d
 \begin{figure}[H]
 \centering
 \includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}
-\caption{Lemma~\ref{lem:zonotope} and Algorithm~\ref{alg:exact} on Example~\ref{ex:alg}. (a) The generators $(2,-1)$, $(1,0)$, $(2,1)$, turned to the half-plane $u>0$ and sorted by angle; the boundary of $Z$ starts at $p_0=-\sigma$, adds $2\tilde g_{(1)},2\tilde g_{(2)},2\tilde g_{(3)}$ (colored edges) and then subtracts them in the same order. (b) Level curves of $\varphi_\delta$ for $\delta=(1,1)$, the vertex $(s,t)=(1,1)$ (dashed: negative values). Its only critical point is a saddle, so its extrema over $Z$ lie on the boundary; here both are attained at stationary points of edges. Algorithm~\ref{alg:exact} performs this walk, in a single pass, for the two shifts $\delta=(x_r,\pm y_r)$ (Lemma~\ref{lem:pairs}).}
+\caption{Lemma~\ref{lem:zonotope} and Algorithm~\ref{alg:exact} on Example~\ref{ex:alg}. (a) The generators $(2,-1)$, $(1,0)$, $(2,1)$, turned to the half-plane $u>0$ and sorted by angle; the boundary of $Z$ starts at $p_0=-\sigma$, adds $2\tilde g_{(1)},2\tilde g_{(2)},2\tilde g_{(3)}$ (thick edges, in three shades of gray like the generators) and then subtracts them in the same order. (b) Level curves of $\varphi_\delta$ for $\delta=(1,1)$, the vertex $(s,t)=(1,1)$ (dashed: negative values); the maximum and the minimum over $Z$ are marked with a black and a white triangle. Its only critical point is a saddle, so its extrema over $Z$ lie on the boundary; here both are attained at stationary points of edges. Algorithm~\ref{alg:exact} performs this walk, in a single pass, for the two shifts $\delta=(x_r,\pm y_r)$ (Lemma~\ref{lem:pairs}).}
 \label{fig:zonotope}
 \end{figure}
 
-Let $[p,q]$ be an edge of the translated polygon $Z+\delta$, with direction $d=q-p$, parametrized as $p+\tau d$ with $\tau\in[0,1]$. Then
+Let the segment $\seg pq$ be an edge of the translated polygon $Z+\delta$ and let $d=q-p$, so that the points of the edge are $p+\tau d$, $\tau\in[0,1]$. Then
 \[
 \begin{gathered}\varphi_0(p+\tau d)=(p_u+\tau d_u)(p_v+\tau d_v)=P+B\tau+A\tau^2,\\ P=p_up_v,\quad B=p_ud_v+p_vd_u,\quad A=d_ud_v,\end{gathered}
 \]
@@ -174,7 +175,7 @@ whose extrema over $[0,1]$ are attained at $\tau\in\{0,1\}$, with values $\varph
 \State $\ell_k\gets+\infty$, $h_k\gets-\infty$ ($k=1,2$);\quad $p\gets-\sum_{k=1}^m\tilde g_{(k)}$ \Comment{vertex $p_0$ of~\eqref{eq:boundary}}
 \For{$j=1,\dots,2m$}
   \State $d\gets2\tilde g_{(j)}$ if $j\le m$, and $d\gets-2\tilde g_{(j-m)}$ otherwise
-  \For{$k=1,2$} \Comment{the edge $[p,p+d]$, translated by $\delta^{(k)}$}
+  \For{$k=1,2$} \Comment{the edge $\seg{p}{(p+d)}$, translated by $\delta^{(k)}$}
     \State $a\gets p+\delta^{(k)}$, $b\gets a+d$
     \State $\ell_k\gets\min(\ell_k,\,b_ub_v)$, $h_k\gets\max(h_k,\,b_ub_v)$
     \State $A\gets d_ud_v$, $B\gets a_ud_v+a_vd_u$
@@ -219,11 +220,11 @@ Hence $\rng N=[-8,10]$, $c=1$, $z_r=9$, and, with the linear part $x_0y_0+e^T(y_
 \end{example}
 
 \begin{remark}
-Skalna and Hlad\'{\i}k reduce the computation of $R_{\max}$ to linear time by replacing the sorting with repeated median selection~\cite[Prop.~8]{skalna2017new}. Their argument uses the central symmetry of $Z$ and of $\varphi_0$, which locates the maximizer in the nonnegative quadrant. For the shifted products of~\eqref{eq:Nst} this symmetry is lost: the extrema can lie on any of the four monotone chains of the boundary, and these chains may cross the coordinate axes of the shifted product. A prune-and-search over each chain, in the spirit of~\cite[Prop.~8]{skalna2017new}, is a natural candidate, but it requires proving that $\varphi_\delta$ is unimodal along each chain, including the parts where its factors have opposite signs, and we leave a linear-time version of Algorithm~\ref{alg:exact} open. In practice, the $O(n\log n)$ version is the one recommended in~\cite{skalna2017new} for moderate $n$, and in our implementation the sorting is shared by the four vertices.
+Skalna and Hlad\'{\i}k compute $R_{\max}$ in linear time by replacing the sorting with repeated median selection~\cite[Prop.~8]{skalna2017new}, using the central symmetry of $\varphi_0$. The shifted products $\varphi_\delta$ lack this symmetry, and we leave a linear-time version of Algorithm~\ref{alg:exact} open; for moderate $n$, the $O(n\log n)$ version is the one recommended in~\cite{skalna2017new}.
 \end{remark}
 
 \begin{remark}
-When $x_r=y_r=0$, $N=Q$ and E gives the exact range of $\hat x\hat y - x_0y_0 - e^T(y_0x+x_0y)$; over a box, this is the narrowest residual of a linear relaxation of the product of two affine functions with the given slopes. All the multiplication formulae above keep the linear part~\eqref{eq:product}; choosing another linear part, as in the min-range approximations of~\cite{stolfi1997self,skalna2013minrange}, is a different problem that we do not consider.
+When $x_r=y_r=0$, $N=Q$ and E gives the exact range of $\hat x\hat y - x_0y_0 - e^T(y_0x+x_0y)$; over a box, this is the narrowest residual of a linear relaxation of the product of two affine functions with the given slopes. All the multiplication formulae of Section~\ref{sec:products} keep the linear part~\eqref{eq:product}; choosing another linear part, as in the min-range approximations of~\cite{stolfi1997self,skalna2013minrange}, is a different problem that we do not consider.
 \end{remark}
 
 \section{A hierarchy of multiplication formulae}
@@ -259,7 +260,7 @@ When both operands carry errors, E can be narrower than SH, but by a bounded fac
 The maximum of $R$ over $\U^{n+2}$ is attained at a point with $(\ex,\ey)=(1,1)$, and its minimum at a point with $(\ex,\ey)=(1,-1)$.
 \end{lemma}
 \begin{proof}
-Write $R=(u+x_r\ex)(v+y_r\ey)$ with $(u,v)=(e^Tx,e^Ty)$. Since $R(0,0,0)=0$, $\max R\ge0$. If $\max R=0$, it is attained at $(e,\ex,\ey)=(0,1,1)$, where $R=x_ry_r\ge0$. Otherwise, at a maximizer both factors have the same sign, and since $R(-e,-\ex,-\ey)=R(e,\ex,\ey)$, we may assume that both are positive. Increasing $\ex$ and $\ey$ to $1$ does not decrease them, because $x_r,y_r\ge0$, so $R$ does not decrease and the maximum is also attained with $(\ex,\ey)=(1,1)$. The argument for the minimum is the same: if $\min R=0$, it is attained at $(0,1,-1)$, where $R=-x_ry_r\le0$; otherwise, at a minimizer the factors have opposite signs, we may assume that the first one is positive, and moving $(\ex,\ey)$ to $(1,-1)$ increases the first factor and decreases the second, so that $R$ does not increase.
+Write $R=(u+x_r\ex)(v+y_r\ey)$ with $(u,v)=(e^Tx,e^Ty)$. Since $R(0,0,0)=0$, $\max R\ge0$. If $\max R=0$, it is attained at $(e,\ex,\ey)=(0,1,1)$, where $R=x_ry_r\ge0$. Otherwise, at a maximizer both factors have the same sign, and since $R(-e,-\ex,-\ey)=R(e,\ex,\ey)$, we may assume, replacing the maximizer by its opposite if necessary, that both are positive. Increasing $\ex$ and $\ey$ to $1$ does not decrease them, because $x_r,y_r\ge0$, so $R$ does not decrease and the maximum is also attained with $(\ex,\ey)=(1,1)$. The argument for the minimum is the same: if $\min R=0$, it is attained at $(0,1,-1)$, where $R=-x_ry_r\le0$; otherwise, at a minimizer the factors have opposite signs, and we may assume in the same way that the first one is positive; and moving $(\ex,\ey)$ to $(1,-1)$ increases the first factor and decreases the second, so that $R$ does not increase.
 \end{proof}
 
 \begin{propo}
@@ -302,16 +303,20 @@ In particular, $[\hat z]_E=[\hat z]_{SH}$ whenever one of the operands has no er
 $\wid[\hat z]_{SH}=\wid\rng R+2A$ and, by Proposition~\ref{prop:32}, $\wid[\hat z]_E\ge\wid\rng R+\Lambda_\alpha+\Lambda_\beta$. Since $\Lambda_\alpha+\Lambda_\beta = |a+b|+|a-b| = 2\max(|a|,|b|)$ and $A=|a|+|b|$, with $a=x_0y_r$ and $b=y_0x_r$, the difference is at most $2A-2\max(|a|,|b|)=2\min(|a|,|b|)$.
 \end{proof}
 
-The bound is attained in most cases: in 100\,000 random products with $n\le6$ and nonzero bound, the difference was equal to $2\min(|x_0|y_r,|y_0|x_r)$ in 68\% of them, and its median ratio to the bound was 1. E is therefore useful when \emph{both} operands carry errors and are \emph{both} away from zero, and its relative gain, at most $1/3$ of $\wid[\hat z]_{SH}$ by Proposition~\ref{prop:32}, is largest when $|x_0|y_r$ and $|y_0|x_r$ are comparable and large with respect to the width of $\rng R$, i.e., when the errors and the centers of the operands dominate their noise coefficients. This is the typical situation of products of subexpressions that have accumulated errors in previous nonlinear operations, such as a square $\hat v\cdot\hat v$ of a nonlinear form, for which $|x_0|y_r=|y_0|x_r$.
+How often the bound is attained depends on the operands. In 100\,000 random products with $n$ uniform in $\{1,\dots,6\}$, standard normal noise coefficients, centers of standard deviation 2 and error radii $|\mathcal N(0,1)|$ (as in Table~\ref{tab:random}), the difference was equal to $2\min(|x_0|y_r,|y_0|x_r)$ in 78\% of them, from 52\% for $n=1$ to 94\% for $n=6$, and its median ratio to the bound was 1. E is therefore useful when \emph{both} operands carry errors and are \emph{both} away from zero, and its relative gain, at most $1/3$ of $\wid[\hat z]_{SH}$ by Proposition~\ref{prop:32}, is largest when $|x_0|y_r$ and $|y_0|x_r$ are comparable and large with respect to the width of $\rng R$, i.e., when the errors and the centers of the operands dominate their noise coefficients. This is the typical situation of products of subexpressions that have accumulated errors in previous nonlinear operations, such as a square $\hat v\cdot\hat v$ of a nonlinear form, for which $|x_0|y_r=|y_0|x_r$.
 
 \begin{propo}
 \label{prop:square}
-For the square of a form, $\rng N_2 = [-2|x_0|x_r,\ 2|x_0|x_r+(\|x\|_1+x_r)^2]$ whenever $x_r\le\|x\|_1$; that is, SH applied to $\hat x\hat x$ with the shared error symbol is exact. When $x_r=0$, both SH and E give $[0,\|x\|_1^2]$.
+For the square of a form, let $S=\|x\|_1$. Then $\max N_2=2|x_0|x_r+(S+x_r)^2$ and
+\[
+\min N_2=\begin{cases}-2|x_0|x_r & \text{if } x_r\le S,\\ -2|x_0|x_r+(x_r-S)^2 & \text{if } S<x_r\le S+|x_0|,\\ -x_0^2-2|x_0|S & \text{if } x_r>S+|x_0|.\end{cases}
+\]
+In particular, SH applied to $\hat x\hat x$ with the shared error symbol, whose enclosure is $[-2|x_0|x_r,\ 2|x_0|x_r+(S+x_r)^2]$, is exact if and only if $x_r\le S$ or $x_0x_r=0$.
 \end{propo}
 \begin{proof}
-Write $u=e^Tx$, which ranges over $[-\|x\|_1,\|x\|_1]$. The interval is an enclosure of $\rng N_2$, since $(u+x_r\ex)^2\in[0,(\|x\|_1+x_r)^2]$ and $|2x_0x_r\ex|\le2|x_0|x_r$. Its upper end is attained with $\ex=\sigma$ and $u=\sigma\|x\|_1$, where $\sigma=\operatorname{sign}(x_0)$ ($\sigma=1$ if $x_0=0$). Its lower end is attained with $\ex=-\sigma$ and $u=\sigma x_r$, which is a value of $u$ because $x_r\le\|x\|_1$, so that $u+x_r\ex=0$ and $N_2=-2|x_0|x_r$.
+Write $u=e^Tx\in[-S,S]$ and $\sigma=\operatorname{sign}(x_0)$ ($\sigma=1$ if $x_0=0$). The SH interval encloses $\rng N_2$, since $(u+x_r\ex)^2\in[0,(S+x_r)^2]$ and $|2x_0x_r\ex|\le2|x_0|x_r$, and its upper end is attained with $\ex=\sigma$ and $u=\sigma S$. For the minimum, take $\ex=-\sigma a$ with $a\in[0,1]$, which is no loss of generality since $\ex$ of the sign of $x_0$ cannot give a smaller value, and choose $u$ to minimize $(u+x_r\ex)^2$: the minimum is $0$ if $x_ra\le S$ and $(x_ra-S)^2$ otherwise, so that $\min N_2=\min_{a\in[0,1]}g(a)$ with $g(a)=-2|x_0|x_ra+\max(0,x_ra-S)^2$. The function $g$ is convex, decreasing on $[0,S/x_r]$ and stationary at $a^*=(S+|x_0|)/x_r$. If $x_r\le S$, the minimum is $g(1)=-2|x_0|x_r$; if $S<x_r\le S+|x_0|$, then $a^*\ge1$ and the minimum is $g(1)=-2|x_0|x_r+(x_r-S)^2$; otherwise it is $g(a^*)=-x_0^2-2|x_0|S$. The last two values exceed $-2|x_0|x_r$ unless $x_0x_r=0$.
 \end{proof}
-The SH enclosure of a square is not new: with $r=\|x\|_1+x_r$, it is the Chebyshev linearization of $t\mapsto t^2$ over the range $[x_0-r,x_0+r]$ of $\hat x$, $t^2\in 2x_0t-x_0^2+[0,r^2]$, which is the usual way of enclosing univariate functions in AA~\cite{stolfi1997self}. The radius of S for a square exceeds that of SH by $\tfrac12(\|x\|_1+x_r)^2-\tfrac12x^Tx$, which approaches $\tfrac12(\|x\|_1+x_r)^2$, half the width of the exact range of the quadratic part, when the noise coefficients are spread over many symbols. Products and squares are thus two separate places where S loses with respect to the exact ranges, and in a solver both matter (Section~\ref{sec:solver}).
+The SH enclosure of a square is not new: with $r=\|x\|_1+x_r$, it is the Chebyshev linearization of $t\mapsto t^2$ over the range $[x_0-r,x_0+r]$ of $\hat x$, $t^2\in 2x_0t-x_0^2+[0,r^2]$, which is the usual way of enclosing univariate functions in AA~\cite{stolfi1997self}. It is the best enclosure of $t^2$ by a linear function of $t$ with slope $2x_0$, but it is not always exact as an enclosure of $N_2$: the reduced form keeps only $2x_0e^Tx$ as linear part and folds $2x_0x_r\ex$ into the error term, and when the error dominates the noise coefficients ($x_r>\|x\|_1$), $u$ and $\ex$ cannot cancel each other and the minimum of $N_2$ is larger. For instance, for $\hat x=1+2\ex$ ($n=0$), $\hat x^2=1+N_2$ with $\rng N_2=[-1,8]$, which gives the exact range $[0,9]$ of $t^2$ over $[-1,3]$, whereas the Chebyshev square gives $[-4,8]$. The radius of S for a square exceeds that of SH by $\tfrac12(\|x\|_1+x_r)^2-\tfrac12x^Tx$, which approaches $\tfrac12(\|x\|_1+x_r)^2$, half the width of the exact range of the quadratic part, when the noise coefficients are spread over many symbols. Products and squares are thus two separate places where S loses with respect to the exact ranges, and in a solver both matter (Section~\ref{sec:solver}).
 
 \paragraph{The standard multiplication is AF2 with re-centering.} An AF2 form~\cite{messine2002extentions} is
 \[
@@ -346,11 +351,11 @@ S can be much wider than SH even without errors: for $\hat x=\eps_1+\eps_2$ and 
 A floating-point implementation of Algorithm~\ref{alg:exact} must return an interval that contains $\rng N$. Two points need care.
 \begin{itemize}
 \item \emph{Angular order.} An incorrect order between two almost parallel generators would produce a path that cuts through the interior of $Z$ and could underestimate the range. The order is decided by the sign of $u_1v_2-v_1u_2$, evaluated in double precision with a forward error filter~\cite{shewchuk1997adaptive}: if $|\mathrm{fl}(u_1v_2)-\mathrm{fl}(v_1u_2)|$ exceeds $4\cdot2^{-52}(|\mathrm{fl}(u_1v_2)|+|\mathrm{fl}(v_1u_2)|)$ and neither product underflows, its sign is the exact one; otherwise the expression is evaluated in quadruple precision, where the two products are exact and the subtraction preserves the sign. Flipping a generator to the half-plane $u>0$ is exact.
-\item \emph{Boundary walk.} The vertices and the values on the edges are computed in double precision, and the resulting interval is widened by an a priori bound of the rounding errors. Let $m$ be the number of generators (including $(x_r,0)$ and $(0,y_r)$ for SH), $U=|\delta_1|+3\sum_k|u_k|$ and $V=|\delta_2|+3\sum_k|v_k|$ (with $\delta=0$ for SH), which bound $|u|$ and $|v|$ at every computed or exact vertex, partial sum and edge point. Each vertex is obtained with at most $3m+2$ additions, so its error is at most $(3m+2)\,\eps_m U$ in $u$ and $(3m+2)\,\eps_m V$ in $v$, with $\eps_m=2^{-52}$, which bounds the error of one operation in any rounding mode~\cite{higham2002accuracy}. On an edge $[p,p+d]$ with $d=\pm2\tilde g_{(j)}$ (exact), the value at the stationary point is $P-B^2/(4A)$, with the notation above; since the stationary point is in $(0,1)$, $|B|<2|A|$, and $|P|,|A|\le UV$, $|B|\le2UV$, so each evaluated value has a rounding error of $O(\eps_m UV)$, and a wrong decision on whether the stationary point lies in $(0,1)$ changes the value by $O(\eps_m UV)$ as well. Adding the constant $\kappa$ and the term $|y_0|x_r+|x_0|y_r$ of SH, we widen the interval by $(8m+64)\,\eps_m\,(UV+|x_0|y_r+|y_0|x_r)$ and round its endpoints outwards. This widening is of the order of $10^{-13}$ times the width of the enclosure.
+\item \emph{Boundary walk.} The vertices and the values on the edges are computed in double precision, and the resulting interval is widened by an a priori bound of the rounding errors. Let $m$ be the number of generators (including $(x_r,0)$ and $(0,y_r)$ for SH), $U=|\delta_1|+3\sum_k|u_k|$ and $V=|\delta_2|+3\sum_k|v_k|$ (with $\delta=0$ for SH), which bound $|u|$ and $|v|$ at every computed or exact vertex, partial sum and edge point. Each vertex is obtained with at most $3m+2$ additions, so its error is at most $(3m+2)\,\eps_m U$ in $u$ and $(3m+2)\,\eps_m V$ in $v$, with $\eps_m=2^{-52}$, which bounds the error of one operation in any rounding mode~\cite{higham2002accuracy}. On an edge $\seg{p}{(p+d)}$ with $d=\pm2\tilde g_{(j)}$ (exact), the value at the stationary point is $P-B^2/(4A)$, with the notation above; since the stationary point is in $(0,1)$, $|B|<2|A|$, and $|P|,|A|\le UV$, $|B|\le2UV$, so each evaluated value has a rounding error of $O(\eps_m UV)$, and a wrong decision on whether the stationary point lies in $(0,1)$ changes the value by $O(\eps_m UV)$ as well. Adding the constant $\kappa$ and the term $|y_0|x_r+|x_0|y_r$ of SH, we widen the interval by $(8m+64)\,\eps_m\,(UV+|x_0|y_r+|y_0|x_r)$ and round its endpoints outwards. This widening is of the order of $10^{-13}$ times the width of the enclosure.
 \end{itemize}
 Our implementation sorts the generators once per product, walks the two shifted polygons of E in a single pass, and allocates no memory per product. For E, when $\min(|x_0|y_r,|y_0|x_r)=0$, it runs the single walk of SH, which gives the same interval by Corollary~\ref{cor:gain}.
 
-For squares, both SH and E use the SH bound, that is, the Chebyshev linearization of $t^2$, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}). The center and the radius of the enclosure are then added to the reduced affine form with the usual outward rounding of the linear part.
+For squares, both SH and E use the SH bound, that is, the Chebyshev linearization of $t^2$, which is exact when $x_r\le\|x\|_1$ (Proposition~\ref{prop:square}); the exact range of Proposition~\ref{prop:square} could be used instead at the same cost. The center and the radius of the enclosure are then added to the reduced affine form with the usual outward rounding of the linear part.
 
 \section{Experiments}
 \label{sec:experiments}

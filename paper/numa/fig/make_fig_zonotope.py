@@ -26,10 +26,11 @@ a = ax[0]
 a.axhline(0, color="0.75", lw=0.6, zorder=0); a.axvline(0, color="0.75", lw=0.6, zorder=0)
 a.fill(V[:, 0], V[:, 1], color="0.88", zorder=1)
 a.plot(V[:, 0], V[:, 1], "k-", lw=1.0, zorder=2)
-cols = ["C0", "C1", "C2"]
+cols = ["0.0", "0.38", "0.6"]          # blanco y negro: los generadores se distinguen por el tono de gris
+styles = ["-", "-", "-"]
 for k in range(3):
-    a.plot([V[k][0], V[k + 1][0]], [V[k][1], V[k + 1][1]], color=cols[k], lw=2.6, zorder=3)
-    a.annotate("", xy=g[k], xytext=(0, 0), arrowprops=dict(arrowstyle="->", color=cols[k], lw=1.4), zorder=4)
+    a.plot([V[k][0], V[k + 1][0]], [V[k][1], V[k + 1][1]], color=cols[k], ls=styles[k], lw=4.0, solid_capstyle="butt", zorder=3)
+    a.annotate("", xy=g[k], xytext=(0, 0), arrowprops=dict(arrowstyle="-|>", color=cols[k], lw=1.8, mutation_scale=10), zorder=4)
 a.plot(V[:-1, 0], V[:-1, 1], "ko", ms=3, zorder=5)
 off = {0: (-0.95, -0.15), 1: (-0.55, -0.75), 2: (0.05, -0.75), 3: (0.25, -0.15), 4: (0.1, 0.25), 5: (-0.6, 0.25)}
 for k in range(6):
@@ -50,8 +51,8 @@ b.plot(V[:, 0], V[:, 1], "k-", lw=1.0)
 pts = np.vstack([V[k] + t * (V[k + 1] - V[k]) for k in range(6) for t in np.linspace(0, 1, 4001)])
 val = (pts[:, 0] + d[0]) * (pts[:, 1] + d[1])
 imax, imin = val.argmax(), val.argmin()
-b.plot(*pts[imax], "^", color="C3", ms=7, label=r"max $8$ (stationary point)")
-b.plot(*pts[imin], "v", color="C0", ms=7, label=r"min $-9/2$ (stationary point)")
+b.plot(*pts[imax], "^", color="black", ms=7, label=r"max $8$ (stationary point)")
+b.plot(*pts[imin], "v", mfc="white", mec="black", mew=1.4, ms=7, label=r"min $-9/2$ (stationary point)")
 b.plot(-d[0], -d[1], "kx", ms=7, label=r"saddle $(-\delta_1,-\delta_2)$")
 if KINDLE:
     b.legend(loc="upper center", bbox_to_anchor=(0.5, -0.3), fontsize=9, frameon=False)
