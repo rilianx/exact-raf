@@ -392,11 +392,6 @@ $f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 39.9 & 39.9 \\
 
 E is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and also for Leon and Rosenbrock. These functions contain squares $(x_i^2-x_j)^2$ computed as products $\hat v\cdot\hat v$ of a form that carries the error of the product $x_i\cdot x_i$ and whose center is far from zero, which is the most favorable case of Corollary~\ref{cor:gain}; in Booth and Matyas, every product has an operand without error, and E and SH coincide.
 
-\paragraph{Benchmark constraints.} Finally, we consider four constraints with products of nonlinear factors, in three variables, taken from a benchmark of nonlinear systems~\cite{coprin}: Trigexp1, two constraints of Trigexp2, and Pramanik. They are evaluated over random boxes of three sizes, with widths in $[0.01,0.1]$, $[0.1,1]$ and $[1,10]$, inside $[-10,10]^3$ (inside the domain $[0.06,1]^3$, and with the two smaller sizes, for Pramanik). The quality of a method is measured by its gap $100\,(W-W^*)/W^*$, where $W$ is the width of its residual and $W^*$ the exact width of the range of $f(x)-L(x)$ over the box, $L$ being the linear part of the products, computed with IbexOpt (Table~\ref{tab:constraints}).
-
-\input{../../results/table_rules_constraints.tex}
-
-The residuals of SH and E are 4--16\% narrower than those of S and AF2, which coincide on these constraints. E is narrower than SH in 435 of the 700 boxes and never wider, but only by 0.1\% on average and by at most 4.1\%: the residuals of these constraints are dominated by the linearization of the univariate functions, and the factors of their products are sines, whose centers are close to zero when they are linearized over wide intervals, and exponentials or affine expressions without error. E and SH coincide on the second constraint of Trigexp2, $-3+4x_2-e^{x_1-x_2-x_3}(x_1-x_3)$, whose only product has an affine factor without error (Proposition~\ref{prop:oneerror}), and on Pramanik.
 
 \subsection{Implementation in Ibex}
 \label{sec:ibex}

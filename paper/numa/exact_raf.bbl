@@ -95,14 +95,6 @@ Gilles Chabert and Luc Jaulin.
 \newblock Contractor programming.
 \newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
 
-\bibitem{coprin}
-Coprin.
-\newblock The coprin examples page.
-\newblock
-  \url{https://www-sop.inria.fr/coprin/logiciels/ALIAS/Benches/benches.html},
-  2024.
-\newblock Accessed: 2024-09-12.
-
 \bibitem{ibexaffine}
 Jordan Ninin, Gilles Chabert, et~al.
 \newblock {ibex-affine}: affine arithmetic plugin of the {Ibex} library.
