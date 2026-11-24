@@ -10,7 +10,7 @@ one() {
   local set="$1" f="$2" tl="$3" v="$4"; local inst; inst=$(basename "$f" .bch)
   local row="$OUT/rows/${set}__${inst}__${v}.csv"; [ -s "$row" ] && return 0
   local env="" a=""
-  case "$v" in af2) a=af2;; splus) a=af2; env="IBEX_AF2_SQR=cheb";; sh) a=sh;; exact) a=exact;; esac
+  case "$v" in af2) a=af2;; splus) a=af2; env="IBEX_AF2_SQR=cheb";; sh) a=sh;; exact) a=exact;; exactsq) a=exact; env="IBEX_SQR_EXACT=1";; shsq) a=sh; env="IBEX_SQR_EXACT=1";; esac
   local log="$OUT/logs/${set}__${inst}__${v}.log" t0; t0=$(date +%s.%N)
   env $env timeout $((tl * 2 + 120)) $B --lr=art --arith=$a --knomial_k=0 -t "$tl" "$f" > "$log" 2>&1; local code=$?
   local wall; wall=$(awk -v a="$t0" -v b="$(date +%s.%N)" 'BEGIN{printf "%.2f", b-a}')

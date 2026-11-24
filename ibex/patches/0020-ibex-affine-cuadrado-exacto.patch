@@ -1,0 +1,92 @@
+diff --git a/src/arithmetic/ibex_Affine2_fAF2.cpp b/src/arithmetic/ibex_Affine2_fAF2.cpp
+index b41542d..20a9807 100644
+--- a/src/arithmetic/ibex_Affine2_fAF2.cpp
++++ b/src/arithmetic/ibex_Affine2_fAF2.cpp
+@@ -793,6 +793,7 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 
+ 		double Sx, Sx2, ttt, sss, ppp, x0, eee,tmp;
+ 		Sx = 0; Sx2 = 0; ttt = 0; sss = 0; ppp = 0; x0 = 0; eee =0.0; tmp =0.0;
++		Interval SxI(0.0);   // [parche 0020] ||x||_1 en intervalos (solo para el cuadrado exacto)
+ 
+ 		// compute the error
+ 		for (int i = 1; i <= _n_noise; i++) {
+@@ -807,6 +808,7 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 			eee = _elt.twoSum(Sx,std::fabs(_elt._val[i]), &tmp);
+ 			ttt = (1+2*AF_EM)*(ttt+std::fabs(eee));
+ 			Sx = tmp;
++			if (exact_square()) SxI += std::fabs(_elt._val[i]);
+ 
+ 		}
+ 		// compute 2*_elt._val[0]*(*this)
+@@ -859,7 +861,31 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 				ttt = (1+2*AF_EM)*(ttt+tq);
+ 			}
+ 		}
+-		if (use_raak_sq) {
++		// [parche 0020] rango exacto de N_2 = 2 x0 e xi + (u + e xi)^2 cuando el error domina (e > ||x||_1):
++		// Chebyshev da [-2|x0|e, 2|x0|e + (S+e)^2]; el minimo exacto es mayor (Proposicion 4). Cota inferior rigurosa:
++		// el minimo de los casos posibles, evaluados en intervalos.
++		bool use_exact_sq = false;
++		double exq_mid = 0.0, exq_rad = 0.0;
++		if (use_raak_sq && exact_square() && _elt._err > Sx) {
++			ExactMultStats& est = exact_mult_stats();
++			est.sq_exact++;
++			const Interval e(_elt._err), a0(std::fabs(x0)), S = SxI;
++			const Interval U = 2.0 * a0 * e + sqr(S + e);
++			double Lb = POS_INFINITY;
++			if (e.lb() <= S.ub()) Lb = std::min(Lb, (-2.0 * a0 * e).lb());
++			if (e.ub() > S.lb() && e.lb() <= (S + a0).ub()) Lb = std::min(Lb, (-2.0 * a0 * e + sqr(e - S)).lb());
++			if (e.ub() > (S + a0).lb()) Lb = std::min(Lb, (-sqr(a0) - 2.0 * a0 * S).lb());
++			const Interval rng(Lb, U.ub());
++			exq_mid = rng.mid();
++			exq_rad = (Interval(rng.ub()) - exq_mid).ub();
++			exq_rad = std::max(exq_rad, (Interval(exq_mid) - rng.lb()).ub());
++			const double cheb_rad = 2.0 * std::fabs(x0) * _elt._err + sq_half;
++			if (exq_rad < cheb_rad * (1 - 16 * AF_EM)) { use_exact_sq = true; est.sq_tighter++; }
++		}
++		if (use_exact_sq) {
++			eee = 0.0;
++			ppp = exq_mid;
++		} else if (use_raak_sq) {
+ 			eee = 0.0;
+ 			ppp = sq_half;
+ 		} else
+@@ -878,6 +904,8 @@ AffineMain<AF_fAF2>& AffineMain<AF_fAF2>::Asqr(const Interval& itv) {
+ 		eee = _elt.twoSum(_elt._err,Sx, &tmp);
+ 		ttt = (1+2*AF_EM)*(ttt+std::fabs(eee));
+ 
++		if (use_exact_sq) _elt._err = (1+ 2*AF_EM) * ( (1 + 4*AF_EM) * exq_rad + (AF_EE * (ttt)) + (AF_EE * sss) );
++		else
+ 		_elt._err = (1+ 2*AF_EM) * (
+ 				((1+ 2*AF_EM) *2*std::fabs(x0) * _elt._err)  +
+ 				(use_raak_sq ? ((1+ 2*AF_EM) * sq_half + 8*AF_EM*sq_half) : (1+ 2*AF_EM) *(tmp * tmp)) +
+diff --git a/src/arithmetic/ibex_ExactMult.h b/src/arithmetic/ibex_ExactMult.h
+index cbf456e..3ec3d21 100644
+--- a/src/arithmetic/ibex_ExactMult.h
++++ b/src/arithmetic/ibex_ExactMult.h
+@@ -47,6 +47,8 @@ struct ExactMultStats {
+ 	long with_errors = 0;     // ... con ex > 0 y ey > 0
+ 	long coupled = 0;         // ... con min(|x0| ey, |y0| ex) > 0: los unicos en que E puede ganar a SH
+ 	long exact_walks = 0;     // productos en que AFFINE_EXACT hizo las cuatro vueltas
++	long sq_exact = 0;        // [parche 0020] cuadrados con el rango exacto (IBEX_SQR_EXACT=1) y error > ||x||_1
++	long sq_tighter = 0;      // ... en que el rango exacto fue mas angosto que Chebyshev
+ };
+ 
+ inline ExactMultStats& exact_mult_stats() {
+diff --git a/src/arithmetic/ibex_KNomial.h b/src/arithmetic/ibex_KNomial.h
+index d791f27..2d100ba 100644
+--- a/src/arithmetic/ibex_KNomial.h
++++ b/src/arithmetic/ibex_KNomial.h
+@@ -68,6 +68,12 @@ enum AffineMode { AFFINE_AF2 = 0, AFFINE_RAA = 1, AFFINE_SH = 2, AFFINE_EXACT =
+ 
+ /** [parche 0017] true si IBEX_RAF_SQR=af2: AFFINE_SH/AFFINE_EXACT usan el cuadrado de fAF2. */
+ /** [parche 0018] true si IBEX_AF2_SQR=cheb: AFFINE_AF2 usa el cuadrado de Chebyshev (S+ = productos de fAF2 + cuadrado exacto). */
++/** [parche 0020] true si IBEX_SQR_EXACT=1: el cuadrado de Chebyshev se reemplaza por el rango exacto de N_2 (Prop. 4). */
++inline bool exact_square() {
++	static const bool v = [] { const char* e = std::getenv("IBEX_SQR_EXACT"); return e && std::string(e) == "1"; }();
++	return v;
++}
++
+ inline bool af2_cheb_square() {
+ 	static const bool v = [] { const char* e = std::getenv("IBEX_AF2_SQR"); return e && std::string(e) == "cheb"; }();
+ 	return v;
