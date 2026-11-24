@@ -32,10 +32,10 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
-\date{\small Kindle version v19 (2026-11-24)}
+\date{\small Kindle version v20 (2026-11-24)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v19}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v20}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -367,7 +367,7 @@ For squares, both SH and E use the SH bound, that is, the Chebyshev linearizatio
 
 \subsection{Range enclosures}
 
-The formulae S, SH and E and AF2 were first implemented in Python, in double precision without outward rounding, on the representation in the variable space described in the introduction (a linear function of the variables plus a residual interval), in which a product has the linear part of~\eqref{eq:product} for all the formulae. Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products. Every enclosure was checked by sampling, and the inclusions of Proposition~\ref{prop:chain} were verified on 2000 random products. Exact ranges were computed with IbexOpt~\cite{chabert2009}. The code, the data and the scripts that produce the tables are available at \url{https://github.com/rilianx/raa-affine-arithmetic}.
+In these experiments, univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products, and exact ranges were computed with IbexOpt~\cite{chabert2009}.
 
 \paragraph{Random products.} Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the gain is bounded by $2\min(|x_0|y_r,|y_0|x_r)$ (Corollary~\ref{cor:gain}), while the width of the quadratic part, which both compute exactly, grows with $n$. S is 1.4--2.0 times wider than E.
 
