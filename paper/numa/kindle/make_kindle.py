@@ -19,10 +19,10 @@ s = s.replace(r"\date{}", r"\date{\small Kindle version " + VERSION + (" (" + FE
 s = s.replace(r"\begin{document}", "\\usepackage{fancyhdr}\n\\fancypagestyle{plain}{\\fancyhf{}\\renewcommand{\\headrulewidth}{0pt}\\cfoot{\\thepage}\\rfoot{\\tiny " + VERSION + "}}\n\\pagestyle{plain}\n\\begin{document}", 1)
 s = s.replace(r"\usepackage[a4paper,margin=27mm]{geometry}",
               r"\usepackage[paperwidth=100mm,paperheight=135mm,left=4mm,right=4mm,top=5mm,bottom=7mm,footskip=4mm]{geometry}"
-              "\n\\usepackage{float}\n\\usepackage{adjustbox}\n\\sloppy\n\\setlength{\\emergencystretch}{3em}")
+              "\n\\usepackage{float}\n\\usepackage{caption}\n\\captionsetup[figure]{font=footnotesize}\n\\usepackage{adjustbox}\n\\sloppy\n\\setlength{\\emergencystretch}{3em}")
 s = s.replace(r"\begin{algorithm}[t]", r"\begin{algorithm}[H]")
 s = s.replace(r"\begin{figure}[t]", r"\begin{figure}[H]")
-s = s.replace(r"\includegraphics[width=\linewidth]{fig/square_cheb.pdf}", r"\includegraphics[height=0.56\textheight]{../fig/square_cheb_kindle.pdf}")
+s = s.replace(r"\includegraphics[width=\linewidth]{fig/square_cheb.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/square_cheb_kindle.pdf}")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/zonotope.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}")
 s = fit(s)
 s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" + m.group(1) + "_k.tex}", s)
