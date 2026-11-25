@@ -17,9 +17,9 @@ import subprocess
 import tempfile
 
 from common import RESULTS, ibexopt_path
-from zcaa import set_box, zcaa_variables, set_product, set_square
+from raf import set_box, raf_variables, set_product, set_square
 
-RULES = ["faf2", "zcaa", "skalna", "exact"]
+RULES = ["faf2", "skalna", "exact"]
 
 # name, number of variables, box (same interval for every variable), expression in x1..xn
 FUNCTIONS = [
@@ -84,10 +84,10 @@ if __name__ == "__main__":
             set_square(square)
             for rule in RULES:
                 set_product(rule)
-                form = evaluate(expr, n, zcaa_variables(n))
+                form = evaluate(expr, n, raf_variables(n))
                 flo, fhi = form.get_range()
                 rec[f"{rule}_{square}"] = {"range": [flo, fhi], "overestimation": (1 - (hi - lo) / (fhi - flo)) * 100}
-        set_product("zcaa")
+        set_product("exact")
         set_square("chebyshev")
         records.append(rec)
         print(f"{name:22s} [{lo:11.4g}, {hi:11.4g}] "

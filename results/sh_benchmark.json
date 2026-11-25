@@ -17,13 +17,6 @@
    ],
    "overestimation": 49.916159856591904
   },
-  "zcaa_product": {
-   "range": [
-    -395359.546875,
-    416069.203125
-   ],
-   "overestimation": 48.84680838182034
-  },
   "skalna_product": {
    "range": [
     -398997.046875,
@@ -39,13 +32,6 @@
    "overestimation": 48.84680838182034
   },
   "faf2_chebyshev": {
-   "range": [
-    -5103.750588854931,
-    778311.4185346493
-   ],
-   "overestimation": 47.0176581088048
-  },
-  "zcaa_chebyshev": {
    "range": [
     -5103.750588854931,
     778311.4185346493
@@ -85,13 +71,6 @@
    ],
    "overestimation": 35.79207917586634
   },
-  "zcaa_product": {
-   "range": [
-    -1446.0,
-    2594.0
-   ],
-   "overestimation": 35.79207917586634
-  },
   "skalna_product": {
    "range": [
     -646.0,
@@ -107,13 +86,6 @@
    "overestimation": 19.938271564969135
   },
   "faf2_chebyshev": {
-   "range": [
-    -646.0,
-    2594.0
-   ],
-   "overestimation": 19.938271564969135
-  },
-  "zcaa_chebyshev": {
    "range": [
     -646.0,
     2594.0
@@ -153,13 +125,6 @@
    ],
    "overestimation": 36.64639273590405
   },
-  "zcaa_product": {
-   "range": [
-    -382778.0,
-    2304082.0
-   ],
-   "overestimation": 14.246294889015443
-  },
   "skalna_product": {
    "range": [
     -1142778.0,
@@ -175,13 +140,6 @@
    "overestimation": 13.635573038127946
   },
   "faf2_chebyshev": {
-   "range": [
-    -667778.0,
-    2304082.0
-   ],
-   "overestimation": 22.470035562072255
-  },
-  "zcaa_chebyshev": {
    "range": [
     -667778.0,
     2304082.0
@@ -221,13 +179,6 @@
    ],
    "overestimation": 36.638014767696156
   },
-  "zcaa_product": {
-   "range": [
-    -7009.0,
-    42386.0
-   ],
-   "overestimation": 14.189695270473424
-  },
   "skalna_product": {
    "range": [
     -21009.0,
@@ -243,13 +194,6 @@
    "overestimation": 13.577326901519726
   },
   "faf2_chebyshev": {
-   "range": [
-    -12259.0,
-    42386.0
-   ],
-   "overestimation": 22.433891442676092
-  },
-  "zcaa_chebyshev": {
    "range": [
     -12259.0,
     42386.0
@@ -289,13 +233,6 @@
    ],
    "overestimation": 99.05947774925137
   },
-  "zcaa_product": {
-   "range": [
-    -111876360.0,
-    109833448.0
-   ],
-   "overestimation": 98.67105742768042
-  },
   "skalna_product": {
    "range": [
     -107330520.0,
@@ -316,13 +253,6 @@
     144517800.0
    ],
    "overestimation": 98.96889287784822
-  },
-  "zcaa_chebyshev": {
-   "range": [
-    -73536440.0,
-    97994920.0
-   ],
-   "overestimation": 98.28229891868169
   },
   "skalna_chebyshev": {
    "range": [
@@ -357,13 +287,6 @@
    ],
    "overestimation": 39.105233899894145
   },
-  "zcaa_product": {
-   "range": [
-    -347.0,
-    701.8
-   ],
-   "overestimation": 33.085430935307016
-  },
   "skalna_product": {
    "range": [
     -277.88,
@@ -379,13 +302,6 @@
    "overestimation": 24.361958920665195
   },
   "faf2_chebyshev": {
-   "range": [
-    -226.03999999999994,
-    701.8
-   ],
-   "overestimation": 24.361958920665195
-  },
-  "zcaa_chebyshev": {
    "range": [
     -226.03999999999994,
     701.8
@@ -425,13 +341,6 @@
    ],
    "overestimation": 32.43243239864865
   },
-  "zcaa_product": {
-   "range": [
-    -48.0,
-    100.0
-   ],
-   "overestimation": 32.43243239864865
-  },
   "skalna_product": {
    "range": [
     -48.0,
@@ -447,13 +356,6 @@
    "overestimation": 32.43243239864865
   },
   "faf2_chebyshev": {
-   "range": [
-    -48.0,
-    100.0
-   ],
-   "overestimation": 32.43243239864865
-  },
-  "zcaa_chebyshev": {
    "range": [
     -48.0,
     100.0
@@ -493,13 +395,6 @@
    ],
    "overestimation": 47.48245319229605
   },
-  "zcaa_product": {
-   "range": [
-    -1593342.0,
-    3116493.0
-   ],
-   "overestimation": 42.19026778305398
-  },
   "skalna_product": {
    "range": [
     -1139826.375,
@@ -515,13 +410,6 @@
    "overestimation": 32.25346974151859
   },
   "faf2_chebyshev": {
-   "range": [
-    -902521.6875,
-    3116493.0
-   ],
-   "overestimation": 32.25346974151859
-  },
-  "zcaa_chebyshev": {
    "range": [
     -902521.6875,
     3116493.0
@@ -561,13 +449,6 @@
    ],
    "overestimation": 57.42409967959783
   },
-  "zcaa_product": {
-   "range": [
-    -6593.75,
-    8489.583333333332
-   ],
-   "overestimation": 57.42409967959783
-  },
   "skalna_product": {
    "range": [
     -2691.685267857143,
@@ -583,13 +464,6 @@
    "overestimation": 39.92126260246289
   },
   "faf2_chebyshev": {
-   "range": [
-    -1437.5000000006435,
-    7833.333333333977
-   ],
-   "overestimation": 30.730445321422707
-  },
-  "zcaa_chebyshev": {
    "range": [
     -1437.5000000006435,
     7833.333333333977

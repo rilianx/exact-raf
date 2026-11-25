@@ -1,6 +1,6 @@
-"""Univariate functions for ZCAA and AF2 forms.
+"""Univariate functions of reduced affine forms.
 
-ZCAA, AF2 and the first-order Taylor models use the same Chebyshev linearization u(v) ~ m v + [r_lo, r_hi]
+Chebyshev linearization u(v) ~ m v + [r_lo, r_hi]
 over the range [a, b] of the argument (Section 3.2 of the paper), with the same
 rule for the slope m, so that the comparisons isolate the effect of the
 multiplication:
@@ -12,9 +12,7 @@ critical points where u'(t) = m. Plain numbers are evaluated with the math modul
 """
 import math
 
-from .zcaa import ZCAAForm
-from .af2 import AF2
-from .tm import TM1
+from .forms import RAFForm
 
 SAFETY = 1e-10
 
@@ -54,17 +52,9 @@ def chebyshev(form, f, df, crit, inflection=None):
             rhi = 0.0
         rlo, rhi = rlo - SAFETY, rhi + SAFETY
 
-    if isinstance(form, ZCAAForm):
+    if isinstance(form, RAFForm):
         elo, ehi = (m * form.lo, m * form.hi) if m >= 0 else (m * form.hi, m * form.lo)
-        return ZCAAForm([s * m for s in form.slopes], rlo + elo, rhi + ehi)
-    if isinstance(form, AF2):
-        res = form.scale(m) + 0.5 * (rlo + rhi)
-        res.s += 0.5 * (rhi - rlo)
-        return res
-    if isinstance(form, TM1):
-        # constant part of the residual to the polynomial, symmetric remainder
-        res = form.scale(m) + 0.5 * (rlo + rhi)
-        return res.add_interval(-0.5 * (rhi - rlo), 0.5 * (rhi - rlo))
+        return RAFForm([s * m for s in form.slopes], rlo + elo, rhi + ehi)
     raise TypeError(f"unsupported form: {type(form).__name__}")
 
 

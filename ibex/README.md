@@ -24,23 +24,41 @@ S, SH or E.
 | `0020-ibex-affine-cuadrado-exacto.patch` | `IBEX_SQR_EXACT=1`: exact range of the square (Proposition 4). |
 | `0021-ibex-affine-diagnostico-s-mas-ancho.patch` | Diagnostic counters (no effect on the results): products in which S is wider than E. |
 
-Validation: `tests/affine_containment_check.cpp` (containment of 20 000 random functions per family,
-in interval arithmetic), `fast/verify.py` (fast walk against rational arithmetic),
-`tests/test_sqexact.cpp` (exact square) and `tests/bench_mult.cpp` (time per product, Table 3).
+Validation and cost (programs built by `build.sh` in `$ROOT`):
+
+```
+$ROOT/affine_containment_check 20000 11     # containment of 20 000 random functions per family, in intervals
+$ROOT/bench_mult                            # time per product (Table 3): results/bench_mult_0019.csv
+python ibex/fast/verify.py                  # fast walk of patch 0017 against rational arithmetic
+```
 
 ## Solver experiments (Table 4)
 
-All the variants are run in the same session, one after the other for each instance:
+The COCONUT set is the optimization benchmark distributed with Ibex (`ibex-lib/benchs/optim`: easy,
+medium, hard, others, unsolved, blowup and coconutbenchmark-library2); copy its 298 distinct
+instances, listed in `results/coconut_manifest.csv`, into one folder `$COCONUT`. The synthetic
+instances are in `benchmarks/ibex/` (generators in `benchmarks/ibex/generators/`).
 
 ```
-TASKS=tasks_all1.txt OUT=$HOME/ibex-local/results/interleaved_all P=4 bash ibex/run_interleaved.sh
+python ibex/make_tasks.py $COCONUT          # ibex/tasks_synthetic.txt, ibex/tasks_coconut.txt
+TASKS=ibex/tasks_synthetic.txt OUT=$ROOT/results/interleaved     P=4 COCONUT=$COCONUT bash ibex/run_interleaved.sh
+TASKS=ibex/tasks_coconut.txt   OUT=$ROOT/results/interleaved_all P=4 COCONUT=$COCONUT bash ibex/run_interleaved.sh
+cat $ROOT/results/interleaved/rows/*.csv     > ibex/results/table5_interleaved.csv
+cat $ROOT/results/interleaved_all/rows/*.csv > ibex/results/table5_interleaved_all.csv
+python ibex/analysis/make_table_solver_interleaved.py     # results/table_solver.tex (Table 4)
 ```
 
-Each line of a task file is `set file.bch time_limit variant`, with variants `af2` (S), `splus` (S⁺),
-`sh` (SH) and `exact` (E). The synthetic instances are in `benchmarks/ibex/` (generators in
-`benchmarks/ibex/generators/` and `analysis/gen_synp.py`); the COCONUT set is the optimization
-benchmark distributed with Ibex (`benchs/optim`: easy, medium, hard, others, unsolved, blowup and
-coconutbenchmark-library2; list in `results/coconut_manifest.csv`).
+All the variants of an instance (`af2` = S, `splus` = S⁺, `sh` = SH, `exact` = E) run one after the
+other in the same session, four runs in parallel; the runs are resumable. The 110 COCONUT instances
+of Table 4 are those in which S encloses some product more widely than E, counted by patch 0021 in
+a run of 5 s with E:
+
+```
+for f in $COCONUT/*.bch; do
+  $ROOT/ibexopt-raak/build/ibexopt-raak --lr=art --arith=exact --knomial_k=0 -t 5 $f | grep EXACT-MULT \
+    > ibex/results/sdiag/$(basename $f .bch).txt
+done
+```
 
 | File | Content |
 |---|---|
@@ -49,4 +67,5 @@ coconutbenchmark-library2; list in `results/coconut_manifest.csv`).
 | `results/sdiag/` | Counters of patch 0021 (5 s with E) used to select the 110 COCONUT instances of Table 4 |
 | `analysis/make_table_solver_interleaved.py` | `results/table_solver.tex` (Table 4) |
 | `analysis/summary_all_by_set.py`, `analysis/summary_all_subsets.py` | COCONUT results by subset |
+| `analysis/make_table_cost.py` | `results/table_cost.tex` (Table 3) from `results/bench_mult_0019.csv` |
 | `results/bench_mult*.csv`, `results/containment_*` | Cost per product and containment tests |

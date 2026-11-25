@@ -1,13 +1,15 @@
-"""Zero-centered affine arithmetic (ZCAA).
+"""Reduced affine forms written in the variables.
 
 A form is f(x) = sum_i a_i x_i + r, with r in [lo, hi], over the box set with
-zcaa.set_box. The residual includes the intercept and is not assumed to be
-centered. Arithmetic is in floating point, without outward rounding.
+raf.set_box: with x_i = mid_i + rad_i eps_i, it is the reduced affine form whose noise symbols
+are the variables and whose error term is the residual interval. Arithmetic is in floating
+point, without outward rounding. The product is selected with set_product: 'faf2' (S),
+'skalna' (SH) or 'exact' (E).
 """
 from .box import get_box
 
 
-class ZCAAForm:
+class RAFForm:
     """f(x) = sum(slopes[i] * x_i) + [lo, hi]."""
     __slots__ = ("slopes", "lo", "hi")
 
@@ -44,18 +46,18 @@ class ZCAAForm:
 
     # ---- affine operations (exact) ------------------------------------------
     def __add__(self, other):
-        if isinstance(other, ZCAAForm):
-            return ZCAAForm([s + o for s, o in zip(self.slopes, other.slopes)],
+        if isinstance(other, RAFForm):
+            return RAFForm([s + o for s, o in zip(self.slopes, other.slopes)],
                            self.lo + other.lo, self.hi + other.hi)
         if isinstance(other, (int, float)):
-            return ZCAAForm(self.slopes, self.lo + other, self.hi + other)
+            return RAFForm(self.slopes, self.lo + other, self.hi + other)
         return NotImplemented
 
     def __radd__(self, other):
         return self + other
 
     def __neg__(self):
-        return ZCAAForm([-s for s in self.slopes], -self.hi, -self.lo)
+        return RAFForm([-s for s in self.slopes], -self.hi, -self.lo)
 
     def __sub__(self, other):
         return self + (-other)
@@ -66,13 +68,13 @@ class ZCAAForm:
     def scale(self, c):
         c = float(c)
         lo, hi = (c * self.lo, c * self.hi) if c >= 0 else (c * self.hi, c * self.lo)
-        return ZCAAForm([s * c for s in self.slopes], lo, hi)
+        return RAFForm([s * c for s in self.slopes], lo, hi)
 
     # ---- nonlinear operations -----------------------------------------------
     def __mul__(self, other):
         if isinstance(other, (int, float)):
             return self.scale(other)
-        if isinstance(other, ZCAAForm):
+        if isinstance(other, RAFForm):
             return PRODUCTS[_PRODUCT](self, other)
         return NotImplemented
 
@@ -91,128 +93,38 @@ class ZCAAForm:
                 out = out * self
             return out
         if k == 2:
-            return pow_zcaa(self)
+            return chebyshev_square(self)
         from .unary import power
         return power(self, k)
 
     def __repr__(self):
         terms = " + ".join(f"{a:g}*x{i + 1}" for i, a in enumerate(self.slopes) if a != 0) or "0"
-        return f"ZCAAForm({terms} + [{self.lo:g}, {self.hi:g}])"
+        return f"RAFForm({terms} + [{self.lo:g}, {self.hi:g}])"
 
 
-def zcaa_variables(n=None):
-    """ZCAA forms of the variables x_1..x_n of the current box."""
+def raf_variables(n=None):
+    """Forms of the variables x_1..x_n of the current box."""
     n = len(get_box()) if n is None else n
     out = []
     for i in range(n):
         s = [0.0] * n
         s[i] = 1.0
-        out.append(ZCAAForm(s, 0.0, 0.0))
+        out.append(RAFForm(s, 0.0, 0.0))
     return out
 
 
-def pow_zcaa(form):
+def chebyshev_square(form):
     """Square of a form: Chebyshev slope a+b over its range [a, b] and residual
-    [-(a+b)^2/4, -ab] (Section 3.2 of the paper)."""
+    [-(a+b)^2/4, -ab] (Chebyshev linearization)."""
     a, b = form.get_range()
     if b - a < 1e-15:
         v = a * a
-        return ZCAAForm([0.0] * len(form.slopes), v, v)
+        return RAFForm([0.0] * len(form.slopes), v, v)
     m = a + b
     rlo, rhi = -m * m / 4.0, -a * b
     elo, ehi = (m * form.lo, m * form.hi) if m >= 0 else (m * form.hi, m * form.lo)
-    return ZCAAForm([s * m for s in form.slopes], rlo + elo, rhi + ehi)
+    return RAFForm([s * m for s in form.slopes], rlo + elo, rhi + ehi)
 
-
-def mul_zcaa(v, w):
-    """Product of two ZCAA forms (Section 3.4, Eq. 17 of the paper).
-
-    The midpoints of the residuals are absorbed into the linear part, every
-    quadratic and bilinear monomial is enclosed by its own envelope, and the
-    residual of the cross terms (Eq. 16) is evaluated at the four vertices.
-    """
-    box = get_box()
-    a, b = v.slopes, w.slopes
-    lv, hv, lw, hw = v.lo, v.hi, w.lo, w.hi
-    mv, mw = 0.5 * (lv + hv), 0.5 * (lw + hw)
-    nz = [i for i in range(len(a)) if a[i] != 0 or b[i] != 0]
-
-    # 1. linear part (midpoints of the residuals absorbed)
-    slopes = [mw * ai + mv * bi for ai, bi in zip(a, b)]
-    elo = ehi = 0.0
-
-    # 2. quadratic terms a_i b_i x_i^2 (Chebyshev envelope)
-    for i in nz:
-        c = a[i] * b[i]
-        if c == 0:
-            continue
-        p, q = box[i]
-        if q - p < 1e-15:
-            elo += c * p * p
-            ehi += c * p * p
-            continue
-        m = p + q
-        rlo, rhi = -m * m / 4.0, -p * q
-        slopes[i] += c * m
-        if c > 0:
-            elo += c * rlo
-            ehi += c * rhi
-        else:
-            elo += c * rhi
-            ehi += c * rlo
-
-    # 3. bilinear terms (a_i b_j + a_j b_i) x_i x_j (tangent plane at the center)
-    for k, i in enumerate(nz):
-        pi, qi = box[i]
-        for j in nz[k + 1:]:
-            c = a[i] * b[j] + a[j] * b[i]
-            if c == 0:
-                continue
-            pj, qj = box[j]
-            mi, mj = 0.5 * (pj + qj), 0.5 * (pi + qi)
-            r = (qi - pi) * (qj - pj) / 4.0
-            shift = mi * mj
-            slopes[i] += c * mi
-            slopes[j] += c * mj
-            if c > 0:
-                elo += c * (-r - shift)
-                ehi += c * (r - shift)
-            else:
-                elo += c * (r - shift)
-                ehi += c * (-r - shift)
-
-    # 4. residual of the cross terms, Eq. (16), evaluated at the four vertices
-    glo, ghi = float("inf"), float("-inf")
-    for rv in (lv, hv):
-        dv = rv - mv
-        for rw in (lw, hw):
-            dw = rw - mw
-            lo = hi = rv * rw
-            for i in nz:
-                c = dw * a[i] + dv * b[i]
-                if c > 0:
-                    lo += c * box[i][0]
-                    hi += c * box[i][1]
-                elif c < 0:
-                    lo += c * box[i][1]
-                    hi += c * box[i][0]
-            glo = min(glo, lo)
-            ghi = max(ghi, hi)
-
-    return ZCAAForm(slopes, elo + glo, ehi + ghi)
-
-
-# ---- other multiplication rules on the same representation ---------------------
-#
-# In noise coordinates, x_i = m_i + rho_i e_i with e_i in [-1, 1], and a form
-# v = sum_i a_i x_i + [lo, hi] is the reduced affine form
-#     v = v0 + sum_i alpha_i e_i + v_r xi,     v0 = a.m + mid([lo, hi]), alpha_i = a_i rho_i,
-# with v_r = rad([lo, hi]) and xi in [-1, 1] (Skalna and Hladik, Numer. Algor. 2017, Eq. 1).
-# The product of v and w = w0 + sum_i beta_i e_i + w_r eta is
-#     v w = v0 w0 + sum_i (v0 beta_i + w0 alpha_i) e_i + N,
-#     N = v0 w_r eta + w0 v_r xi + (alpha.e + v_r xi)(beta.e + w_r eta)        (*)
-# The rules below share this linear part, which is also the linear part of mul_zcaa,
-# and differ only in the interval that encloses N.
 
 def _noise(v):
     box = get_box()
@@ -228,7 +140,7 @@ def _assemble(v, w, nlo, nhi):
     w0, _, _, _ = _noise(w)
     slopes = [v0 * b + w0 * a for a, b in zip(v.slopes, w.slopes)]
     c = v0 * w0 - sum(s * mi for s, mi in zip(slopes, m))
-    return ZCAAForm(slopes, c + nlo, c + nhi)
+    return RAFForm(slopes, c + nlo, c + nhi)
 
 
 def _sorted_generators(gens):
@@ -279,50 +191,63 @@ def _uv_range(gens, c0=0.0, c1=0.0):
     return _uv_range_sorted(_sorted_generators(gens), c0, c1)
 
 
-def mul_faf2(v, w):
-    """'Standard' multiplication of reduced affine forms (Skalna and Hladik 2017, Eq. 5),
-    the rule of the fAF2 model of the Ibex affine plugin."""
+def nonlinear_enclosure(rule, x0, a, xr, y0, b, yr):
+    """Interval [lo, hi] enclosing the nonlinear part N of the product of the reduced affine forms
+    x = x0 + sum_i a_i e_i + xr ex and y = y0 + sum_i b_i e_i + yr ey (Eq. (3) of the paper):
+        N = x0 yr ey + y0 xr ex + (a.e + xr ex)(b.e + yr ey),
+    with rule 'faf2' (S), 'skalna' (SH) or 'exact' (E). The product is then
+        x0 y0 + sum_i (x0 b_i + y0 a_i) e_i + [lo, hi],
+    that is, center x0 y0 + (lo + hi)/2 and error term (hi - lo)/2. This function is self-contained
+    (plain lists of floats) and is the reference to port the multiplications to another library."""
+    a, b = list(a), list(b)
+    if rule == "faf2":          # standard multiplication (fAF2 in Ibex: AF2 with re-centering)
+        sx, sy = sum(abs(t) for t in a), sum(abs(t) for t in b)
+        c = 0.5 * sum(ai * bi for ai, bi in zip(a, b))
+        r = abs(y0) * xr + abs(x0) * yr + (sx + xr) * (sy + yr) - 0.5 * sum(abs(ai * bi) for ai, bi in zip(a, b))
+        return c - r, c + r
+    if rule == "skalna":        # Skalna and Hladik (2017, Eq. 10): exact range of R, plus |y0| xr + |x0| yr
+        rlo, rhi = _uv_range(list(zip(a, b)) + [(xr, 0.0), (0.0, yr)])
+        e = abs(y0) * xr + abs(x0) * yr
+        return rlo - e, rhi + e
+    if rule == "exact":         # exact range of N (Algorithm 1): N is affine in ex and in ey, so its extrema
+        sg = _sorted_generators(zip(a, b))      # are attained at ex, ey in {-1, 1}; generators sorted once
+        lo, hi = float("inf"), float("-inf")
+        for s in (-1.0, 1.0):                   # opposite corners give the same range (Lemma 3): two walks
+            ulo, uhi = _uv_range_sorted(sg, xr, s * yr)
+            k = abs(x0 * s * yr + y0 * xr)
+            lo, hi = min(lo, ulo - k), max(hi, uhi + k)
+        return lo, hi
+    raise ValueError(f"unknown rule {rule!r}")
+
+
+def _mul(rule, v, w):
     v0, a, vr, _ = _noise(v)
     w0, b, wr, _ = _noise(w)
-    sx, sy = sum(abs(t) for t in a), sum(abs(t) for t in b)
-    c = 0.5 * sum(ai * bi for ai, bi in zip(a, b))
-    r = abs(w0) * vr + abs(v0) * wr + (sx + vr) * (sy + wr) - 0.5 * sum(abs(ai * bi) for ai, bi in zip(a, b))
-    return _assemble(v, w, c - r, c + r)
+    lo, hi = nonlinear_enclosure(rule, v0, a, vr, w0, b, wr)
+    return _assemble(v, w, lo, hi)
+
+
+def mul_faf2(v, w):
+    """Standard multiplication S (Skalna and Hladik 2017, Eq. 5), the rule of the fAF2 model of Ibex."""
+    return _mul("faf2", v, w)
 
 
 def mul_skalna(v, w):
-    """Chebyshev minimum-error multiplication of Skalna and Hladik (2017, Eq. 10): exact range of
-    R = (alpha.e + v_r xi)(beta.e + w_r eta), plus |w0| v_r + |v0| w_r for the other terms of (*)."""
-    v0, a, vr, _ = _noise(v)
-    w0, b, wr, _ = _noise(w)
-    rlo, rhi = _uv_range(list(zip(a, b)) + [(vr, 0.0), (0.0, wr)])
-    e = abs(w0) * vr + abs(v0) * wr
-    return _assemble(v, w, rlo - e, rhi + e)
+    """Multiplication SH of Skalna and Hladik (2017, Eq. 10)."""
+    return _mul("skalna", v, w)
 
 
 def mul_exact(v, w):
-    """Exact range of N in (*). N is affine in xi and in eta, so its extrema are attained with
-    xi, eta in {-1, 1} (the four vertices of mul_zcaa); for each vertex, N is a product of two
-    shifted linear forms in e, whose exact range follows from _uv_range_sorted. The generators
-    are sorted once, so the cost is O(n log n) + 4 O(n)."""
-    v0, a, vr, _ = _noise(v)
-    w0, b, wr, _ = _noise(w)
-    sg = _sorted_generators(zip(a, b))          # sorted once, shared by the four vertices
-    nlo, nhi = float("inf"), float("-inf")
-    for xi in (-1.0, 1.0):
-        for eta in (-1.0, 1.0):
-            lo, hi = _uv_range_sorted(sg, vr * xi, wr * eta)
-            k = v0 * wr * eta + w0 * vr * xi
-            nlo, nhi = min(nlo, lo + k), max(nhi, hi + k)
-    return _assemble(v, w, nlo, nhi)
+    """Exact multiplication E (Algorithm 1 of the paper): O(n log n)."""
+    return _mul("exact", v, w)
 
 
-PRODUCTS = {"zcaa": mul_zcaa, "faf2": mul_faf2, "skalna": mul_skalna, "exact": mul_exact}
-_PRODUCT = "zcaa"
+PRODUCTS = {"faf2": mul_faf2, "skalna": mul_skalna, "exact": mul_exact}
+_PRODUCT = "exact"
 
 
 def set_product(name):
-    """Select the multiplication rule used by ZCAAForm.__mul__ (one of PRODUCTS)."""
+    """Select the multiplication rule used by RAFForm.__mul__ (one of PRODUCTS)."""
     global _PRODUCT
     if name not in PRODUCTS:
         raise ValueError(f"unknown product {name!r}; choose one of {sorted(PRODUCTS)}")
