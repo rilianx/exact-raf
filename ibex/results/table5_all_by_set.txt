@@ -1,0 +1,28 @@
+ALL       n=298 solved S/S+/SH/E=[203, 203, 203, 204] common=202 nodes S=1.032 SH=1.003 E=1.001 cpu SH=1.022 E=1.014 E/SH=0.998 24/17
+blowup    n= 20 solved S/S+/SH/E=[11, 11, 11, 11] common=11 nodes S=0.957 SH=1.004 E=0.822 cpu SH=1.031 E=0.787 E/SH=0.819 3/0
+coconutbenchmark-library2 n= 89 solved S/S+/SH/E=[51, 51, 51, 51] common=51 nodes S=1.043 SH=0.988 E=0.985 cpu SH=0.979 E=0.957 E/SH=0.997 3/3
+easy      n=102 solved S/S+/SH/E=[97, 97, 97, 98] common=97 nodes S=0.993 SH=1.016 E=1.047 cpu SH=1.041 E=1.086 E/SH=1.030 10/10
+hard      n=  8 solved S/S+/SH/E=[2, 2, 2, 2] common=2 nodes S=1.000 SH=0.897 E=0.901 cpu SH=0.780 E=0.808 E/SH=1.004 0/0
+medium    n= 42 solved S/S+/SH/E=[37, 37, 37, 37] common=36 nodes S=1.088 SH=0.998 E=0.975 cpu SH=1.040 E=0.996 E/SH=0.977 6/4
+others    n=  8 solved S/S+/SH/E=[4, 4, 4, 4] common=4 nodes S=1.834 SH=0.968 E=0.956 cpu SH=1.060 E=1.070 E/SH=0.988 2/0
+unsolved  n= 29 solved S/S+/SH/E=[1, 1, 1, 1] common=1 nodes S=1.000 SH=0.999 E=0.999 cpu SH=1.024 E=1.013 E/SH=1.000 0/0
+instancias con 4 variantes: 298 de 298
+diff himmel16 medium [('af2', 'TIME_OUT', 18730, 60.0), ('splus', 'TIME_OUT', 20174, 60.0), ('sh', 'SUCCESS', 27412, 47.5), ('exact', 'SUCCESS', 27412, 47.7)]
+diff ex14_1_7 medium [('af2', 'SUCCESS', 23008, 59.5), ('splus', 'SUCCESS', 23008, 58.6), ('sh', 'TIME_OUT', 22602, 60.0), ('exact', 'TIME_OUT', 21842, 60.0)]
+diff ship-1 easy [('af2', 'TIME_OUT', 149398, 60.0), ('splus', 'TIME_OUT', 146456, 60.0), ('sh', 'TIME_OUT', 134710, 60.0), ('exact', 'SUCCESS', 105286, 40.4)]
+---- |E/SH| > 1.1 o < 0.9
+ex14_2_4               easy       S+=128 SH=130 E=172 r=1.323
+launch                 medium     S+=516 SH=370 E=304 r=0.822
+ex7_2_1bis             easy       S+=70 SH=70 E=80 r=1.143
+hs119                  coconutbenchmark-library2 S+=978 SH=894 E=686 r=0.767
+hs109                  coconutbenchmark-library2 S+=262 SH=256 E=316 r=1.234
+ex7_2_10               easy       S+=12 SH=16 E=110 r=6.875
+ex8_5_5-1              easy       S+=66 SH=72 E=64 r=0.889
+hhfair1                blowup     S+=1608 SH=2416 E=296 r=0.123
+ex14_2_1               easy       S+=180 SH=130 E=186 r=1.431
+hs071                  easy       S+=324 SH=362 E=286 r=0.790
+ex7_3_5bis             medium     S+=5688 SH=4762 E=5606 r=1.177
+bearing                medium     S+=3562 SH=11024 E=5516 r=0.500
+process                easy       S+=198 SH=192 E=430 r=2.240
+ex14_2_9               easy       S+=36 SH=30 E=38 r=1.267
+ex14_2_5               easy       S+=16 SH=22 E=16 r=0.727

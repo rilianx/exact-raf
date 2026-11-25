@@ -2,12 +2,13 @@
 Variantes: af2 (S), splus (S+), sh (SH), exact (E). En synq y synt no hay cuadrados: S+ = S."""
 import csv, glob, math, collections, os, sys
 RES = sys.argv[1] if len(sys.argv) > 1 else "/home/user/ibex-local/results/interleaved"
-SETS = [("synq", "synq", 300), ("synt", "synt", 60), ("synp", "synp", 60), ("Ibex medium+hard", "ibexmh", 200)]
+RES_ALL = sys.argv[2] if len(sys.argv) > 2 else "/home/user/ibex-local/results/interleaved_all"
+SETS = [("synq", "synq", 300), ("synt", "synt", 60), ("synp", "synp", 60), ("Ibex", "all", 60)]
 R = collections.defaultdict(lambda: collections.defaultdict(dict))
-for f in glob.glob(os.path.join(RES, "rows", "*.csv")):
+for f in glob.glob(os.path.join(RES, "rows", "*.csv")) + glob.glob(os.path.join(RES_ALL, "rows", "*.csv")):
     for r in csv.reader(open(f)):
         st, inst = r[0].split("/")
-        if st.startswith("ref"): continue
+        if st.startswith("ref") or st == "ibexmh": continue
         R[st][inst][r[1].split("_")[1]] = dict(st=r[2], c=int(r[3] or 0), lb=float(r[4] or "nan"), ub=float(r[5] or "nan"), t=float(r[6] or "nan"))
 gm = lambda x: math.exp(sum(map(math.log, x)) / len(x)) if x else float("nan")
 ok = lambda r: r["st"] == "SUCCESS"
@@ -22,7 +23,7 @@ for name, key, tl in SETS:
     allok = [i for i in inst if all(ok(D[i][v]) for v in V)]
     rc = lambda v: gm([max(D[i][v]["c"], 1) / max(D[i]["splus"]["c"], 1) for i in allok])
     rt = lambda v: gm([max(D[i][v]["t"], 1e-2) / max(D[i]["splus"]["t"], 1e-2) for i in allok])
-    es = [D[i]["exact"]["c"] / max(D[i]["sh"]["c"], 1) for i in allok]
+    es = [max(D[i]["exact"]["c"], 1) / max(D[i]["sh"]["c"], 1) for i in allok]
     less, more = sum(x < 0.99 for x in es), sum(x > 1.01 for x in es)
     lines.append(f"{name} & {len(inst)} & {tl} & {solved[0]} & {solved[1]} & {solved[2]} & {solved[3]} & {rc('af2'):.2f} & {rc('sh'):.2f} & {rc('exact'):.2f} & {rt('sh'):.2f} & {rt('exact'):.2f} & {gm(es):.3f} & {less}/{more} \\\\")
     to = [i for i in inst if not any(ok(D[i][v]) for v in ["splus", "sh", "exact"])]
