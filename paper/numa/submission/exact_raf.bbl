@@ -1,0 +1,129 @@
+\begin{thebibliography}{10}
+
+\bibitem{combastolfi1993}
+J.L.D. Comba and J.~Stolfi.
+\newblock Affine arithmetic and its applications to computer graphics.
+\newblock In {\em Proceedings of SIBGRAPI'93 -- VI Simp{\'o}sio Brasileiro de
+  Computa\c{c}{\~a}o Gr{\'a}fica e Processamento de Imagens}, pages 9--18,
+  October 1993.
+
+\bibitem{stolfi1997self}
+Jorge Stolfi and Luiz Henrique~De Figueiredo.
+\newblock {\em Self-Validated Numerical Methods and Applications}.
+\newblock IMPA, Rio de Janeiro, 1997.
+\newblock Monograph, Course notes for the 21st Brazilian Mathematics Colloquium
+  held at IMPA, July 1997.
+
+\bibitem{defigueiredo2004affine}
+Luiz~Henrique de~Figueiredo and Jorge Stolfi.
+\newblock Affine arithmetic: concepts and applications.
+\newblock {\em Numerical Algorithms}, 37(1--4):147--158, 2004.
+\newblock \url{https://doi.org/10.1023/B:NUMA.0000049462.70970.b6}.
+
+\bibitem{messine2002extentions}
+Fr{\'e}d{\'e}ric Messine.
+\newblock Extensions of affine arithmetic: Application to unconstrained global
+  optimization.
+\newblock {\em Journal of Universal Computer Science}, 8(11):992--1015, 2002.
+\newblock \url{https://doi.org/10.3217/jucs-008-11-0992}.
+
+\bibitem{vu2009enhancing}
+Xuan-Ha Vu, Djamila Sam-Haroud, and Boi Faltings.
+\newblock Enhancing numerical constraint propagation using multiple inclusion
+  representations.
+\newblock {\em Annals of Mathematics and Artificial Intelligence},
+  55(3--4):295--354, 2009.
+\newblock \url{https://doi.org/10.1007/s10472-009-9129-6}.
+
+\bibitem{skalna2017new}
+Iwona Skalna and Milan Hlad{\'\i}k.
+\newblock A new algorithm for chebyshev minimum-error multiplication of reduced
+  affine forms.
+\newblock {\em Numerical Algorithms}, 76(4):1131--1152, 2017.
+\newblock \url{https://doi.org/10.1007/s11075-017-0300-6}.
+
+\bibitem{ninin2015reliable}
+Jordan Ninin, Fr{\'e}d{\'e}ric Messine, and Pierre Hansen.
+\newblock A reliable affine relaxation method for global optimization.
+\newblock {\em 4OR}, 13(3):247--277, 2015.
+\newblock \url{https://doi.org/10.1007/s10288-014-0269-0}.
+
+\bibitem{kolev2004improved}
+Lubomir~V. Kolev.
+\newblock An improved interval linearization for solving nonlinear problems.
+\newblock {\em Numerical Algorithms}, 37(1--4):213--224, 2004.
+\newblock \url{https://doi.org/10.1023/B:NUMA.0000049468.03595.4c}.
+
+\bibitem{miyajima2003best}
+Shinya Miyajima, Takatomi Miyata, and Masahide Kashiwagi.
+\newblock On the best multiplication of the affine arithmetic.
+\newblock {\em IEICE Transactions on Fundamentals of Electronics,
+  Communications and Computer Sciences (Japanese Edition)}, J86-A(2):150--159,
+  2003.
+\newblock In Japanese.
+
+\bibitem{kvlib}
+Masahide Kashiwagi.
+\newblock kv -- a {C}++ library for verified numerical computation.
+\newblock \url{https://github.com/mskashi/kv}, file \texttt{kv/affine.hpp}.
+\newblock Accessed 2026.
+
+\bibitem{rump2015implementation}
+Siegfried~M. Rump and Masahide Kashiwagi.
+\newblock Implementation and improvements of affine arithmetic.
+\newblock {\em Nonlinear Theory and Its Applications, IEICE}, 6(3):341--359,
+  2015.
+\newblock \url{https://doi.org/10.1587/nolta.6.341}.
+
+\bibitem{ziegler1995lectures}
+G{\"u}nter~M. Ziegler.
+\newblock {\em Lectures on Polytopes}, volume 152 of {\em Graduate Texts in
+  Mathematics}.
+\newblock Springer, New York, 1995.
+\newblock \url{https://doi.org/10.1007/978-1-4613-8431-1}.
+
+\bibitem{skalna2013minrange}
+Iwona Skalna.
+\newblock Algorithm for min-range multiplication of affine forms.
+\newblock {\em Numerical Algorithms}, 63(4):601--614, 2013.
+\newblock \url{https://doi.org/10.1007/s11075-012-9644-0}.
+
+\bibitem{shewchuk1997adaptive}
+Jonathan~Richard Shewchuk.
+\newblock Adaptive precision floating-point arithmetic and fast robust
+  geometric predicates.
+\newblock {\em Discrete \& Computational Geometry}, 18(3):305--363, 1997.
+\newblock \url{https://doi.org/10.1007/PL00009321}.
+
+\bibitem{higham2002accuracy}
+Nicholas~J. Higham.
+\newblock {\em Accuracy and Stability of Numerical Algorithms}.
+\newblock SIAM, Philadelphia, second edition, 2002.
+\newblock \url{https://doi.org/10.1137/1.9780898718027}.
+
+\bibitem{chabert2009}
+Gilles Chabert and Luc Jaulin.
+\newblock Contractor programming.
+\newblock {\em Artificial Intelligence}, 173(11):1079--1100, 2009.
+\newblock \url{https://doi.org/10.1016/j.artint.2009.03.002}.
+
+\bibitem{ibexaffine}
+Jordan Ninin, Gilles Chabert, et~al.
+\newblock {ibex-affine}: affine arithmetic plugin of the {Ibex} library.
+\newblock \url{https://github.com/ibex-team/ibex-affine}.
+\newblock Accessed 2026.
+
+\bibitem{araya2017}
+Ignacio Araya and Bertrand Neveu.
+\newblock lsmear: a variable selection strategy for interval branch and bound
+  solvers.
+\newblock {\em Journal of Global Optimization}, 71(3):483--500, 2018.
+\newblock \url{https://doi.org/10.1007/s10898-017-0569-y}.
+
+\bibitem{coconut}
+Continuous Constraints.
+\newblock {COCONUT}.
+\newblock \url{https://arnold-neumaier.at/glopt/coconut/index.html}, 2024.
+\newblock Accessed: 2024-09-12.
+
+\end{thebibliography}
