@@ -23,6 +23,7 @@ s = s.replace(r"\usepackage[a4paper,margin=27mm]{geometry}",
 s = s.replace(r"\begin{algorithm}[t]", r"\begin{algorithm}[H]")
 s = s.replace(r"\begin{figure}[t]", r"\begin{figure}[H]")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/square_cheb.pdf}", r"\includegraphics[height=0.55\textheight]{../fig/square_cheb_kindle.pdf}")
+s = s.replace(r"\includegraphics[width=\linewidth]{fig/solver_scatter.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/solver_scatter_kindle.pdf}")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/zonotope.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}")
 s = fit(s)
 s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" + m.group(1) + "_k.tex}", s)
