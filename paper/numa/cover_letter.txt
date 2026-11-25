@@ -1,7 +1,7 @@
 Dear Editor,
 
 We submit the manuscript "Exact multiplication of reduced affine forms", by Ignacio Araya,
-Daniel Miranda, Victor Reyes and Juan Geraldo, for consideration in Numerical Algorithms.
+Daniel Miranda, Victor Reyes, Juan Geraldo and Eva Ponce, for consideration in Numerical Algorithms.
 
 Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation
 errors in a single error term; the width of the enclosure of a product determines the quality of
