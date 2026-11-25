@@ -29,6 +29,11 @@ The manuscript is original, has not been published before and is not under consi
 publication elsewhere. All the authors have approved the submission. The authors have no competing
 interests to declare.
 
+Suggested reviewers:
+- Milan Hladik, Department of Applied Mathematics, Faculty of Mathematics and Physics, Charles
+  University, Prague, Czech Republic. hladik@kam.mff.cuni.cz, https://kam.mff.cuni.cz/~hladik/
+- Jordan Ninin, Lab-STICC, ENSTA Bretagne, Brest, France. jordan.ninin@ensta-bretagne.fr
+
 Sincerely,
 
 Ignacio Araya (corresponding author)
