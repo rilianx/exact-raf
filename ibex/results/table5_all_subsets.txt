@@ -1,0 +1,12 @@
+sin stats: 1 ['robot']
+s_mas_ancho frac>0: n=110 solved=[70, 70, 69, 70] common=69 nodes S=1.024 SH=0.980 E=0.976 cpu SH=1.012 E=0.992 E/SH=0.996 22/16
+s_mas_ancho_10 frac>0: n=94 solved=[57, 57, 56, 57] common=56 nodes S=1.034 SH=0.945 E=0.983 cpu SH=0.979 E=1.002 E/SH=1.040 18/13
+s_mas_ancho frac>0.01: n=109 solved=[70, 70, 69, 69] common=69 nodes S=1.024 SH=0.980 E=0.976 cpu SH=1.012 E=0.992 E/SH=0.996 22/16
+s_mas_ancho_10 frac>0.01: n=71 solved=[37, 37, 36, 36] common=36 nodes S=0.984 SH=0.923 E=0.985 cpu SH=0.932 E=0.989 E/SH=1.066 6/11
+s_mas_ancho frac>0.1: n=103 solved=[67, 67, 66, 66] common=66 nodes S=1.028 SH=0.957 E=0.994 cpu SH=0.996 E=1.017 E/SH=1.039 20/16
+s_mas_ancho_10 frac>0.1: n=43 solved=[22, 22, 22, 22] common=22 nodes S=0.974 SH=0.924 E=0.936 cpu SH=0.951 E=0.946 E/SH=1.013 4/6
+Counter({'easy': 30, 'medium': 27, 'coconutbenchmark-library2': 25, 'blowup': 10, 'unsolved': 8, 'hard': 6, 'others': 4})
+con productos acoplados: 108
+acoplados>0: n=108 common=65 E/SH nodes=0.994 cpu=0.974 24/17 solved SH/E=65/66
+acoplados>0.01: n=105 common=64 E/SH nodes=0.994 cpu=0.975 24/17 solved SH/E=64/65
+acoplados>0.1: n=82 common=49 E/SH nodes=1.010 cpu=0.989 20/16 solved SH/E=49/50

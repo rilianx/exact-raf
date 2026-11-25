@@ -1,0 +1,28 @@
+diff -ru a/src/arithmetic/ibex_Affine2_fAF2.cpp b/src/arithmetic/ibex_Affine2_fAF2.cpp
+--- a/src/arithmetic/ibex_Affine2_fAF2.cpp	2026-11-25 10:55:55.654870881 +0000
++++ b/src/arithmetic/ibex_Affine2_fAF2.cpp	2026-11-25 10:55:55.640953333 +0000
+@@ -702,6 +702,12 @@
+ 				                                         affine_mode() == AFFINE_EXACT);
+ 				const double nmid = Nenc.mid();
+ 				nrad = (Nenc - nmid).mag();
++				{	// [parche 0021] diagnostico: radio no lineal de S (fAF2) en aritmetica de punto flotante
++					const double srad = std::fabs(y._elt._val[0])*ex + std::fabs(xVal0)*ey + (ex+Sx)*(ey+Sy) - 0.5*Sxy;
++					ExactMultStats& est = exact_mult_stats();
++					if (srad > nrad*(1+1e-6) + 1e-300) est.s_wider++;
++					if (srad > nrad*1.1) est.s_wider_big++;
++				}
+ 				eee = 0.0;
+ 				ppp = nmid;
+ 			} else if (use_raak) {
+diff -ru a/src/arithmetic/ibex_ExactMult.h b/src/arithmetic/ibex_ExactMult.h
+--- a/src/arithmetic/ibex_ExactMult.h	2026-11-25 10:55:55.654329347 +0000
++++ b/src/arithmetic/ibex_ExactMult.h	2026-11-25 10:55:55.639561677 +0000
+@@ -49,6 +49,8 @@
+ 	long exact_walks = 0;     // productos en que AFFINE_EXACT hizo las cuatro vueltas
+ 	long sq_exact = 0;        // [parche 0020] cuadrados con el rango exacto (IBEX_SQR_EXACT=1) y error > ||x||_1
+ 	long sq_tighter = 0;      // ... en que el rango exacto fue mas angosto que Chebyshev
++	long s_wider = 0;         // [parche 0021] productos en que el radio no lineal de S supera al de SH/E en mas de 1e-6 relativo
++	long s_wider_big = 0;     // ... en mas de 10% relativo
+ };
+ 
+ inline ExactMultStats& exact_mult_stats() {
