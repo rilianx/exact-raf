@@ -27,10 +27,10 @@
 \newcommand{\mmid}{\operatorname{mid}}
 
 \title{Exact multiplication of reduced affine forms}
-\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reyes$^{2}$, Juan Geraldo$^{1}$\\[2mm]
+\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reyes$^{2}$, Juan Geraldo$^{1}$, Eva Ponce$^{1}$\\[2mm]
 \small $^{1}$Escuela de Ingenier\'{\i}a Inform\'atica, Pontificia Universidad Cat\'olica de Valpara\'{\i}so, Valpara\'{\i}so, Chile\\
 \small $^{2}$Facultad de Ingenier\'{\i}a y Ciencias, Universidad Diego Portales, Santiago, Chile\\[1mm]
-\small \texttt{ignacio.araya@pucv.cl}, \texttt{daniel.miranda.v@mail.pucv.cl},\\ \small \texttt{victor.reyes1@mail.udp.cl}, \texttt{juan.geraldo.u@mail.pucv.cl}\\[1mm]
+\small \texttt{ignacio.araya@pucv.cl}, \texttt{daniel.miranda.v@mail.pucv.cl},\\ \small \texttt{victor.reyes1@mail.udp.cl}, \texttt{juan.geraldo.u@mail.pucv.cl}, \texttt{eva.ponce.f@mail.pucv.cl}\\[1mm]
 \small ORCID: I.~Araya 0000-0001-5882-6217, V.~Reyes 0000-0002-3358-3906\\[1mm]
 \small $^{*}$Corresponding author}
 \date{}
@@ -511,6 +511,9 @@ COCONUT & 110/298 & 60 & 70 & 70 & 69 & 70 & 1.02 & 0.98 & 0.98 & 1.01 & 0.99 & 
 The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from the ranges of shifted products over a planar zonotope at the vertices of the square of the error symbols; by central symmetry, two of them suffice, and both are computed in a single walk along the boundary, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error or a zero center, and can be narrower otherwise, by at most a factor $3/2$ and by at most $2\min(|x_0|y_r,|y_0|x_r)$. Its effect on range enclosures is large on products of forms that already carry errors, such as the squares in the Colville and Dixon functions.
 
 In an interval branch-and-bound optimizer, the main practical effect comes from computing the quadratic part exactly, which SH and E share: with respect to the standard multiplication, which is AF2 with re-centering, the number of nodes is divided by about four on problems dominated by products of compound factors, even when the standard multiplication is given the Chebyshev square; on classical benchmarks, where most products involve single variables, the square matters more than the product. The new multiplication adds a further 4--8\% where the theory predicts a gain, and coincides with SH elsewhere. Open questions are a linear-time version of Algorithm~\ref{alg:exact}, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
+
+\section*{Acknowledgments}
+We thank Angelo Alvear and Juan Aramayo, students who took part in early versions of this research.
 
 \section*{Statements and Declarations}
 \textbf{Funding.} This work was supported by the Agencia Nacional de Investigaci\'on y Desarrollo (ANID), Chile, through FONDECYT Regular project No.~1260159.

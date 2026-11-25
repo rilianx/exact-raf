@@ -25,10 +25,10 @@ s = s.replace(r"\begin{figure}[t]", r"\begin{figure}[H]")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/square_cheb.pdf}", r"\includegraphics[height=0.55\textheight]{../fig/square_cheb_kindle.pdf}")
 # bloque de autores angosto para el Kindle
 s = s.replace(r"\small ORCID: I.~Araya 0000-0001-5882-6217, V.~Reyes 0000-0002-3358-3906", r"\small ORCID: I.~Araya 0000-0001-5882-6217,\\ \small V.~Reyes 0000-0002-3358-3906")
-s = s.replace(r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reyes$^{2}$, Juan Geraldo$^{1}$", r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$,\\ Victor Reyes$^{2}$, Juan Geraldo$^{1}$")
+s = s.replace(r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reyes$^{2}$, Juan Geraldo$^{1}$, Eva Ponce$^{1}$", r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$,\\ Victor Reyes$^{2}$, Juan Geraldo$^{1}$,\\ Eva Ponce$^{1}$")
 s = s.replace(r"Pontificia Universidad Cat\'olica de Valpara\'{\i}so, Valpara\'{\i}so, Chile\\", r"\\ \small Pontificia Universidad Cat\'olica de Valpara\'{\i}so,\\ \small Valpara\'{\i}so, Chile\\")
 s = s.replace(r"Facultad de Ingenier\'{\i}a y Ciencias, Universidad Diego Portales, Santiago, Chile", r"Facultad de Ingenier\'{\i}a y Ciencias,\\ \small Universidad Diego Portales, Santiago, Chile")
-s = s.replace(r"\texttt{ignacio.araya@pucv.cl}, \texttt{daniel.miranda.v@mail.pucv.cl},\\ \small \texttt{victor.reyes1@mail.udp.cl}, \texttt{juan.geraldo.u@mail.pucv.cl}", r"\texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}")
+s = s.replace(r"\texttt{ignacio.araya@pucv.cl}, \texttt{daniel.miranda.v@mail.pucv.cl},\\ \small \texttt{victor.reyes1@mail.udp.cl}, \texttt{juan.geraldo.u@mail.pucv.cl}, \texttt{eva.ponce.f@mail.pucv.cl}", r"\texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}\\ \small \texttt{eva.ponce.f@mail.pucv.cl}")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/zonotope.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}")
 s = fit(s)
 s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" + m.group(1) + "_k.tex}", s)
@@ -58,7 +58,7 @@ for a, b in BREAKS:
 s = s.replace(r"\bibliography{bibliography}", r"\bibliography{../bibliography}")
 open(os.path.join(HERE, "exact_raf_kindle.tex"), "w").write(s)
 
-for name in ["table_rules_random", "table_cost"]:
+for name in ["table_rules_random", "table_cost", "table_sh"]:
     open(os.path.join(HERE, name + "_k.tex"), "w").write(fit(open(os.path.join(RES, name + ".tex")).read()))
 
 # tabla del solver en dos bloques
