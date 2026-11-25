@@ -1,9 +1,9 @@
-"""Figura 2: el cuadrado de x = 1 + eps_1 + 2 eps_x (x0 = 1, ||x||_1 = 1, xr = 2), t = x in [-2, 4].
-(a) imagen clasica de Chebyshev de t^2 en una variable: banda de pendiente 2 x0 = 2, t^2 in 2t - 1 + [0, 9].
-(b) con el error hay dos variables, u = e^T x y eps_x: N_2(u, eps_x) = 4 eps_x + (u + 2 eps_x)^2 sobre el
-    rectangulo [-1,1]^2; la cota de Chebyshev (-4) es su minimo en (u, eps_x) = (2, -1), fuera del rectangulo;
-    el minimo en el rectangulo es -3, en (1, -1).
-(c) cortes: una parabola en u por cada valor de eps_x; la forma reducida las encierra con un solo intervalo.
+"""Figura 2: el cuadrado de x = 1 + eps_1 + 2 eps_x (x0 = 1, ||x||_1 = 1, xr = 2).
+(a) imagen clasica: en el plano (t, t^2), t = x in [-2, 4], la banda de Chebyshev de pendiente 2 es la mas angosta.
+(b) la forma reducida expresa x^2 en funcion de u = e^T x solamente (el simbolo de error no es una coordenada del
+    resultado): en el plano (u, x^2) los valores posibles forman una region (para cada u, t recorre un intervalo de
+    ancho 2 xr). La banda de Chebyshev, 1 + 2u + [-4, 13], no es la mas angosta de pendiente 2 que contiene la
+    region; la exacta es 1 + 2u + [-3, 13].
     python make_fig_square.py [kindle]"""
 import sys
 import numpy as np
@@ -11,60 +11,41 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 KINDLE = len(sys.argv) > 1 and sys.argv[1] == "kindle"
-plt.rcParams.update({"font.size": 12 if KINDLE else 8.5, "font.family": "serif", "mathtext.fontset": "stix"})
-fig, ax = plt.subplots(3, 1, figsize=(3.4, 8.4)) if KINDLE else plt.subplots(1, 3, figsize=(7.0, 2.6))
+plt.rcParams.update({"font.size": 12 if KINDLE else 9, "font.family": "serif", "mathtext.fontset": "stix"})
+fig, ax = plt.subplots(2, 1, figsize=(3.4, 6.0)) if KINDLE else plt.subplots(1, 2, figsize=(6.8, 2.9), sharey=True)
 x0, S, xr = 1.0, 1.0, 2.0
-fs = 9.5 if KINDLE else 7.5
-ts = 11 if KINDLE else 8.5
-N2 = lambda u, e: 2 * x0 * xr * e + (u + xr * e) ** 2
+fs = 9.5 if KINDLE else 8
+ts = 11 if KINDLE else 9
 
-# (a) Chebyshev en una variable
+# (a) plano (t, t^2)
 a = ax[0]
 t = np.linspace(-2, 4, 300)
-a.fill_between(t, 2 * t - 1, 2 * t + 8, color="0.88", lw=0)
+a.fill_between(t, 2 * t - 1, 2 * t + 8, color="0.9", lw=0)
 a.plot(t, 2 * t - 1, "k--", lw=1); a.plot(t, 2 * t + 8, "k--", lw=1)
 a.plot(t, t ** 2, "k-", lw=1.8)
-a.set_xlabel(r"$t=\hat x\in[-2,4]$"); a.set_ylabel(r"$t^2$")
-a.set_title(r"(a) one variable: $t^2\in 2t-1+[0,9]$", fontsize=ts)
+a.set_xlabel(r"$t=\hat x=1+\varepsilon_1+2\varepsilon_x\in[-2,4]$")
+a.set_ylabel(r"$\hat x^2$")
+a.set_title(r"(a) in $(t,t^2)$" if KINDLE else r"(a) in $(t,t^2)$: Chebyshev band $2t-1+[0,9]$", fontsize=ts)
+a.set_ylim(-6, 18)
 
-# (b) dos variables: curvas de nivel de N_2 sobre (u, eps_x)
+# (b) plano (u, x^2): region de valores posibles
 b = ax[1]
-uu, ee = np.meshgrid(np.linspace(-1.3, 2.6, 400), np.linspace(-1.35, 1.35, 300))
-cs = b.contour(uu, ee, N2(uu, ee), levels=[-3.5, -3, -1, 2, 6], colors="0.45", linewidths=0.7)
-b.clabel(cs, fmt="%g", fontsize=fs - 1, manual=[(1.6, 0.3), (-0.3, -0.75), (0.1, 0.55), (1.55, -0.55), (1.95, -0.8)])
-b.add_patch(plt.Rectangle((-S, -1), 2 * S, 2, fill=True, facecolor="0.9", edgecolor="k", lw=1.2, zorder=0))
-b.plot(xr, -1, "o", mfc="white", mec="k", ms=6, zorder=5)
-b.plot(S, -1, "o", color="k", ms=5, zorder=5)
-b.annotate(r"$-4$ (Chebyshev)", xy=(xr, -1), xytext=(1.25, -0.25), fontsize=fs, arrowprops=dict(arrowstyle="->", lw=0.7))
-b.annotate(r"$\min N_2=-3$", xy=(S, -1), xytext=(-1.2, -0.62), fontsize=fs, arrowprops=dict(arrowstyle="->", lw=0.7))
-b.plot(S, 1, "^", color="k", ms=6, zorder=5)
-b.annotate(r"$\max N_2=13$", xy=(S, 1), xytext=(1.2, 1.05), fontsize=fs, arrowprops=dict(arrowstyle="->", lw=0.7))
-b.set_xlim(-1.3, 2.6); b.set_ylim(-1.35, 1.35)
-b.set_xlabel(r"$u=e^Tx$"); b.set_ylabel(r"$\varepsilon_x$")
-b.set_title(r"(b) two variables: $N_2(u,\varepsilon_x)$", fontsize=ts)
-
-# (c) cortes: parabolas en u para cada eps_x
-c = ax[2]
 u = np.linspace(-S, S, 300)
-xis = np.linspace(-1, 1, 9)
-allv = np.array([N2(u, xi) for xi in xis])
-c.fill_between(u, allv.min(0), allv.max(0), color="0.88", lw=0)
-for v in allv: c.plot(u, v, color="0.6", lw=0.7)
-c.plot(u, allv[0], "k-", lw=1.8)
-ue = np.linspace(S, xr + 0.3, 100)
-c.plot(ue, N2(ue, -1), "k--", lw=1.1)
-c.plot(xr, -2 * x0 * xr, "o", mfc="white", mec="k", ms=6)
-c.plot(S, N2(S, -1), "o", color="k", ms=5)
-c.axhline(-4, color="k", ls="--", lw=0.8); c.axhline(-3, color="k", ls=":", lw=1.1)
-c.axvline(S, color="0.5", lw=0.6); c.axvline(-S, color="0.5", lw=0.6)
-c.text(-1.0, -2.6, r"$\min N_2=-3$", fontsize=fs); c.text(-1.0, -5.6, r"Chebyshev $=-4$", fontsize=fs)
-hi = N2(S, 1)
-c.plot(S, hi, "^", color="k", ms=6)
-c.axhline(hi, color="k", ls="-", lw=0.6)
-c.text(-1.0, hi + 0.6, r"$\max N_2=13$", fontsize=fs)
-c.set_xlim(-1.15, 2.45); c.set_ylim(-6.2, 16.5)
-c.set_xlabel(r"$u=e^Tx$"); c.set_ylabel(r"$N_2$")
-c.set_title(r"(c) slices at fixed $\varepsilon_x$", fontsize=ts)
+lo = np.array([min(((x0 + uu + xr * e) ** 2) for e in np.linspace(-1, 1, 801)) for uu in u])
+hi = (x0 + u + xr) ** 2
+b.fill_between(u, lo, hi, color="0.75", lw=0)
+b.plot(u, x0 ** 2 + 2 * x0 * u - 4, "k--", lw=1)                    # Chebyshev, inferior
+b.plot(u, x0 ** 2 + 2 * x0 * u + 13, "k-", lw=1)                    # superior (igual en ambos)
+b.plot(u, x0 ** 2 + 2 * x0 * u - 3, "k-", lw=1.4)                   # exacta, inferior
+b.plot(S, 0, "o", color="k", ms=4); b.plot(S, 16, "o", color="k", ms=4)
+b.text(-0.6, 6, "possible values\nof $\\hat x^2$", fontsize=fs)
+b.text(-0.95, 14.4, r"$1+2u+13$ (both)", fontsize=fs)
+b.text(0.05, -4.9, r"Chebyshev: $1+2u-4$", fontsize=fs)
+b.text(-0.95, -1.2, r"exact: $1+2u-3$", fontsize=fs)
+b.set_xlabel(r"$u=e^Tx=\varepsilon_1\in[-1,1]$")
+b.set_title(r"(b) in $(u,\hat x^2)$" if KINDLE else r"(b) in $(u,\hat x^2)$: a region, not a curve", fontsize=ts)
+b.set_xlim(-1.05, 1.05); b.set_ylim(-6, 18)
+if KINDLE: b.set_ylabel(r"$\hat x^2$")
 fig.tight_layout()
 name = "square_cheb_kindle" if KINDLE else "square_cheb"
 fig.savefig(name + ".pdf"); fig.savefig(name + ".png", dpi=150)
