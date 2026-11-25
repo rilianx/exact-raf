@@ -39,10 +39,10 @@
 \small \texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}\\ \small \texttt{eva.ponce.f@mail.pucv.cl}\\[1mm]
 \small ORCID: I.~Araya 0000-0001-5882-6217,\\ \small V.~Reyes 0000-0002-3358-3906\\[1mm]
 \small $^{*}$Corresponding author}
-\date{\small Kindle version v40 (25 Nov 2026)}
+\date{\small Kindle version v41 (25 Nov 2026)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v40}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v41}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -381,7 +381,7 @@ For squares, both SH and E use the SH bound, that is, the Chebyshev linearizatio
 
 We implemented the three multiplications S, SH and E twice, for two purposes.
 \begin{itemize}
-\item A \emph{reference implementation in Python}, in double precision without outward rounding, used for the range enclosures of Section~\ref{sec:ranges}. A form is written in the variables, as a linear function of the variables plus a residual interval; over a box, this is the reduced affine form whose noise symbols are the normalized variables and whose error term is the radius of the residual. Each multiplication keeps the linear part of the product and computes the interval that encloses $N$, by formula~S, by the formula of Skalna and Hlad\'{\i}k, or by Algorithm~\ref{alg:exact}. Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products.
+\item A \emph{reference implementation in Python}, in double precision without outward rounding, used for the range enclosures of Section~\ref{sec:ranges}. Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products.
 \item A \emph{rigorous implementation in C++} in the affine arithmetic of the Ibex library, following Section~\ref{sec:rigor}, used to validate the formulae on whole expressions, to measure their cost (Section~\ref{sec:ibex}) and in the global optimizer IbexOpt (Section~\ref{sec:solver}).
 \end{itemize}
 Both implementations, the instances and the scripts that produce the tables are available in the repository given in the Statements and Declarations. The code was written with the help of an AI assistant (see the Statements and Declarations).
