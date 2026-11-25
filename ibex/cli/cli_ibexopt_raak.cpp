@@ -239,8 +239,8 @@ int main(int argc, char** argv) {
     {
         {
             const ibex::ExactMultStats& e = ibex::exact_mult_stats();
-            std::printf("EXACT-MULT stats: productos=%ld con_errores=%ld acoplados=%ld cuatro_vueltas=%ld\n",
-                        e.products, e.with_errors, e.coupled, e.exact_walks);
+            std::printf("EXACT-MULT stats: productos=%ld con_errores=%ld acoplados=%ld cuatro_vueltas=%ld cuadrados_exactos=%ld mas_angostos=%ld s_mas_ancho=%ld s_mas_ancho_10=%ld\n",
+                        e.products, e.with_errors, e.coupled, e.exact_walks, e.sq_exact, e.sq_tighter, e.s_wider, e.s_wider_big);
         }
         const ibex::TrigLinStats& t = ibex::trig_lin_stats();
         const long total = t.sin_ch + t.cos_ch + t.sin_mr + t.cos_mr + t.sin_mr_itv + t.cos_mr_itv

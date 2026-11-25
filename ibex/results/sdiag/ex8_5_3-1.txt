@@ -1,0 +1,1 @@
+EXACT-MULT stats: productos=3536 con_errores=272 acoplados=272 cuatro_vueltas=272 cuadrados_exactos=0 mas_angostos=0 s_mas_ancho=807 s_mas_ancho_10=10

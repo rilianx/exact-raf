@@ -1,9 +1,0 @@
-== opt-ibexmh-t200/rows: 38 instancias completas
-   resueltas por todas: 33
-   variante   resueltas  celdas/af2  cpu/af2  (gm, resueltas por todas)
-   art_af2_k0       33       1.000     1.000
-   art_sh_k0        35       0.891     0.900
-   art_exact_k0     35       0.892     0.900
-   exact/sh celdas gm=1.002  menos=4 igual=26 mas=3
-   no resueltas por ninguna: 3; gap (ub-lb) gm vs af2: af2=nan sh=nan exact=nan
-   inconsistencias f*: 0

@@ -1,0 +1,26 @@
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lrrrrrr}
+\toprule
+ & & & \multicolumn{4}{c}{Solved} \\
+\cmidrule(lr){4-7}
+Set & Inst. & $t_{\max}$ & S & S$^+$ & SH & E \\
+\midrule
+synq & 78 & 300 & 45 & 45 & 60 & 60 \\
+synt & 24 & 60 & 19 & 19 & 20 & 20 \\
+synp & 18 & 60 & 18 & 18 & 18 & 18 \\
+COCONUT & 110/298 & 60 & 70 & 70 & 69 & 70 \\
+\bottomrule
+\end{tabular}\end{adjustbox}
+
+\medskip
+\begin{adjustbox}{max width=\linewidth}\begin{tabular}{lrrrrrrr}
+\toprule
+ & \multicolumn{3}{c}{Nodes / S$^+$} & \multicolumn{2}{c}{CPU / S$^+$} & \multicolumn{2}{c}{E vs SH} \\
+\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-8}
+Set & S & SH & E & SH & E & nodes & $<$/$>$ \\
+\midrule
+synq & 1.00 & 0.26 & 0.26 & 0.32 & 0.34 & 0.996 & 3/3 \\
+synt & 1.00 & 0.67 & 0.62 & 0.74 & 0.69 & 0.921 & 11/1 \\
+synp & 1.00 & 0.83 & 0.79 & 0.89 & 0.86 & 0.960 & 8/2 \\
+COCONUT & 1.02 & 0.98 & 0.98 & 1.01 & 0.99 & 0.996 & 22/16 \\
+\bottomrule
+\end{tabular}\end{adjustbox}
