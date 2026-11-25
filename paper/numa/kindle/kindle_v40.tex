@@ -1,7 +1,4 @@
 \documentclass[10pt]{article}
-%DIF LATEXDIFF DIFFERENCE FILE
-%DIF DEL /tmp/claude-0/-home-user/d9aaf6b6-3621-5cc9-b938-4d7649b13fc7/scratchpad/old38.tex   Wed Nov 25 13:15:22 2026
-%DIF ADD exact_raf_kindle.tex                                                                 Wed Nov 25 13:15:37 2026
 \usepackage[paperwidth=100mm,paperheight=135mm,left=4mm,right=4mm,top=5mm,bottom=7mm,footskip=4mm]{geometry}
 \usepackage{float}
 \usepackage{caption}
@@ -9,7 +6,6 @@
 \usepackage{adjustbox}
 \sloppy
 \setlength{\emergencystretch}{3em}
-\usepackage[T1]{fontenc}
 \usepackage{mathptmx}
 \usepackage{amsmath,amssymb,amsthm}
 \usepackage{booktabs}
@@ -37,103 +33,17 @@
 \newcommand{\mmid}{\operatorname{mid}}
 
 \title{Exact multiplication of reduced affine forms}
-\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$,\\ Victor Reyes$^{2}$, Juan Geraldo$^{1}$\DIFaddbegin \DIFadd{,}\\ \DIFadd{Eva Ponce$^{1}$}\DIFaddend \\[2mm]
+\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$,\\ Victor Reyes$^{2}$, Juan Geraldo$^{1}$,\\ Eva Ponce$^{1}$\\[2mm]
 \small $^{1}$Escuela de Ingenier\'{\i}a Inform\'atica, \\ \small Pontificia Universidad Cat\'olica de Valpara\'{\i}so,\\ \small Valpara\'{\i}so, Chile\\
 \small $^{2}$Facultad de Ingenier\'{\i}a y Ciencias,\\ \small Universidad Diego Portales, Santiago, Chile\\[1mm]
-\small \texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}\DIFaddbegin \\ \small \DIFadd{\texttt{eva.ponce.f@mail.pucv.cl}}\DIFaddend \\[1mm]
+\small \texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}\\ \small \texttt{eva.ponce.f@mail.pucv.cl}\\[1mm]
 \small ORCID: I.~Araya 0000-0001-5882-6217,\\ \small V.~Reyes 0000-0002-3358-3906\\[1mm]
 \small $^{*}$Corresponding author}
-\date{\small Kindle version \DIFdelbegin \DIFdel{v38 }\DIFdelend \DIFaddbegin \DIFadd{v39 }\DIFaddend (25 Nov 2026)}
+\date{\small Kindle version v40 (25 Nov 2026)}
 
 \usepackage{fancyhdr}
-%DIF 45c45
-%DIF < \fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v38}}
-%DIF -------
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v39}} %DIF > 
-%DIF -------
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v40}}
 \pagestyle{plain}
-%DIF PREAMBLE EXTENSION ADDED BY LATEXDIFF
-%DIF CFONT PREAMBLE %DIF PREAMBLE
-\RequirePackage{color}\definecolor{RED}{rgb}{1,0,0}\definecolor{BLUE}{rgb}{0,0,1} %DIF PREAMBLE
-\DeclareOldFontCommand{\sf}{\normalfont\sffamily}{\mathsf} %DIF PREAMBLE
-\providecommand{\DIFadd}[1]{\highLight[hlgray]{#1}} %DIF PREAMBLE
-\providecommand{\DIFdel}[1]{{\protect\color{red}\strikeThrough{#1}}} %DIF PREAMBLE
-%DIF SAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddbegin}{} %DIF PREAMBLE
-\providecommand{\DIFaddend}{} %DIF PREAMBLE
-\providecommand{\DIFdelbegin}{} %DIF PREAMBLE
-\providecommand{\DIFdelend}{} %DIF PREAMBLE
-\providecommand{\DIFmodbegin}{} %DIF PREAMBLE
-\providecommand{\DIFmodend}{} %DIF PREAMBLE
-%DIF FLOATSAFE PREAMBLE %DIF PREAMBLE
-\providecommand{\DIFaddFL}[1]{\DIFadd{#1}} %DIF PREAMBLE
-\providecommand{\DIFdelFL}[1]{\DIFdel{#1}} %DIF PREAMBLE
-\providecommand{\DIFaddbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFaddendFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelbeginFL}{} %DIF PREAMBLE
-\providecommand{\DIFdelendFL}{} %DIF PREAMBLE
-\newcommand{\DIFscaledelfig}{0.5}
-%DIF HIGHLIGHTGRAPHICS PREAMBLE %DIF PREAMBLE
-\RequirePackage{settobox} %DIF PREAMBLE
-\RequirePackage{letltxmacro} %DIF PREAMBLE
-\newsavebox{\DIFdelgraphicsbox} %DIF PREAMBLE
-\newlength{\DIFdelgraphicswidth} %DIF PREAMBLE
-\newlength{\DIFdelgraphicsheight} %DIF PREAMBLE
-% store original definition of \includegraphics %DIF PREAMBLE
-\LetLtxMacro{\DIFOincludegraphics}{\includegraphics} %DIF PREAMBLE
-\newcommand{\DIFaddincludegraphics}[2][]{{\color{blue}\fbox{\DIFOincludegraphics[#1]{#2}}}} %DIF PREAMBLE
-\newcommand{\DIFdelincludegraphics}[2][]{% %DIF PREAMBLE
-\sbox{\DIFdelgraphicsbox}{\DIFOincludegraphics[#1]{#2}}% %DIF PREAMBLE
-\settoboxwidth{\DIFdelgraphicswidth}{\DIFdelgraphicsbox} %DIF PREAMBLE
-\settoboxtotalheight{\DIFdelgraphicsheight}{\DIFdelgraphicsbox} %DIF PREAMBLE
-\scalebox{\DIFscaledelfig}{% %DIF PREAMBLE
-\parbox[b]{\DIFdelgraphicswidth}{\usebox{\DIFdelgraphicsbox}\\[-\baselineskip] \rule{\DIFdelgraphicswidth}{0em}}\llap{\resizebox{\DIFdelgraphicswidth}{\DIFdelgraphicsheight}{% %DIF PREAMBLE
-\setlength{\unitlength}{\DIFdelgraphicswidth}% %DIF PREAMBLE
-\begin{picture}(1,1)% %DIF PREAMBLE
-\thicklines\linethickness{2pt} %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,0){\framebox(1,1){}}}% %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,0){\line( 1,1){1}}}% %DIF PREAMBLE
-{\color[rgb]{1,0,0}\put(0,1){\line(1,-1){1}}}% %DIF PREAMBLE
-\end{picture}% %DIF PREAMBLE
-}\hspace*{3pt}}} %DIF PREAMBLE
-} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddbegin}{\DIFaddbegin} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddend}{\DIFaddend} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelbegin}{\DIFdelbegin} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelend}{\DIFdelend} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddbegin}{\DIFOaddbegin \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelbegin}{\DIFOdelbegin \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelend}{\DIFOaddend \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddbeginFL}{\DIFaddbeginFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOaddendFL}{\DIFaddendFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelbeginFL}{\DIFdelbeginFL} %DIF PREAMBLE
-\LetLtxMacro{\DIFOdelendFL}{\DIFdelendFL} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddbeginFL}{\DIFOaddbeginFL \let\includegraphics\DIFaddincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFaddendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelbeginFL}{\DIFOdelbeginFL \let\includegraphics\DIFdelincludegraphics} %DIF PREAMBLE
-\DeclareRobustCommand{\DIFdelendFL}{\DIFOaddendFL \let\includegraphics\DIFOincludegraphics} %DIF PREAMBLE
-%DIF COLORLISTINGS PREAMBLE %DIF PREAMBLE
-\RequirePackage{listings} %DIF PREAMBLE
-\RequirePackage{color} %DIF PREAMBLE
-\lstdefinelanguage{DIFcode}{ %DIF PREAMBLE
-%DIF DIFCODE_CFONT %DIF PREAMBLE
-  moredelim=[il][\color{red}\scriptsize]{\%DIF\ <\ }, %DIF PREAMBLE
-  moredelim=[il][\color{blue}\sffamily]{\%DIF\ >\ } %DIF PREAMBLE
-} %DIF PREAMBLE
-\lstdefinestyle{DIFverbatimstyle}{ %DIF PREAMBLE
-	language=DIFcode, %DIF PREAMBLE
-	basicstyle=\ttfamily, %DIF PREAMBLE
-	columns=fullflexible, %DIF PREAMBLE
-	keepspaces=true %DIF PREAMBLE
-} %DIF PREAMBLE
-\lstnewenvironment{DIFverbatim}{\lstset{style=DIFverbatimstyle}}{} %DIF PREAMBLE
-\lstnewenvironment{DIFverbatim*}{\lstset{style=DIFverbatimstyle,showspaces=true}}{} %DIF PREAMBLE
-%DIF END PREAMBLE EXTENSION ADDED BY LATEXDIFF
-
-\usepackage{luacolor}
-\usepackage{lua-ul}
-\definecolor{hlgray}{gray}{0.78}
 \begin{document}
 \maketitle
 
@@ -469,9 +379,15 @@ For squares, both SH and E use the SH bound, that is, the Chebyshev linearizatio
 \section{Experiments}
 \label{sec:experiments}
 
-\subsection{Range enclosures}
+We implemented the three multiplications S, SH and E twice, for two purposes.
+\begin{itemize}
+\item A \emph{reference implementation in Python}, in double precision without outward rounding, used for the range enclosures of Section~\ref{sec:ranges}. A form is written in the variables, as a linear function of the variables plus a residual interval; over a box, this is the reduced affine form whose noise symbols are the normalized variables and whose error term is the radius of the residual. Each multiplication keeps the linear part of the product and computes the interval that encloses $N$, by formula~S, by the formula of Skalna and Hlad\'{\i}k, or by Algorithm~\ref{alg:exact}. Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products.
+\item A \emph{rigorous implementation in C++} in the affine arithmetic of the Ibex library, following Section~\ref{sec:rigor}, used to validate the formulae on whole expressions, to measure their cost (Section~\ref{sec:ibex}) and in the global optimizer IbexOpt (Section~\ref{sec:solver}).
+\end{itemize}
+Both implementations, the instances and the scripts that produce the tables are available in the repository given in the Statements and Declarations. The code was written with the help of an AI assistant (see the Statements and Declarations).
 
-For these experiments, the formulae were implemented in Python, in double precision, on the representation in the variables of the introduction (a linear function of the variables plus a residual interval). The Python and C++ code of this section was written with the help of an AI assistant (see the Statements and Declarations). Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products, and exact ranges were computed with IbexOpt~\cite{chabert2009}.
+\subsection{Range enclosures}
+\label{sec:ranges}
 
 \paragraph{Random products.} Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the gain is bounded by $2\min(|x_0|y_r,|y_0|x_r)$ (Corollary~\ref{cor:gain}), while the width of the range of $R$, which SH computes exactly, grows with $n$. S is 1.4--2.0 times wider than E.
 
@@ -484,11 +400,8 @@ For these experiments, the formulae were implemented in Python, in double precis
 \caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products. The values of E are in bold when E is narrower than SH.}
 \label{tab:sh}
 \small
-\DIFdelbeginFL %DIFDELCMD < \begin{adjustbox}{max width=\linewidth}%%%
-\DIFdelendFL \input{table_sh_k.tex}
-\DIFdelbeginFL %DIFDELCMD < \end{adjustbox}
-%DIFDELCMD < %%%
-\DIFdelendFL \end{table}
+\input{table_sh_k.tex}
+\end{table}
 
 E is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and also for Leon and Rosenbrock. These functions contain squares $(x_i^2-x_j)^2$ computed as products $\hat v\cdot\hat v$ of a form that carries the error of the product $x_i\cdot x_i$ and whose center is far from zero, which is the most favorable case of Corollary~\ref{cor:gain}; in Booth and Matyas, every product has an operand without error, and E and SH coincide.
 
@@ -542,11 +455,10 @@ Each run used one core, with four simultaneous runs on the same machine, and the
 
 The multiplication of reduced affine forms of Skalna and Hlad\'{\i}k computes exactly the quadratic part of the product, but bounds the terms that couple the centers of the operands with their error symbols separately. Since the nonlinear part of the product is affine in each error symbol, its exact range is obtained from the ranges of shifted products over a planar zonotope at the vertices of the square of the error symbols; by central symmetry, two of them suffice, and both are computed in a single walk along the boundary, at a cost of $O(n\log n)$ operations. The resulting multiplication is the narrowest one with the usual linear part; it coincides with that of Skalna and Hlad\'{\i}k when one of the operands has no error or a zero center, and can be narrower otherwise, by at most a factor $3/2$ and by at most $2\min(|x_0|y_r,|y_0|x_r)$. Its effect on range enclosures is large on products of forms that already carry errors, such as the squares in the Colville and Dixon functions.
 
-In an interval branch-and-bound optimizer, the main practical effect comes from computing the quadratic part exactly, which SH and E share: with respect to the standard multiplication, which is AF2 with re-centering, the number of nodes is divided by about four on problems dominated by products of compound factors, even when the standard multiplication is given the Chebyshev square; on classical benchmarks, where most products involve single variables, the square matters more than the product. The new multiplication adds a further 4--8\% where the theory predicts a gain, and coincides with SH elsewhere. Open questions are a linear-time version of Algorithm~\ref{alg:exact}, and the choice of the linear part of the product, which all the formulae considered here keep fixed\DIFaddbegin \DIFadd{.
-}
+In an interval branch-and-bound optimizer, the main practical effect comes from computing the quadratic part exactly, which SH and E share: with respect to the standard multiplication, which is AF2 with re-centering, the number of nodes is divided by about four on problems dominated by products of compound factors, even when the standard multiplication is given the Chebyshev square; on classical benchmarks, where most products involve single variables, the square matters more than the product. The new multiplication adds a further 4--8\% where the theory predicts a gain, and coincides with SH elsewhere. Open questions are a linear-time version of Algorithm~\ref{alg:exact}, and the choice of the linear part of the product, which all the formulae considered here keep fixed.
 
-\section*{\DIFadd{Acknowledgments}}
-\DIFadd{We thank Angelo Alvear and Juan Aramayo, students who took part in early versions of this research}\DIFaddend .
+\section*{Acknowledgments}
+We thank Angelo Alvear and Juan Aramayo, students who took part in early versions of this research.
 
 \section*{Statements and Declarations}
 \textbf{Funding.} This work was supported by the Agencia Nacional de Investigaci\'on y Desarrollo (ANID), Chile, through FONDECYT Regular project No.~1260159.
