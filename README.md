@@ -16,196 +16,97 @@ the exact range of the quadratic part `(e^T x + xr ex)(e^T y + yr ey)` but bound
 `x0 yr ey + y0 xr ex` separately. The paper gives a multiplication **E** that computes the exact
 range of the whole of `N` in O(n log n) time, by a single walk along the boundary of a planar
 zonotope, and shows that E coincides with SH when one operand has no error or a zero center, and
-that `wid SH <= 3/2 wid E` otherwise (tight).
+that `wid SH <= 3/2 wid E` otherwise (tight). S denotes the standard multiplication of the affine
+arithmetic of Ibex (fAF2).
 
 ## Repository layout
 
 ```
-paper/numa/             the paper (exact_raf.tex, exact_raf.pdf), its figures (fig/) and a
-                        small-format version for e-readers (kindle/)
-zcaa/                   Python implementation (double precision): forms in the variables, products
-                        and squares; set_product('faf2' | 'skalna' | 'exact') selects S, SH or E
-benchmarks/
-  functions.py          test expressions
-  ibex/                 synthetic IbexOpt instances (synq, synt, synp) and their generators
-experiments/            Python experiments of the paper (range enclosures, Section 6.1)
-tests/test_soundness.py sampling checks of all the rules
-results/                JSON results and LaTeX tables used in the paper
-ibex/                   implementation in Ibex and solver experiments (Sections 6.2-6.3),
-                        see ibex/README.md
-paper/optl/, zcaa/      also contain the earlier ZCAA manuscript and code (see below)
+raf/                    Python implementation (double precision, no outward rounding): reduced affine
+                        forms written in the variables, set_product('faf2' | 'skalna' | 'exact')
+                        selects S, SH or E; Chebyshev linearization of squares and unary functions
+experiments/            range-enclosure experiments (Section 6.1) and the scripts of Tables 1 and 2
+tests/test_soundness.py sampling checks of the three multiplications
+results/                JSON results and the LaTeX tables included in the paper
+ibex/                   rigorous implementation in Ibex and solver experiments (Sections 6.2-6.3,
+                        Tables 3 and 4), see ibex/README.md
+benchmarks/ibex/        synthetic IbexOpt instances (synq, synt, synp) and their generators
+paper/numa/             the paper, its figures (fig/), the flat source folder for the journal
+                        (make_submission.py) and a small-format version for e-readers (kindle/)
 ```
 
 ## Requirements
 
-- Python 3.9 or later with `numpy`, `scipy` and `matplotlib` (`pip install -r requirements.txt`).
-- [Ibex](https://github.com/ibex-team/ibex-lib) with IbexOpt, to compute the exact ranges used as
-  reference in the Python experiments (`export IBEXOPT=/path/to/ibexopt`). The results used in the
-  paper are included in `results/` and `ibex/results/`, so the tables can be regenerated without Ibex.
+- Python 3.9 or later with `numpy` and `matplotlib` (`pip install -r requirements.txt`).
+- For Table 2: [IbexOpt](https://github.com/ibex-team/ibex-lib), which computes the exact ranges
+  (`export IBEXOPT=/path/to/ibexopt`).
 - For the Ibex implementation and the solver experiments: a C++ compiler, CMake and an LP solver
-  (CLP or SoPlex); `ibex/build.sh` fetches and builds everything.
+  (CLP or SoPlex); `ibex/build.sh` fetches, patches and builds everything.
+
+All the results used in the paper are stored in `results/` and `ibex/results/`, so that every table
+can be regenerated without running the experiments again.
 
 ## Reproducing the results of the paper
 
-Python (range enclosures, Section 6.1), from the root of the repository:
+From the root of the repository:
 
-```
-python tests/test_soundness.py
-python experiments/random_products.py                          # Table 1
-IBEXOPT=/path/to/ibexopt python experiments/sh_benchmark.py    # Table 2
-python experiments/check_gain_bound.py                         # attainment of Corollary 1
-python experiments/make_tables_rules.py                        # results/table_rules_*.tex
-```
+| Result | Experiment | Table from the stored results |
+|---|---|---|
+| Table 1 (random products) | `python experiments/random_products.py` | `python experiments/make_table_random.py` |
+| Table 2 (test functions of Skalna and Hladik) | `IBEXOPT=... python experiments/sh_benchmark.py` | `python experiments/make_table_sh.py` |
+| Corollary 1 (attainment of the bound) | `python experiments/check_gain_bound.py` | |
+| Table 3 (time per product) | `bench_mult` (built by `ibex/build.sh`) | `python ibex/analysis/make_table_cost.py` |
+| Table 4 (IbexOpt) | `ibex/run_interleaved.sh`, see `ibex/README.md` | `python ibex/analysis/make_table_solver_interleaved.py` |
+| Figures 1 and 2 | `python paper/numa/fig/make_fig_zonotope.py`, `python paper/numa/fig/make_fig_square.py` | |
 
-Ibex (implementation and solver, Sections 6.2-6.3):
+Checks: `python tests/test_soundness.py` (Python) and `affine_containment_check` (Ibex, see
+`ibex/README.md`).
 
-```
-ROOT=$HOME/ibex-local LP_LIB=clp bash ibex/build.sh
-python ibex/analysis/make_table_solver_interleaved.py          # Table 4 from ibex/results
-```
-
-Figures: `python paper/numa/fig/make_fig_zonotope.py` and `python paper/numa/fig/make_fig_square.py`.
-
-The rules on the same representation, in Python:
+The three multiplications on the same representation:
 
 ```python
-from zcaa import set_box, zcaa_variables, set_product
+from raf import set_box, raf_variables, set_product
 
 for rule in ["faf2", "skalna", "exact"]:        # S, SH, E
     set_box([(0.0, 2.0), (1.0, 3.0)])
     set_product(rule)
-    x1, x2 = zcaa_variables()
+    x1, x2 = raf_variables()
     f = (x1 + 2 * x1 * x2) * (3 * x2 - x1 * x2)
     print(rule, f.get_range(), f.residual_width())
+# faf2   (-62.0, 96.0)    102.0
+# skalna (-46.0, 74.225)  64.225
+# exact  (-36.0, 74.225)  54.225
 ```
 
-## Earlier work: ZCAA
+## Using or porting the multiplications
 
-**Zero-centered affine arithmetic (ZCAA)** represents every subexpression of a factorable
-function as a linear function of the input variables plus a bounded residual interval,
+The three multiplications only change the interval that encloses the nonlinear part of the product.
+For `x = x0 + sum_i a_i e_i + xr ex` and `y = y0 + sum_i b_i e_i + yr ey`, every rule keeps the linear
+part `x0 y0 + sum_i (x0 b_i + y0 a_i) e_i`, computes an interval `[lo, hi]` that encloses
 
-    f(x) ∈ a_1 x_1 + ... + a_n x_n + [r_lo, r_hi]     for all x in the box,
+    N = x0 yr ey + y0 xr ex + (a.e + xr ex)(b.e + yr ey),
 
-without the symbolic noise variables of classical affine arithmetic. Products of forms are
-decomposed into linear, quadratic and bilinear terms, each enclosed by its own envelope, and the
-midpoints of the residuals are absorbed into the linear part at every multiplication. This rule is
-`set_product("zcaa")` (the default). The sections below describe the experiments of that
-manuscript, which compare ZCAA with AF2 and first-order Taylor models.
+and returns the form with center `x0 y0 + (lo + hi)/2` and error term `(hi - lo)/2`.
 
-### Quick start
+- **Reference (Python, self-contained):** `raf.nonlinear_enclosure(rule, x0, a, xr, y0, b, yr)` in
+  `raf/forms.py` takes plain floats and lists and returns `(lo, hi)` for `rule` = `'faf2'` (S),
+  `'skalna'` (SH) or `'exact'` (E). E is Algorithm 1 of the paper: the generators `(a_i, b_i)` are
+  turned to the half-plane `u > 0` and sorted by angle once (`_sorted_generators`), and the boundary
+  of the zonotope is walked for the two shifts `(xr, yr)` and `(xr, -yr)` (`_uv_range_sorted`), checking
+  the vertices and the stationary point of each edge. About 70 lines without dependencies.
+- **Rigorous (C++, floating point with outward rounding):** `ibex/fast/ibex_ExactMult_fast.h`,
+  function `raf_mult_enclosure_fast(a, b, n, x0, ex, y0, ey, exact)`, which returns an
+  `ibex::Interval` containing the range of `N` (`exact = false` gives SH). It depends only on
+  `ibex::Interval` for the result and can be adapted to any interval type; the rounding errors of the
+  walk in `double` are covered by an a priori bound (Section 5 of the paper, `ibex/fast/README.md`).
+  Its use in Ibex is in `operator*=` of `ibex_Affine2_fAF2.cpp` (patches 0016 and 0017, `ibex/patches/`):
+  the enclosure replaces the nonlinear error terms of fAF2, and its midpoint is added to the center.
 
-```python
-from zcaa import set_box, zcaa_variables, af2_variables, sin
-
-box = [(0.0, 2.0), (1.0, 3.0)]
-set_box(box)
-x1, x2 = zcaa_variables()
-
-f = (x1 + 2 * x1 * x2) * (3 * x2 - x1 * x2) + sin(x1 * x2)
-print(f)                     # linear part and residual interval
-print(f.get_range())         # enclosure of the range: (-43.53, 81.35)
-print(f.residual_width())    # distance between the two envelopes: 68.41
-
-y1, y2 = af2_variables(box)  # the same expression with AF2
-g = (y1 + 2 * y1 * y2) * (3 * y2 - y1 * y2) + sin(y1 * y2)
-print(g.get_range())         # (-63.53, 97.35)
-print(g.residual_width())    # 104.41
-```
-
-### Reproducing the results of the ZCAA manuscript
-
-```
-python tests/test_soundness.py                      # checks (about 1 min)
-python experiments/run_experiments.py controlled    # Table 2 data (about 1 min)
-python experiments/run_experiments.py instances     # Table 3 data (1-2 h, mostly IbexOpt)
-python experiments/make_tables.py --latex           # Tables 2 and 3 and the statistics
-python experiments/make_figure.py                   # Figure 2
-python experiments/timing.py                        # running times
-```
-
-`run_experiments.py --runs N` uses only the first N boxes of each configuration, with the same
-random sequence as the full run, for a quick check. The seeds, numbers of runs and IbexOpt
-settings of the paper are fixed in `run_experiments.py`:
-
-| Set | Expressions | Boxes per size | Sizes (width of each interval) | IbexOpt precision |
-|---|---|---|---|---|
-| controlled | Cases 1-4 | 100 | small [0.01, 0.1], medium [0.1, 1], large [1, 10] | 1e-8 |
-| instances | Trigexp1 | 100 | small, medium, large | 1e-8 |
-| instances | Trigexp2 (1), Trigexp2 (2) | 50 | small, medium, large | 1e-6 |
-| instances | Pramanik | 50 | small, medium | 1e-6 |
-
-The boxes are sampled in [-10, 10]^3, except for Pramanik, sampled in its domain [0.06, 1]^3.
-For every box, the gap of a method M is (W_M - W_OPT) / W_OPT, where W_M is the residual width
-of M (the vertical distance between its two parallel envelopes) and W_OPT is the exact width
-of the range of f(x) - L(x), L being the linear part of the ZCAA enclosure, computed with
-IbexOpt. The same W_OPT is used for both methods. Two widths that differ by less than a
-relative 1e-9 are counted as equal.
-
-Running times depend on the machine and on the Python version; the relevant quantity is the
-ratio between the methods.
-
-### Benchmark constraints
-
-The constraints of `benchmarks/functions.py` come from the benchmark of systems of
-equations used to test interval solvers (COPRIN examples, distributed with Ibex); the original
-files are in `benchmarks/instances/`. We selected constraints with three variables that
-contain products of two factors depending on at least two variables each:
-
-- `Trigexp1-020.bch`, constraint 2 (variables x1, x2, x3);
-- `Trigexp2-3.bch`, constraints 1 and 2;
-- `Pramanik.bch`, constraint 1, with the constants f0, f1, y0, y1 replaced by their values.
-
-### Notes on the Taylor model baseline
-
-`zcaa/tm.py` implements first-order Taylor models T(x) = c0 + sum_i c_i (x_i - m_i) + I, centered
-at the midpoint m of the box. The product keeps the first-order part and encloses the rest by
-B(P_e) + B(P_1) I_2 + B(P_2) I_1 + I_1 I_2 (Makino and Berz, 2003, Def. 2), bounding the
-second-order monomials one by one, so that the squares (x_i - m_i)^2 are enclosed in [0, r_i^2].
-Univariate functions use the same Chebyshev linearization as ZCAA and AF2, with the constant part
-of the residual moved to c0, so that the remainder they produce is centered. The remainders
-produced by the products are not re-centered.
-
-### Notes on the AF2 baseline
-
-`zcaa/af2.py` implements AF2 as described by Messine (2002). It corrects four issues of the
-implementation used in an earlier version of our experiments, which could produce enclosures
-that do not contain the range of the expression:
-
-1. `x + c` modified `x` in place;
-2. `c * x` with `c < 0`, and `-x`, did not swap the e(+) and e(-) terms;
-3. in `x * y`, the e(+) contributions of the centers were omitted when both centers were
-   negative (and all of them when a center was zero);
-4. in `x * y`, the product of the two e(+-) terms was enclosed in [0, 1]; since the two
-   symbols are independent, it is enclosed in [-1, 1].
-
-For example, over x1, x2 in [-1, 1], the product (x1^2 - 0.5)(0.5 - x2^2) ranges over
-[-0.25, 0.25]; the earlier implementation returned [0, 0.25]. `tests/test_soundness.py`
-contains regression tests for these cases.
-
-### Numerical remarks
-
-The Python arithmetics are implemented in floating point **without outward rounding**: the
-enclosures are correct up to rounding errors, and they are checked numerically by sampling
-(`tests/test_soundness.py`), not rigorously. The Ibex implementation of SH and E (`ibex/`) is
-rigorous.
-
-## Citation
-
-If you use this code, please cite the paper (the reference will be updated upon publication):
-
-```bibtex
-@unpublished{araya2026exact,
-  title  = {Exact multiplication of reduced affine forms},
-  author = {Araya, Ignacio and Miranda, Daniel and Reyes, Victor and Geraldo, Juan},
-  note   = {In preparation},
-  year   = {2026}
-}
-```
-
-## Acknowledgements
-
-This work was supported by ANID, FONDECYT Regular 2026, project No. 1260159.
+To port E to another affine arithmetic library, compute the linear part as the library already does,
+call the enclosure of `N` above with the center, noise coefficients and error term of each operand,
+and add the midpoint and the radius of the interval to the center and to the new error term, with
+the library's own handling of rounding errors.
 
 ## License
 
-MIT, see `LICENSE`.
+See `LICENSE`.

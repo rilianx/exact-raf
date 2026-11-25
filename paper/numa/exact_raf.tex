@@ -385,21 +385,7 @@ For these experiments, the formulae were implemented in Python, in double precis
 \caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products. The values of E are in bold when E is narrower than SH.}
 \label{tab:sh}
 \small
-\begin{tabular}{llrrr}
-\toprule
-Function & Box & S & SH & E \\
-\midrule
-$f_1$ Beale & $[-5,5]^2$ & 49.9 & 49.1 & \textbf{48.8} \\
-$f_2$ Booth & $[-10,10]^2$ & 35.8 & 19.9 & 19.9 \\
-$f_3$ Colville & $[-10,10]^4$ & 36.6 & 33.2 & \textbf{13.6} \\
-$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 & 33.1 & \textbf{13.6} \\
-$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 & 98.6 & \textbf{98.1} \\
-$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 & 28.4 & \textbf{24.4} \\
-$f_7$ Matyas & $[-10,10]^2$ & 32.4 & 32.4 & 32.4 \\
-$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 & 36.0 & \textbf{32.3} \\
-$f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 39.9 & 39.9 \\
-\bottomrule
-\end{tabular}
+\input{../../results/table_sh.tex}
 \end{table}
 
 E is much tighter than SH for Colville and Dixon (13.6\% instead of 33\%), and also for Leon and Rosenbrock. These functions contain squares $(x_i^2-x_j)^2$ computed as products $\hat v\cdot\hat v$ of a form that carries the error of the product $x_i\cdot x_i$ and whose center is far from zero, which is the most favorable case of Corollary~\ref{cor:gain}; in Booth and Matyas, every product has an operand without error, and E and SH coincide.

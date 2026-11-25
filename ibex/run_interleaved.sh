@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
-# Tabla 5 con las variantes intercaladas por instancia en la misma sesion (P corridas en paralelo), reanudable.
-#   TASKS=<archivo con lineas "set ruta.bch tlim variante"> OUT=<dir> P=4 bash run_interleaved.sh
+# Table 4 of the paper: all the variants of each instance one after the other in the same session
+# (P runs in parallel); resumable (a row already written is not run again).
+#   TASKS=<file with lines "set file.bch time_limit variant"> OUT=<dir> P=4 [COCONUT=<dir>] bash run_interleaved.sh
+#   (task files: python ibex/make_tasks.py)
 set -uo pipefail
 B="${B:-${ROOT:-$HOME/ibex-local}/ibexopt-raak/build/ibexopt-raak}"
 : "${TASKS:?}"; : "${OUT:?}"; P="${P:-4}"
@@ -30,8 +32,10 @@ one() {
   echo "[$st] $set/$inst $v celdas=$cells cpu=$cpu"
 }
 export -f one
-REF=/home/user/ibex-local/benchs-mh/ex6_2_9.bch
-ref() { for k in 1 2 3 4; do echo "ref_$1 $REF 60 splus"; done | xargs -P4 -L1 bash -c 'rm -f "$OUT/rows/$0__ex6_2_9__splus.csv"; one "$0" "$1" "$2" "$3"'; }
+# reference run (ex6_2_9 of the Ibex benchmark, four times) at the start and at the end, to check that the load
+# of the machine did not change during the run; skipped if REF does not exist
+REF="${REF:-${COCONUT:-}/ex6_2_9.bch}"
+ref() { [ -f "$REF" ] || return 0; for k in 1 2 3 4; do echo "ref_$1 $REF 60 splus"; done | xargs -P4 -L1 bash -c 'rm -f "$OUT/rows/$0__ex6_2_9__splus.csv"; one "$0" "$1" "$2" "$3"'; }
 ref inicio
 xargs -P"$P" -L1 bash -c 'one "$0" "$1" "$2" "$3"' < "$TASKS"
 ref fin

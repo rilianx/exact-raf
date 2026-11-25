@@ -8,3 +8,5 @@ results/*_first*.json
 *.log
 *.blg
 *.out
+ibex/tasks_synthetic.txt
+ibex/tasks_coconut.txt

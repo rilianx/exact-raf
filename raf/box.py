@@ -1,4 +1,4 @@
-"""Global input box shared by the ZCAA forms (one interval [lb, ub] per variable)."""
+"""Global input box shared by the forms (one interval [lb, ub] per variable)."""
 
 _BOX = []
 

@@ -4,7 +4,7 @@ error radii |N(0,1)|. Run from the repository root:  python experiments/check_ga
 import sys, os, math
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 import numpy as np
-from zcaa.zcaa import _uv_range, _sorted_generators, _uv_range_sorted
+from raf.forms import _uv_range, _sorted_generators, _uv_range_sorted
 
 def widths(x0, a, xr, y0, b, yr):
     rlo, rhi = _uv_range(list(zip(a, b)) + [(xr, 0.0), (0.0, yr)])

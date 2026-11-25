@@ -1,18 +1,18 @@
-# Versión rápida de `raf_mult_enclosure`
+# Fast version of `raf_mult_enclosure` (patch 0017)
 
-`ibex_ExactMult_fast.h`: mismo algoritmo que `ibex_ExactMult.h` (parche 0016), pero:
+`ibex_ExactMult_fast.h` implements the same algorithm as `ibex_ExactMult.h` (patch 0016), but:
 
-- el recorrido del borde se hace en `double` y se agrega al final una cota a priori del error de redondeo
-  `M = (8m + 64)·eps·(U·V + |x0|ey + |y0|ex)`, con `eps = 2^-52` (vale para cualquier modo de redondeo),
-  y se redondea hacia afuera con `nextafter`;
-- el predicado angular usa un filtro en `double` y recurre a `__float128` solo si el signo es dudoso;
-- los buffers son `thread_local` (sin asignaciones por producto);
-- `exact` recorre las cuatro esquinas en una sola pasada.
+- the walk along the boundary is done in `double`, and an a priori bound of the rounding errors,
+  `M = (8m + 64)·eps·(U·V + |x0|ey + |y0|ex)` with `eps = 2^-52` (valid for any rounding mode),
+  is added at the end, followed by outward rounding with `nextafter`;
+- the angular predicate uses a filter in `double` and falls back to `__float128` only when the sign is doubtful;
+- the buffers are `thread_local` (no allocation per product);
+- E walks its corners in a single pass.
 
-Verificación (`test_fast 0 <semilla> <casos>` + `verify.py`, rango exacto con `fractions.Fraction`):
-86 000 casos, incluidos generadores casi paralelos y escalas de 1e-6 a 1e6: **0 violaciones**;
-holgura relativa ≤ 1.1e-12. Tiempos (`test_fast 1`): `results/bench_fast.csv`, de 5 a 10 veces más rápida
-que la versión con `ibex::Interval`.
+Verification (`test_fast 0 <seed> <cases>` + `verify.py`, exact range with `fractions.Fraction`):
+86 000 cases, including nearly parallel generators and scales from 1e-6 to 1e6: **0 violations**;
+relative slack ≤ 1.1e-12. Times (`test_fast 1`): `../results/bench_fast.csv`, 5 to 10 times faster
+than the version with `ibex::Interval`.
 
-Compilar: `g++ -std=gnu++11 -O2 -msse3 -frounding-math -I. test_fast.cpp $(pkg-config --cflags ibex) -o test_fast $(pkg-config --libs ibex) -lquadmath`
-(con `ibex_ExactMult_interval.h` = copia de `ibex-affine/src/arithmetic/ibex_ExactMult.h`).
+Build: `g++ -std=gnu++11 -O2 -msse3 -frounding-math -I. test_fast.cpp $(pkg-config --cflags ibex) -o test_fast $(pkg-config --libs ibex) -lquadmath`
+(with `ibex_ExactMult_interval.h` = a copy of `ibex-affine/src/arithmetic/ibex_ExactMult.h`).

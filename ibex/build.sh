@@ -12,7 +12,11 @@ mkdir -p "$ROOT"
 cd "$ROOT"
 
 # 1. ibex-lib: fork de JCGeraldo (rama raak-experimentos), que trae el cambio 0003 y los parches RAA-K
-[ -d jcgeraldo-ibex-lib ] || git clone -q -b raak-experimentos https://github.com/JCGeraldo/ibex-lib jcgeraldo-ibex-lib
+if [ ! -d jcgeraldo-ibex-lib ]; then
+  git clone -q -b raak-experimentos https://github.com/JCGeraldo/ibex-lib jcgeraldo-ibex-lib
+  git -C jcgeraldo-ibex-lib fetch -q origin 24480efba0d767af50ba164dca49416c0bae9e22   # version used in the paper
+  git -C jcgeraldo-ibex-lib checkout -q 24480efba0d767af50ba164dca49416c0bae9e22
+fi
 cmake -S jcgeraldo-ibex-lib -B jcgeraldo-ibex-lib/build -DCMAKE_BUILD_TYPE=Release -DLP_LIB="$LP_LIB" \
       -DCMAKE_INSTALL_PREFIX="$PREFIX" > ibexlib-cmake.log 2>&1
 make -C jcgeraldo-ibex-lib/build -j"$JOBS" > ibexlib-make.log 2>&1
