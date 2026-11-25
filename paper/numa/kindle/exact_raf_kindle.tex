@@ -32,10 +32,10 @@
 
 \title{Exact multiplication of reduced affine forms}
 \author{Ignacio Araya \and Daniel Miranda \and Victor Reyes \and Juan Geraldo}
-\date{\small Kindle version v25 (2026-11-25)}
+\date{\small Kindle version v26 (2026-11-25)}
 
 \usepackage{fancyhdr}
-\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v25}}
+\fancypagestyle{plain}{\fancyhf{}\renewcommand{\headrulewidth}{0pt}\cfoot{\thepage}\rfoot{\tiny v26}}
 \pagestyle{plain}
 \begin{document}
 \maketitle
@@ -374,7 +374,7 @@ For squares, both SH and E use the SH bound, that is, the Chebyshev linearizatio
 
 \subsection{Range enclosures}
 
-In these experiments, univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products, and exact ranges were computed with IbexOpt~\cite{chabert2009}.
+For these experiments, the formulae were implemented in Python, in double precision, on the representation in the variables of the introduction (a linear function of the variables plus a residual interval). Univariate functions are enclosed by the same Chebyshev linearization in all methods, so that the differences come only from the products, and exact ranges were computed with IbexOpt~\cite{chabert2009}.
 
 \paragraph{Random products.} Table~\ref{tab:random} reports single products of random forms over $[-1,1]^n$ (so that the variables are the noise symbols), with standard normal coefficients, centers of standard deviation 2, and error radii $|\mathcal N(0,1)|\rho$. Without errors ($\rho=0$), SH and E coincide, as they compute the exact range of $Q$. With errors, E is strictly narrower than SH in every product, and SH is up to 1.37 times wider than E for $n=2$; the mean advantage decreases with $n$, since the gain is bounded by $2\min(|x_0|y_r,|y_0|x_r)$ (Corollary~\ref{cor:gain}), while the width of the quadratic part, which both compute exactly, grows with $n$. S is 1.4--2.0 times wider than E.
 
@@ -384,21 +384,21 @@ In these experiments, univariate functions are enclosed by the same Chebyshev li
 
 \begin{table}[H]
 \centering
-\caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products.}
+\caption{Overestimation (\%) of the exact range of the test functions of~\cite{skalna2017new}, with integer powers computed as repeated products. The values of E are in bold when E is narrower than SH.}
 \label{tab:sh}
 \small
 \begin{adjustbox}{max width=\linewidth}\begin{tabular}{llrrr}
 \toprule
 Function & Box & S & SH & E \\
 \midrule
-$f_1$ Beale & $[-5,5]^2$ & 49.9 & 49.1 & 48.8 \\
+$f_1$ Beale & $[-5,5]^2$ & 49.9 & 49.1 & \textbf{48.8} \\
 $f_2$ Booth & $[-10,10]^2$ & 35.8 & 19.9 & 19.9 \\
-$f_3$ Colville & $[-10,10]^4$ & 36.6 & 33.2 & 13.6 \\
-$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 & 33.1 & 13.6 \\
-$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 & 98.6 & 98.1 \\
-$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 & 28.4 & 24.4 \\
+$f_3$ Colville & $[-10,10]^4$ & 36.6 & 33.2 & \textbf{13.6} \\
+$f_4$ Dixon ($n=5$) & $[-5,5]^5$ & 36.6 & 33.1 & \textbf{13.6} \\
+$f_5$ Goldstein--Price & $[-2,2]^2$ & 99.1 & 98.6 & \textbf{98.1} \\
+$f_6$ Leon & $[-1.2,1.2]^2$ & 39.1 & 28.4 & \textbf{24.4} \\
 $f_7$ Matyas & $[-10,10]^2$ & 32.4 & 32.4 & 32.4 \\
-$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 & 36.0 & 32.3 \\
+$f_8$ Rosenbrock ($n=4$) & $[-5,10]^4$ & 47.5 & 36.0 & \textbf{32.3} \\
 $f_9$ Six-hump camel & $[-5,5]^2$ & 57.4 & 39.9 & 39.9 \\
 \bottomrule
 \end{tabular}\end{adjustbox}
