@@ -24,6 +24,7 @@ s = s.replace(r"\begin{algorithm}[t]", r"\begin{algorithm}[H]")
 s = s.replace(r"\begin{figure}[t]", r"\begin{figure}[H]")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/square_cheb.pdf}", r"\includegraphics[height=0.55\textheight]{../fig/square_cheb_kindle.pdf}")
 # bloque de autores angosto para el Kindle
+s = s.replace(r"\small ORCID: I.~Araya 0000-0001-5882-6217, V.~Reyes 0000-0002-3358-3906", r"\small ORCID: I.~Araya 0000-0001-5882-6217,\\ \small V.~Reyes 0000-0002-3358-3906")
 s = s.replace(r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reyes$^{2}$, Juan Geraldo$^{1}$", r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$,\\ Victor Reyes$^{2}$, Juan Geraldo$^{1}$")
 s = s.replace(r"Pontificia Universidad Cat\'olica de Valpara\'{\i}so, Valpara\'{\i}so, Chile\\", r"\\ \small Pontificia Universidad Cat\'olica de Valpara\'{\i}so,\\ \small Valpara\'{\i}so, Chile\\")
 s = s.replace(r"Facultad de Ingenier\'{\i}a y Ciencias, Universidad Diego Portales, Santiago, Chile", r"Facultad de Ingenier\'{\i}a y Ciencias,\\ \small Universidad Diego Portales, Santiago, Chile")

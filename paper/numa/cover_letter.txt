@@ -1,0 +1,36 @@
+Dear Editor,
+
+We submit the manuscript "Exact multiplication of reduced affine forms", by Ignacio Araya,
+Daniel Miranda, Victor Reyes and Juan Geraldo, for consideration in Numerical Algorithms.
+
+Reduced affine forms keep a fixed number of noise symbols and accumulate all the approximation
+errors in a single error term; the width of the enclosure of a product determines the quality of
+range bounds and of the linear relaxations used in interval branch-and-bound solvers. In this
+journal, Skalna and Hladik (Numer. Algorithms 76, 2017) computed in linear time the exact range of
+the quadratic part of the product. Our manuscript shows that their multiplication is not exact in
+general when both operands carry errors, and contributes:
+
+- a multiplication that computes the exact range of the whole nonlinear part of the product in
+  O(n log n) time, by a single walk along the boundary of a planar zonotope, with a proof that it
+  gives the narrowest enclosure with the usual linear part;
+- a proof that it coincides with the multiplication of Skalna and Hladik when one operand has no
+  error or a zero center, and is at most 3/2 times narrower otherwise, a tight bound; a closed-form
+  exact range of the square;
+- a rigorous floating-point implementation of both multiplications in the affine arithmetic of
+  the Ibex library;
+- experiments on range enclosures and in the global optimizer IbexOpt, where both multiplications
+  reduce the number of nodes about four times on problems dominated by products, and the new one
+  improves further where the theory predicts a gain.
+
+The code, data and scripts that produce all the tables and figures are publicly available at
+https://github.com/rilianx/exact-raf.
+
+The manuscript is original, has not been published before and is not under consideration for
+publication elsewhere. All the authors have approved the submission. The authors have no competing
+interests to declare.
+
+Sincerely,
+
+Ignacio Araya (corresponding author)
+Escuela de Ingenieria Informatica, Pontificia Universidad Catolica de Valparaiso, Chile
+ignacio.araya@pucv.cl
