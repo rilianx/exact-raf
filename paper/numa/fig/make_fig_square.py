@@ -1,7 +1,9 @@
-"""Figura 2: N_2 = 2 x0 xr xi + (u + xr xi)^2 en funcion de u = e^T x in [-S, S], una curva por valor del
-simbolo de error xi. La forma reducida debe encerrar todas las curvas con un solo intervalo (su rango);
-la cota inferior de Chebyshev, -2|x0| xr, solo se alcanza si la curva de xi = -sign(x0) tiene su minimo
-dentro de [-S, S], es decir, si xr <= S. Ejemplo x = 1 + eps_1 + xr eps_x (x0 = 1, S = 1).
+"""Figura 2: el cuadrado de x = 1 + eps_1 + 2 eps_x (x0 = 1, ||x||_1 = 1, xr = 2), t = x in [-2, 4].
+(a) imagen clasica de Chebyshev de t^2 en una variable: banda de pendiente 2 x0 = 2, t^2 in 2t - 1 + [0, 9].
+(b) con el error hay dos variables, u = e^T x y eps_x: N_2(u, eps_x) = 4 eps_x + (u + 2 eps_x)^2 sobre el
+    rectangulo [-1,1]^2; la cota de Chebyshev (-4) es su minimo en (u, eps_x) = (2, -1), fuera del rectangulo;
+    el minimo en el rectangulo es -3, en (1, -1).
+(c) cortes: una parabola en u por cada valor de eps_x; la forma reducida las encierra con un solo intervalo.
     python make_fig_square.py [kindle]"""
 import sys
 import numpy as np
@@ -9,42 +11,54 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 KINDLE = len(sys.argv) > 1 and sys.argv[1] == "kindle"
-plt.rcParams.update({"font.size": 12 if KINDLE else 9, "font.family": "serif", "mathtext.fontset": "stix"})
-fig, ax = plt.subplots(2, 1, figsize=(3.4, 5.6)) if KINDLE else plt.subplots(1, 2, figsize=(6.8, 2.9), sharey=True)
-x0, S = 1.0, 1.0
+plt.rcParams.update({"font.size": 12 if KINDLE else 8.5, "font.family": "serif", "mathtext.fontset": "stix"})
+fig, ax = plt.subplots(3, 1, figsize=(3.4, 8.4)) if KINDLE else plt.subplots(1, 3, figsize=(7.0, 2.6))
+x0, S, xr = 1.0, 1.0, 2.0
+fs = 9.5 if KINDLE else 7.5
+ts = 11 if KINDLE else 8.5
+N2 = lambda u, e: 2 * x0 * xr * e + (u + xr * e) ** 2
+
+# (a) Chebyshev en una variable
+a = ax[0]
+t = np.linspace(-2, 4, 300)
+a.fill_between(t, 2 * t - 1, 2 * t + 8, color="0.88", lw=0)
+a.plot(t, 2 * t - 1, "k--", lw=1); a.plot(t, 2 * t + 8, "k--", lw=1)
+a.plot(t, t ** 2, "k-", lw=1.8)
+a.set_xlabel(r"$t=\hat x\in[-2,4]$"); a.set_ylabel(r"$t^2$")
+a.set_title(r"(a) one variable: $t^2\in 2t-1+[0,9]$", fontsize=ts)
+
+# (b) dos variables: curvas de nivel de N_2 sobre (u, eps_x)
+b = ax[1]
+uu, ee = np.meshgrid(np.linspace(-1.3, 2.6, 400), np.linspace(-1.35, 1.35, 300))
+cs = b.contour(uu, ee, N2(uu, ee), levels=[-3.5, -3, -1, 2, 6], colors="0.45", linewidths=0.7)
+b.clabel(cs, fmt="%g", fontsize=fs - 1, manual=[(1.6, 0.3), (-0.3, -0.75), (0.1, 0.55), (1.55, -0.55), (1.95, -0.8)])
+b.add_patch(plt.Rectangle((-S, -1), 2 * S, 2, fill=True, facecolor="0.9", edgecolor="k", lw=1.2, zorder=0))
+b.plot(xr, -1, "o", mfc="white", mec="k", ms=6, zorder=5)
+b.plot(S, -1, "o", color="k", ms=5, zorder=5)
+b.annotate(r"$-4$ (Chebyshev)", xy=(xr, -1), xytext=(1.25, -0.25), fontsize=fs, arrowprops=dict(arrowstyle="->", lw=0.7))
+b.annotate(r"$\min N_2=-3$", xy=(S, -1), xytext=(-1.2, -0.62), fontsize=fs, arrowprops=dict(arrowstyle="->", lw=0.7))
+b.set_xlim(-1.3, 2.6); b.set_ylim(-1.35, 1.35)
+b.set_xlabel(r"$u=e^Tx$"); b.set_ylabel(r"$\varepsilon_x$")
+b.set_title(r"(b) two variables: $N_2(u,\varepsilon_x)$", fontsize=ts)
+
+# (c) cortes: parabolas en u para cada eps_x
+c = ax[2]
 u = np.linspace(-S, S, 300)
-for a, xr, tag in [(ax[0], 0.5, "a"), (ax[1], 2.0, "b")]:
-    xis = np.linspace(-1, 1, 9)
-    allv = np.array([2 * x0 * xr * xi + (u + xr * xi) ** 2 for xi in xis])
-    a.fill_between(u, allv.min(0), allv.max(0), color="0.88", lw=0)
-    for xi, v in zip(xis, allv):
-        a.plot(u, v, color="0.6", lw=0.7)
-    a.plot(u, allv[0], "k-", lw=1.8)                                    # xi = -1
-    cheb_lo = -2 * abs(x0) * xr
-    exact_lo = allv.min()
-    a.axhline(cheb_lo, color="k", ls="--", lw=1)
-    a.axhline(exact_lo, color="k", ls=":", lw=1.2) if exact_lo > cheb_lo + 1e-9 else None
-    a.set_xlim(-1.15, 2.45)
-    a.set_xlabel(r"$u=e^Tx$")
-    fs = 8 if not KINDLE else 9.5
-    if tag == "a":
-        a.set_title(r"(a) $x_r=0.5\leq\|x\|_1=1$: exact", fontsize=9 if not KINDLE else 11)
-        a.text(1.08, cheb_lo - 3.0, "Chebyshev\n$=\\min N_2=-1$", fontsize=fs)
-        a.set_ylabel(r"$N_2$")
-    else:
-        a.set_title(r"(b) $x_r=2>\|x\|_1=1$: not exact", fontsize=9 if not KINDLE else 11)
-        a.text(-1.1, cheb_lo - 1.3, r"Chebyshev $=-4$", fontsize=fs)
-        a.text(-1.1, exact_lo + 0.45, r"$\min N_2=-3$", fontsize=fs)
-    ue = np.linspace(S, xr + 0.35, 100)                                  # prolongacion de la curva xi = -1 fuera de [-S, S]
-    if xr > S:
-        a.plot(ue, -2 * x0 * xr + (ue - xr) ** 2, "k--", lw=1.2)
-        a.plot(xr, cheb_lo, "o", mfc="white", mec="k", ms=6)
-        a.text(1.08, cheb_lo + 2.4, "vertex outside\nthe range of $u$", fontsize=fs)
-    else:
-        a.plot(xr, cheb_lo, "o", color="k", ms=5)
-    a.axvspan(S, 3, color="0.97", lw=0, zorder=0)
-    a.axvline(S, color="0.5", lw=0.6); a.axvline(-S, color="0.5", lw=0.6)
-ax[0].set_ylim(-6.2, 13.5); ax[1].set_ylim(-6.2, 13.5)
+xis = np.linspace(-1, 1, 9)
+allv = np.array([N2(u, xi) for xi in xis])
+c.fill_between(u, allv.min(0), allv.max(0), color="0.88", lw=0)
+for v in allv: c.plot(u, v, color="0.6", lw=0.7)
+c.plot(u, allv[0], "k-", lw=1.8)
+ue = np.linspace(S, xr + 0.3, 100)
+c.plot(ue, N2(ue, -1), "k--", lw=1.1)
+c.plot(xr, -2 * x0 * xr, "o", mfc="white", mec="k", ms=6)
+c.plot(S, N2(S, -1), "o", color="k", ms=5)
+c.axhline(-4, color="k", ls="--", lw=0.8); c.axhline(-3, color="k", ls=":", lw=1.1)
+c.axvline(S, color="0.5", lw=0.6); c.axvline(-S, color="0.5", lw=0.6)
+c.text(-1.0, -2.6, r"$\min N_2=-3$", fontsize=fs); c.text(-1.0, -5.6, r"Chebyshev $=-4$", fontsize=fs)
+c.set_xlim(-1.15, 2.45); c.set_ylim(-6.2, 13.5)
+c.set_xlabel(r"$u=e^Tx$"); c.set_ylabel(r"$N_2$")
+c.set_title(r"(c) slices at fixed $\varepsilon_x$", fontsize=ts)
 fig.tight_layout()
 name = "square_cheb_kindle" if KINDLE else "square_cheb"
 fig.savefig(name + ".pdf"); fig.savefig(name + ".png", dpi=150)
