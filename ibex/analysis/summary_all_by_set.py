@@ -1,8 +1,9 @@
 import csv, glob, math, collections
-RES="/home/user/ibex-local/results/interleaved_all"
-man={r["instance"][:-4]:r["set"] for r in csv.DictReader(open("/home/user/x2taylor/benchs/optim/all/manifest.csv"))}
+import os
+HERE=os.path.dirname(os.path.abspath(__file__))
+man={r["instance"][:-4]:r["set"] for r in csv.DictReader(open(os.path.join(HERE,"..","results","coconut_manifest.csv")))}
 D=collections.defaultdict(dict)
-for f in glob.glob(RES+"/rows/*.csv"):
+for f in [os.path.join(HERE,"..","results","table5_interleaved_all.csv")]:
     for r in csv.reader(open(f)):
         st,inst=r[0].split("/")
         if st!="all": continue

@@ -1,4 +1,0 @@
-synq: inst=78 resueltas S/S+/SH/E=[45, 45, 61, 60] comunes=45 nodos/S+: S=1.000 SH=0.260 E=0.259 cpu/S+: SH=0.290 E=0.314 E/SH=0.998 menos/mas=4/9 no resueltas=17 gap SH=0.369 E=0.393
-synt: inst=24 resueltas S/S+/SH/E=[19, 19, 20, 20] comunes=19 nodos/S+: S=1.000 SH=0.666 E=0.617 cpu/S+: SH=0.695 E=0.704 E/SH=0.926 menos/mas=11/1 no resueltas=4 gap SH=0.457 E=0.564
-synp: inst=18 resueltas S/S+/SH/E=[18, 18, 18, 18] comunes=18 nodos/S+: S=1.000 SH=0.826 E=0.794 cpu/S+: SH=0.914 E=0.883 E/SH=0.961 menos/mas=8/2 no resueltas=0 gap SH=nan E=nan
-Ibex medium+hard: inst=38 resueltas S/S+/SH/E=[33, 33, 35, 34] comunes=33 nodos/S+: S=1.071 SH=0.976 E=0.920 cpu/S+: SH=0.872 E=0.912 E/SH=0.942 menos/mas=10/1 no resueltas=3 gap SH=0.950 E=0.950

@@ -1,8 +1,9 @@
 """Tabla 5 desde la corrida intercalada (todas las variantes en la misma sesion): results/table_solver.tex.
 Variantes: af2 (S), splus (S+), sh (SH), exact (E). En synq y synt no hay cuadrados: S+ = S."""
 import csv, glob, math, collections, os, sys
-RES = sys.argv[1] if len(sys.argv) > 1 else "/home/user/ibex-local/results/interleaved"
-RES_ALL = sys.argv[2] if len(sys.argv) > 2 else "/home/user/ibex-local/results/interleaved_all"
+HERE = os.path.dirname(os.path.abspath(__file__))
+# filas de las corridas intercaladas (una por instancia y variante), guardadas en ibex/results
+CSVS = sys.argv[1:] or [os.path.join(HERE, "..", "results", "table5_interleaved.csv"), os.path.join(HERE, "..", "results", "table5_interleaved_all.csv")]
 SETS = [("synq", "synq", 300), ("synt", "synt", 60), ("synp", "synp", 60), ("COCONUT", "all", 60)]
 # En el conjunto Ibex (COCONUT) solo se cuentan las instancias con al menos un producto en que el radio no lineal
 # de S supera al de E (contador s_mas_ancho del parche 0021, corrida de 5 s con E): en las demas S, SH y E coinciden.
@@ -13,8 +14,9 @@ for f in glob.glob(os.path.join(SDIAG, "*.txt")):
     m = re.search(r"s_mas_ancho=(\d+)", open(f).read())
     if m and int(m.group(1)) > 0: SWIDER.add(os.path.basename(f)[:-4])
 R = collections.defaultdict(lambda: collections.defaultdict(dict))
-for f in glob.glob(os.path.join(RES, "rows", "*.csv")) + glob.glob(os.path.join(RES_ALL, "rows", "*.csv")):
+for f in CSVS:
     for r in csv.reader(open(f)):
+        if "/" not in r[0]: continue
         st, inst = r[0].split("/")
         if st.startswith("ref") or st == "ibexmh": continue
         R[st][inst][r[1].split("_")[1]] = dict(st=r[2], c=int(r[3] or 0), lb=float(r[4] or "nan"), ub=float(r[5] or "nan"), t=float(r[6] or "nan"))
@@ -44,10 +46,9 @@ for name, key, tl in SETS:
     out.append(f"{name}: inst={len(inst)} resueltas S/S+/SH/E={solved} comunes={len(allok)} nodos/S+ S={rc('af2'):.3f} SH={rc('sh'):.3f} E={rc('exact'):.3f} "
                f"cpu/S+ S={rt('af2'):.3f} SH={rt('sh'):.3f} E={rt('exact'):.3f} t/nodo/S+ SH={tpn('sh'):.3f} E={tpn('exact'):.3f} E/SH={gm(es):.3f} menos/mas={less}/{more} "
                f"no resueltas={len(to)} gap SH={gap('sh'):.3f} E={gap('exact'):.3f} inconsistencias={bad}")
-ref = [float(r[6]) for f in glob.glob(os.path.join(RES, "rows", "ref_*")) for r in csv.reader(open(f))]
 tex = [r"\begin{tabular}{lrrrrrrrrrrrrr}", r"\toprule",
        r" & & & \multicolumn{4}{c}{Solved} & \multicolumn{3}{c}{Nodes / S$^+$} & \multicolumn{2}{c}{CPU / S$^+$} & \multicolumn{2}{c}{E vs SH} \\",
        r"\cmidrule(lr){4-7}\cmidrule(lr){8-10}\cmidrule(lr){11-12}\cmidrule(lr){13-14}",
        r"Set & Inst. & $t_{\max}$ & S & S$^+$ & SH & E & S & SH & E & SH & E & nodes & $<$/$>$ \\", r"\midrule"] + lines + [r"\bottomrule", r"\end{tabular}"]
-open("/home/user/raa-affine-arithmetic/results/table_solver.tex", "w").write("\n".join(tex) + "\n")
+open(os.path.join(HERE, "..", "..", "results", "table_solver.tex"), "w").write("\n".join(tex) + "\n")
 print("\n".join(out))

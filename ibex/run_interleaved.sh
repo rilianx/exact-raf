@@ -2,7 +2,7 @@
 # Tabla 5 con las variantes intercaladas por instancia en la misma sesion (P corridas en paralelo), reanudable.
 #   TASKS=<archivo con lineas "set ruta.bch tlim variante"> OUT=<dir> P=4 bash run_interleaved.sh
 set -uo pipefail
-B=/home/user/ibex-local/ibexopt-raak/build/ibexopt-raak
+B="${B:-${ROOT:-$HOME/ibex-local}/ibexopt-raak/build/ibexopt-raak}"
 : "${TASKS:?}"; : "${OUT:?}"; P="${P:-4}"
 mkdir -p "$OUT/rows" "$OUT/logs"
 export B OUT

@@ -1,38 +1,52 @@
-# Multiplicación exacta en Ibex (parche 0016)
+# Implementation in Ibex and solver experiments
 
-Implementación en `ibex-affine` (modelo `AF_fAF2`) de la multiplicación exacta del paper
-*Exact multiplication of reduced affine forms* (`paper/numa/`) y de la de Skalna y Hladík (2017, Ec. 10),
-sobre la cadena de parches RAA-K de JCGeraldo (`JCGeraldo/ibex-lib`, rama `raak-experimentos`,
-carpeta `raak/`). Especificación: `paper/numa/IBEX_EXACT_SPEC.md`.
+Implementation of the multiplications SH (Skalna and Hladík, 2017) and E (this paper) in the affine
+arithmetic `AF_fAF2` of [ibex-affine](https://github.com/ibex-team/ibex-affine), on top of the RAA-K
+patch chain of `JCGeraldo/ibex-lib` (branch `raak-experimentos`, folder `raak/`), and the IbexOpt
+experiments of Sections 6.2 and 6.3 of the paper.
 
-| Archivo | Contenido |
+## Build
+
+```
+ROOT=$HOME/ibex-local LP_LIB=clp bash ibex/build.sh
+```
+
+`build.sh` clones Ibex and ibex-affine, applies the RAA-K patches (0001–0015) and the patches below,
+and builds the command-line optimizer `ibexopt-raak`, whose option `--arith=af2|sh|exact` selects
+S, SH or E.
+
+| Patch | Content |
 |---|---|
-| `patches/0016-ibex-affine-multiplicacion-exacta.patch` | Sobre `ibex-affine` `c219009c` + `raak-ibex-affine-consolidado.patch` (0001–0015). Agrega `ibex_ExactMult.h`, los modos `AFFINE_SH` y `AFFINE_EXACT` y la rama correspondiente en `operator*=`; `Asqr` usa en ambos modos el cuadrado exacto de `AFFINE_RAA`. |
-| `patches/0017-ibex-affine-multiplicacion-rapida.patch` | Sobre 0016. `ibex_ExactMultFast.h`: recorrido en `double` con cota a priori del redondeo, predicado angular filtrado, sin asignaciones y las cuatro esquinas en una pasada (ver `fast/`). Con `IBEX_RAF_SQR=af2`, `sh`/`exact` usan el cuadrado de fAF2 (ablación). |
-| `cli/` | `ibexopt-raak` e `ibexsolve-raak` de JCGeraldo con `--arith=sh` y `--arith=exact` y la línea `EXACT-MULT stats`. |
-| `tests/affine_containment_check.cpp` | Prueba de contención de JCGeraldo (sin tolerancia, en intervalos) con las variantes `sh_k0` y `exact_k0` y la comparación de anchos. |
-| `tests/bench_mult.cpp` | Tiempo por producto según `n`, con y sin error en los factores (resultados en `results/bench_mult.csv`). |
-| `build.sh` | Clona, parcha y compila todo (Ibex con `LP_LIB=clp` o `soplex`). |
-| `run_experiments.sh` | Barridos de `ibexopt` (reales, synq, synl, synt) y de `ibexsolve` (17 instancias con material) con `af2`, `raa`, `sh`, `exact`. |
-| `results/` | Resultados (CSV) de las pruebas y los barridos. |
+| `0016-ibex-affine-multiplicacion-exacta.patch` | Modes `AFFINE_SH` and `AFFINE_EXACT` (`ibex_ExactMult.h`): rigorous enclosure of the whole nonlinear part `N`. |
+| `0017-ibex-affine-multiplicacion-rapida.patch` | Fast version (`ibex_ExactMultFast.h`): walk in double precision with an a priori bound of the rounding errors and a filtered angular predicate (see `fast/`). |
+| `0018-ibex-affine-cuadrado-chebyshev-af2.patch` | `IBEX_AF2_SQR=cheb`: S with the Chebyshev square (S⁺ in the paper). |
+| `0019-ibex-affine-dos-esquinas-una-pasada.patch` | The two corners of Algorithm 1 in a single pass. |
+| `0020-ibex-affine-cuadrado-exacto.patch` | `IBEX_SQR_EXACT=1`: exact range of the square (Proposition 4). |
+| `0021-ibex-affine-diagnostico-s-mas-ancho.patch` | Diagnostic counters (no effect on the results): products in which S is wider than E. |
 
-## Rigor
+Validation: `tests/affine_containment_check.cpp` (containment of 20 000 random functions per family,
+in interval arithmetic), `fast/verify.py` (fast walk against rational arithmetic),
+`tests/test_sqexact.cpp` (exact square) and `tests/bench_mult.cpp` (time per product, Table 3).
 
-`raf_mult_enclosure` devuelve un intervalo que contiene el rango de la parte no lineal
-`N = x0 ey η + y0 ex ξ + (aᵀε + ex ξ)(bᵀε + ey η)`:
-orden angular con predicado exacto (`__float128`), vértices y valores en las aristas con `ibex::Interval`,
-y el centro y el radio se suman con los mismos `twoSum` y factores `(1+2·AF_EM)` de fAF2.
+## Solver experiments (Table 4)
 
-## Validación
+All the variants are run in the same session, one after the other for each instance:
 
-- `affine_containment_check 20000 11` (9 familias × 20 000 funciones × 7 variantes): **0 violaciones seguras**;
-  con el error achicado al 90 % detecta 1696 (`sh`) y 1719 (`exact`) violaciones, así que la prueba es sensible.
-- En productos aislados (200 000 casos), el encierro de `exact` está siempre contenido en el de `sh`.
-- `ex5_4_3` (`ibexopt`, `art`): mismo óptimo con las cuatro aritméticas; 42 celdas con `af2`/`raa`, 40 con `sh`/`exact`.
+```
+TASKS=tasks_all1.txt OUT=$HOME/ibex-local/results/interleaved_all P=4 bash ibex/run_interleaved.sh
+```
 
-## Parche 0017 (versión rápida)
+Each line of a task file is `set file.bch time_limit variant`, with variants `af2` (S), `splus` (S⁺),
+`sh` (SH) and `exact` (E). The synthetic instances are in `benchmarks/ibex/` (generators in
+`benchmarks/ibex/generators/` and `analysis/gen_synp.py`); the COCONUT set is the optimization
+benchmark distributed with Ibex (`benchs/optim`: easy, medium, hard, others, unsolved, blowup and
+coconutbenchmark-library2; list in `results/coconut_manifest.csv`).
 
-- `affine_containment_check 20000 11`: **0 violaciones seguras** (`results/containment_20000_0017_stderr.txt`).
-- Verificación contra el rango exacto en aritmética racional: 86 000 casos, 0 violaciones (`fast/`).
-- Costo por producto (`results/bench_mult_0017.csv`): `exact` cuesta 2.4 a 5.4 veces `af2` (antes 7 a 45)
-  y es de 1.5 a 18 veces más barato que `raa`.
+| File | Content |
+|---|---|
+| `results/table5_interleaved.csv` | Runs on synq, synt and synp |
+| `results/table5_interleaved_all.csv` | Runs on the 298 COCONUT instances (60 s) |
+| `results/sdiag/` | Counters of patch 0021 (5 s with E) used to select the 110 COCONUT instances of Table 4 |
+| `analysis/make_table_solver_interleaved.py` | `results/table_solver.tex` (Table 4) |
+| `analysis/summary_all_by_set.py`, `analysis/summary_all_subsets.py` | COCONUT results by subset |
+| `results/bench_mult*.csv`, `results/containment_*` | Cost per product and containment tests |

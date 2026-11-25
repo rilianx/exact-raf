@@ -28,7 +28,6 @@ s = s.replace(r"\author{Ignacio Araya$^{1,*}$, Daniel Miranda$^{1}$, Victor Reye
 s = s.replace(r"Pontificia Universidad Cat\'olica de Valpara\'{\i}so, Valpara\'{\i}so, Chile\\", r"\\ \small Pontificia Universidad Cat\'olica de Valpara\'{\i}so,\\ \small Valpara\'{\i}so, Chile\\")
 s = s.replace(r"Facultad de Ingenier\'{\i}a y Ciencias, Universidad Diego Portales, Santiago, Chile", r"Facultad de Ingenier\'{\i}a y Ciencias,\\ \small Universidad Diego Portales, Santiago, Chile")
 s = s.replace(r"\texttt{ignacio.araya@pucv.cl}, \texttt{daniel.miranda.v@mail.pucv.cl},\\ \small \texttt{victor.reyes1@mail.udp.cl}, \texttt{juan.geraldo.u@mail.pucv.cl}", r"\texttt{ignacio.araya@pucv.cl}\\ \small \texttt{daniel.miranda.v@mail.pucv.cl}\\ \small \texttt{victor.reyes1@mail.udp.cl}\\ \small \texttt{juan.geraldo.u@mail.pucv.cl}")
-s = s.replace(r"\includegraphics[width=\linewidth]{fig/solver_scatter.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/solver_scatter_kindle.pdf}")
 s = s.replace(r"\includegraphics[width=\linewidth]{fig/zonotope.pdf}", r"\includegraphics[height=0.6\textheight]{../fig/zonotope_kindle.pdf}")
 s = fit(s)
 s = re.sub(r"\\input\{\.\./\.\./results/([a-z_]+)\.tex\}", lambda m: r"\input{" + m.group(1) + "_k.tex}", s)

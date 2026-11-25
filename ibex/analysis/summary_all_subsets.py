@@ -1,7 +1,7 @@
 import re,glob,os
 exec(open(__import__("os").path.join(__import__("os").path.dirname(__file__),"summary_all_by_set.py")).read().split("groups=")[0])
 st={}
-for f in glob.glob("/home/user/raa-affine-arithmetic/ibex/results/sdiag/*.txt"):
+for f in glob.glob(""+__import__("os").path.join(__import__("os").path.dirname(__import__("os").path.abspath(__file__)),"..","results","sdiag")+"/*.txt"):
     t=open(f).read(); n=os.path.basename(f)[:-4]
     m=dict(re.findall(r"(\w+)=(\d+)",t))
     st[n]={k:int(v) for k,v in m.items()} if m else None
